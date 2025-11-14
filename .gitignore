@@ -1,1 +1,4 @@
 /.idea
+/tv-like-module/target/classes/tv/tvai/like/*.class
+**/target/
+/tv-like-module/*.iml

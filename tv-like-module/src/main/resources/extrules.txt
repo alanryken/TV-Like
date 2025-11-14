@@ -1,0 +1,30 @@
+page-type: video-detail
+globals {
+  base-url: "https://example.com"
+  exclude: ".ads"
+}
+section: info .info-container {
+  text: .title [transform: trim]
+  img: .cover img [attr: src|data-src]
+  link: null
+}
+section: episodes .episode-list {
+  text: null
+  img: null
+  link: null
+  items: .ep-item {
+    text: .name
+    img: null
+    link: a [limit: 2]
+  }
+}
+section: recommend .rec-list {
+  text: null
+  img: null
+  link: null
+  items: .item {
+    text: .rec-title
+    img: .thumb img
+    link: a
+  }
+}
