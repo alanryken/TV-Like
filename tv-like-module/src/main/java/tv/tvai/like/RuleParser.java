@@ -1,187 +1,146 @@
 package tv.tvai.like;
 
-
+// RuleParser.java
 import java.util.*;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+import java.util.regex.*;
 
 public class RuleParser {
-    private static final Pattern SECTION_PATTERN = Pattern.compile("^section:\\s*([a-zA-Z0-9_-]+)\\s+([^ { ]+)\\s*\\{$");
-    private static final Pattern FIELD_PATTERN = Pattern.compile("^([a-zA-Z0-9_-]+):\\s*([^\\[ ]+)\\s*(\\[([^\\]]+)\\])?\\s*$");
-    private static final Pattern ITEMS_PATTERN = Pattern.compile("^items:\\s*([^ { ]+)\\s*\\{$");
-    private static final Pattern GLOBALS_PATTERN = Pattern.compile("^globals\\s*\\{");
-    private static final Pattern OPTION_PATTERN = Pattern.compile("([a-zA-Z-]+):\\s*([^,\\]]+)");
-    private static final Pattern GLOBAL_OPTION = Pattern.compile("([a-zA-Z-]+):\\s*([^,\\]]+)");
+    private static final Pattern SECTION = Pattern.compile("^section:\\s*([a-zA-Z0-9_-]+)\\s+(.+?)\\s*\\{$");
+    private static final Pattern FIELD   = Pattern.compile("^\\s*([a-zA-Z0-9_-]+):\\s*([^\\[\\s]+)\\s*(\\[([^\\]]+)\\])?\\s*$");
+    private static final Pattern ITEMS_START = Pattern.compile("^\\s*items:\\s*([^\\{\\s]+)\\s*\\{$");
+    private static final Pattern BLOCK_END   = Pattern.compile("^\\s*\\}\\s*(\\[([^\\]]+)\\])?\\s*$");
+    private static final Pattern OPT         = Pattern.compile("([a-zA-Z-]+):\\s*([^,\\]]+)");
 
     public List<RuleNode> parse(String rulesText) {
         rulesText = rulesText.replace("&#10;", "\n").replace("&#13;", "\r\n").replace("\r\n", "\n");
-
         String[] lines = rulesText.split("\n");
         List<RuleNode> sections = new ArrayList<>();
-        Map<String, Object> globals = new HashMap<>();
-        int braceLevel = 0;
-        String currentName = null;
-        String currentSelector = null;
-        List<String> currentBlock = new ArrayList<>();
-        boolean inItems = false;
-        boolean inGlobals = false;
 
-        for (String line : lines) {
-            line = line.trim();
-            if (line.isEmpty() || line.startsWith("#")) continue;
+        String curName = null, curSel = null;
+        List<String> blockLines = new ArrayList<>();
+        int brace = 0;
 
-            int braces = countBraces(line);
-            braceLevel += braces;
+        for (String raw : lines) {
+            String line = raw.trim();
+            if (line.isEmpty() || line.startsWith("#") || line.startsWith("page-type:") || line.startsWith("globals")) continue;
 
-            if (line.startsWith("page-type: ")) {
+            Matcher sec = SECTION.matcher(line);
+            if (sec.find()) {
+                if (brace > 0) process(blockLines, curName, curSel, sections);
+                curName = sec.group(1).trim();
+                curSel  = sec.group(2).trim();
+                blockLines.clear();
+                brace = 1;
                 continue;
             }
 
-            if (GLOBALS_PATTERN.matcher(line).find()) {
-                inGlobals = true;
-                braceLevel = 1;
-                continue;
-            }
-
-            if (inGlobals) {
-                if (braceLevel == 0) {
-                    inGlobals = false;
-                    continue;
+            if (brace > 0) {
+                blockLines.add(raw);  // 保留原始缩进行
+                brace += countBraces(raw);
+                if (brace == 0) {
+                    process(blockLines, curName, curSel, sections);
+                    blockLines.clear();
                 }
-                Matcher globalMatcher = GLOBAL_OPTION.matcher(line);
-                if (globalMatcher.find()) {
-                    String key = globalMatcher.group(1).trim();
-                    String value = globalMatcher.group(2).trim();
-                    globals.put(key, value);
-                }
-                continue;
-            }
-
-            Matcher sectionMatcher = SECTION_PATTERN.matcher(line);
-            if (sectionMatcher.find()) {
-                if (currentBlock.size() > 0) {
-                    processBlock(currentBlock, currentName, currentSelector, sections);
-                }
-                currentName = sectionMatcher.group(1).trim();
-                currentSelector = sectionMatcher.group(2).trim();
-                currentBlock = new ArrayList<>();
-                inItems = false;
-                braceLevel = 1;
-                continue;
-            }
-
-            if (braceLevel > 0) {
-                if (line.equals("}")) {
-                    braceLevel = 0;
-                    if (currentBlock.size() > 0) {
-                        processBlock(currentBlock, currentName, currentSelector, sections);
-                        currentName = null;
-                        currentSelector = null;
-                        currentBlock = new ArrayList<>();
-                    }
-                    continue;
-                }
-
-                Matcher itemsMatcher = ITEMS_PATTERN.matcher(line);
-                if (itemsMatcher.find()) {
-                    inItems = true;
-                    currentBlock.add(line);
-                    continue;
-                }
-
-                Matcher fieldMatcher = FIELD_PATTERN.matcher(line);
-                if (fieldMatcher.matches()) {
-                    String key = fieldMatcher.group(1);
-                    String sel = fieldMatcher.group(2).trim();
-                    String optStr = fieldMatcher.group(4);
-                    currentBlock.add(key + ": " + sel + (optStr != null ? " [" + optStr + "]" : ""));
-                    continue;
-                }
-
-                currentBlock.add(line);
             }
         }
-
+        if (brace > 0) process(blockLines, curName, curSel, sections);
         return sections;
     }
 
-    private int countBraces(String line) {
-        int count = 0;
-        for (char c : line.toCharArray()) {
-            if (c == '{') count++;
-            if (c == '}') count--;
-        }
-        return count;
+    private int countBraces(String s) {
+        int c = 0;
+        for (char ch : s.toCharArray()) { if (ch == '{') c++; else if (ch == '}') c--; }
+        return c;
     }
 
-    private void processBlock(List<String> block, String name, String selector, List<RuleNode> sections) {
-        Map<String, String> fieldSelectors = new HashMap<>();
-        Map<String, RuleNode.Options> fieldOptions = new HashMap<>();
+    private void process(List<String> lines, String name, String selector, List<RuleNode> out) {
+        if (lines.isEmpty() || name == null) return;
+
+        Map<String, String> fSel = new HashMap<>();
+        Map<String, RuleNode.Options> fOpt = new HashMap<>();
         RuleNode itemT = null;
+        RuleNode.Options itemSecOpt = new RuleNode.Options();
 
-        for (String blockLine : block) {
-            Matcher fieldMatcher = FIELD_PATTERN.matcher(blockLine);
-            if (fieldMatcher.matches()) {
-                String key = fieldMatcher.group(1);
-                String sel = fieldMatcher.group(2).trim();
-                String optStr = fieldMatcher.group(4);
-                RuleNode.Options opts = parseOptions(optStr);
-                if ("items".equals(key)) {
-                    itemT = buildItemTemplate(sel, block.subList(block.indexOf(blockLine) + 1, block.size()));
-                } else {
-                    fieldSelectors.put(key, sel);
-                    fieldOptions.put(key, opts);
+        List<String> itemLines = null;
+        int i = 0;
+        while (i < lines.size()) {
+            String raw = lines.get(i);
+            String trimmed = raw.trim();
+
+            // 检测 items: 开头
+            Matcher itemsStart = ITEMS_START.matcher(trimmed);
+            if (itemsStart.find()) {
+                String itemSel = itemsStart.group(1).trim();
+                itemLines = new ArrayList<>();
+                i++;
+                int subBrace = 1;
+                while (i < lines.size() && subBrace > 0) {
+                    String subRaw = lines.get(i);
+                    String subTrim = subRaw.trim();
+                    itemLines.add(subRaw);
+                    subBrace += countBraces(subRaw);
+                    if (BLOCK_END.matcher(subTrim).find()) {
+                        // 提取 [limit: 6]
+                        Matcher end = BLOCK_END.matcher(subTrim);
+                        if (end.find() && end.group(2) != null) {
+                            itemSecOpt = parseOpt(end.group(2));
+                        }
+                        break;
+                    }
+                    i++;
                 }
+                itemT = buildItem(itemSel, itemLines);
+                continue; // 跳过已处理的 items 行
             }
+
+            // 普通字段
+            Matcher field = FIELD.matcher(trimmed);
+            if (field.matches()) {
+                String k = field.group(1);
+                String s = field.group(2).trim();
+                String o = field.group(4);
+                fSel.put(k, s);
+                fOpt.put(k, parseOpt(o));
+            }
+            i++;
         }
 
-        RuleNode.Options sectionOpts = new RuleNode.Options();
-        RuleNode node;
-        if (itemT != null) {
-            Map<String, String> itemSels = itemT.getFieldSelectors();
-            Map<String, RuleNode.Options> itemOpts = itemT.getFieldOptions();
-            node = RuleNode.sectionWithItems(name, selector, fieldSelectors, fieldOptions, itemT.getSelector(), itemSels, itemOpts, sectionOpts);
-        } else {
-            node = RuleNode.section(name, selector, fieldSelectors, fieldOptions, sectionOpts);
-        }
-        sections.add(node);
+        RuleNode node = itemT != null
+                ? RuleNode.sectionWithItems(name, selector, fSel, fOpt,
+                itemT.getSelector(), itemT.getFieldSelectors(), itemT.getFieldOptions(), itemSecOpt)
+                : RuleNode.section(name, selector, fSel, fOpt, new RuleNode.Options());
+        out.add(node);
     }
 
-    private RuleNode buildItemTemplate(String itemSel, List<String> subBlock) {
-        Map<String, String> itemSelectors = new HashMap<>();
-        Map<String, RuleNode.Options> itemFieldOptions = new HashMap<>();
-        RuleNode.Options itemSectionOpts = new RuleNode.Options();
-
-        for (String subLine : subBlock) {
-            Matcher fieldMatcher = FIELD_PATTERN.matcher(subLine);
-            if (fieldMatcher.matches()) {
-                String key = fieldMatcher.group(1);
-                String sel = fieldMatcher.group(2).trim();
-                String optStr = fieldMatcher.group(4);
-                RuleNode.Options opts = parseOptions(optStr);
-                itemSelectors.put(key, sel);
-                itemFieldOptions.put(key, opts);
+    private RuleNode buildItem(String sel, List<String> lines) {
+        Map<String, String> iSel = new HashMap<>();
+        Map<String, RuleNode.Options> iOpt = new HashMap<>();
+        int brace = 0;
+        for (String raw : lines) {
+            String trim = raw.trim();
+            brace += countBraces(raw);
+            if (brace <= 0) break; // 跳过结束 }
+            if (trim.isEmpty() || trim.startsWith("}")) continue;
+            Matcher m = FIELD.matcher(trim);
+            if (m.matches()) {
+                iSel.put(m.group(1), m.group(2).trim());
+                iOpt.put(m.group(1), parseOpt(m.group(4)));
             }
         }
-
-        return RuleNode.section("item", itemSel, itemSelectors, itemFieldOptions, itemSectionOpts);
+        return RuleNode.section("item", sel, iSel, iOpt, new RuleNode.Options());
     }
 
-    private RuleNode.Options parseOptions(String optStr) {
-        RuleNode.Options opts = new RuleNode.Options();
-        if (optStr == null) return opts;
-        Matcher optMatcher = OPTION_PATTERN.matcher(optStr);
-        while (optMatcher.find()) {
-            String key = optMatcher.group(1).trim();
-            String value = optMatcher.group(2).trim();
-            if ("limit".equals(key) || "index".equals(key)) {
-                opts.put(key, Integer.valueOf(value));
-            } else if ("transform".equals(key)) {
-                opts.put(key, Arrays.asList(value.split("\\|")));
-            } else {
-                opts.put(key, value);
-            }
+    private RuleNode.Options parseOpt(String s) {
+        RuleNode.Options o = new RuleNode.Options();
+        if (s == null) return o;
+        Matcher m = OPT.matcher(s);
+        while (m.find()) {
+            String k = m.group(1).trim();
+            String v = m.group(2).trim();
+            if ("limit".equals(k) || "index".equals(k)) o.put(k, Integer.valueOf(v));
+            else if ("transform".equals(k)) o.put(k, Arrays.asList(v.split("\\|")));
+            else o.put(k, v);
         }
-        return opts;
+        return o;
     }
 }
