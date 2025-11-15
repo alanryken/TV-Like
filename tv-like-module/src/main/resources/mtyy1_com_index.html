@@ -66,27 +66,22 @@
                 link: a [attr: href]
             } [limit: 6]
         }
-        section: episodes .episode-list {
-            text: null
+        section: top-title .title.top10 h4.title-h.cor4 {
+            text: a span:first-child
             img: null
-            link: null
-            items: .ep-item {
-                text: .name
-                img: null
-                link: a [limit: 2]
-            }
-        }
-        section: recommend .rec-list {
-            text: null
-            img: null
-            link: null
-            items: .item {
-                text: .rec-title
-                img: .thumb img
-                link: a
-            }
+            link: a
         }
 
+        section: episodes .flex.wrap.border-box.public-r {
+            text: null
+            img: null
+            link: null
+            items: .public-list-box.public-pic-a {
+                text: .public-list-button a.time-title
+                img: .public-list-div a.public-list-exp img [attr: data-src]
+                link: .public-list-button a.time-title
+            }
+        }
     </script>
 </head>
 
