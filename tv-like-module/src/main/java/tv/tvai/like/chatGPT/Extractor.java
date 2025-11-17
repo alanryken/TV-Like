@@ -50,15 +50,32 @@ public class Extractor {
         for (Map.Entry<String, String> en : rule.getFieldSelectors().entrySet()) {
             String field = en.getKey();
             String sel = en.getValue();
+            String attr = null;
+
+            Map<String, RuleNode.Options> fieldOptions = rule.getFieldOptions();
+            if (fieldOptions != null) {
+                RuleNode.Options options = fieldOptions.get(field);
+                if (options != null) {
+                    Map<String, Object> values = options.getValues();
+                    attr = values == null || values.get("attr") == null ? null : values.get("attr").toString();
+                }
+            }
 
             String value = null;
             if (sel != null) {
                 if ("text".equals(field)) {
-                    value = selectText(el, sel);
+                    //先尝试获取attr
+                    if (attr != null) {
+                        value = selectAttr(el, sel, attr);
+                    }
+                    //attr 获取失败则获取默认文本
+                    if (value == null || "".equals(value)) {
+                        value = selectText(el, sel);
+                    }
                 } else if ("img".equals(field)) {
-                    value = selectAttr(el, sel, "src");
+                    value = selectAttr(el, sel, attr == null ? "src" : attr);
                 } else if ("link".equals(field)) {
-                    value = selectAttr(el, sel, "href");
+                    value = selectAttr(el, sel, attr == null ? "href" : attr);
                 }
             }
 
@@ -81,15 +98,32 @@ public class Extractor {
                     String field = en.getKey();
                     String sel = en.getValue();
 
-                    String value = null;
-                    if ("text".equals(field)) {
-                        value = selectText(ie, sel);
-                    } else if ("img".equals(field)) {
-                        value = selectAttr(ie, sel, "src");
-                    } else if ("link".equals(field)) {
-                        value = selectAttr(ie, sel, "href");
+                    String attr = null;
+
+                    Map<String, RuleNode.Options> fieldOptions = item.getFieldOptions();
+                    if (fieldOptions != null) {
+                        RuleNode.Options options = fieldOptions.get(field);
+                        if (options != null) {
+                            Map<String, Object> values = options.getValues();
+                            attr = values == null || values.get("attr") == null ? null : values.get("attr").toString();
+                        }
                     }
 
+                    String value = null;
+                    if ("text".equals(field)) {
+                        //先尝试获取attr
+                        if (attr != null) {
+                            value = selectAttr(el, sel, attr);
+                        }
+                        //attr 获取失败则获取默认文本
+                        if (value == null || "".equals(value)) {
+                            value = selectText(ie, sel);
+                        }
+                    } else if ("img".equals(field)) {
+                        value = selectAttr(ie, sel, attr == null ? "src" : attr);
+                    } else if ("link".equals(field)) {
+                        value = selectAttr(ie, sel, attr == null ? "href" : attr);
+                    }
                     if (value != null && !mm.containsKey(field)) mm.put(field, value);
                 }
 

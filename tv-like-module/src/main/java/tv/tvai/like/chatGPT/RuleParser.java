@@ -172,14 +172,16 @@ public class RuleParser {
         sc.close();
     }
 
-    private static void parseSingleOptionTokenInto(String t, RuleNode.Options opts) {
-        if (t == null || t.trim().isEmpty()) return;
-
-        String[] arr = t.split(":", 2);
-        if (arr.length == 1) {
-            opts.putIfAbsent(arr[0].trim(), true);
-        } else {
-            opts.putIfAbsent(arr[0].trim(), arr[1].trim());
+    private static void parseSingleOptionTokenInto(String s, RuleNode.Options opts) {
+        if (s == null || s.trim().isEmpty()) return;
+        String[] split = s.split(",");
+        for (String t : split) {
+            String[] arr = t.split(":", 2);
+            if (arr.length == 1) {
+                opts.putIfAbsent(arr[0].trim(), true);
+            } else {
+                opts.putIfAbsent(arr[0].trim(), arr[1].trim());
+            }
         }
     }
 
@@ -192,6 +194,12 @@ public class RuleParser {
         return opts;
     }
 
+    /**
+     * 找结尾大括号
+     * @param text
+     * @param openIndex
+     * @return
+     */
     public static int findMatchingBrace(String text, int openIndex) {
         int level = 0;
         for (int i = openIndex; i < text.length(); i++) {
