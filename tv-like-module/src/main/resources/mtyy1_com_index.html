@@ -56,30 +56,31 @@
             base-url: "https://mtyy1.com"
             exclude: ".ads"
         }
-        section: tab .head-nav.ft4.roll.bold0.pc-show1.wap-show0 {
-            text: null
-            img: null
-            link: null
-            items: ul.swiper-wrapper li.swiper-slide {
-                text: a [transform: trim]
+        path: /vodtype/** {
+            section: tab .head-nav.ft4.roll.bold0.pc-show1.wap-show0 {
+                text: null
                 img: null
-                link: a [attr: href]
-            } [limit: 6]
-        }
-        section: top-title .title.top10 h4.title-h.cor4 {
-            text: a span:first-child
-            img: null
-            link: a
-        }
-
-        section: episodes .flex.wrap.border-box.public-r {
-            text: null
-            img: null
-            link: null
-            items: .public-list-box.public-pic-a {
-                text: .public-list-button a.time-title
-                img: .public-list-div a.public-list-exp img [attr: data-src]
-                link: .public-list-button a.time-title
+                link: null
+                items: ul.swiper-wrapper li.swiper-slide {
+                    text: a [transform: trim]
+                    img: null
+                    link: a [attr: href]
+                } [limit: 6]
+            }
+            section: top-title .title.top10 h4.title-h.cor4 {
+                text: a span:first-child
+                img: null
+                link: a
+            }
+            section: episodes .flex.wrap.border-box.public-r {
+                text: null
+                img: null
+                link: null
+                items: .public-list-box.public-pic-a {
+                    text: .public-list-button a.time-title
+                    img: .public-list-div a.public-list-exp img [attr: data-src]
+                    link: .public-list-button a.time-title
+                }
             }
         }
     </script>

@@ -1,5 +1,4 @@
 package tv.tvai.like.chatGPT;
-import org.jsoup.nodes.Document;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -8,10 +7,10 @@ import java.util.regex.Pattern;
 public class RuleParser {
 
     private static final Set<String> ALLOWED_FIELDS =
-            new HashSet<String>(Arrays.asList("text", "img", "link"));
+            new HashSet<>(Arrays.asList("text", "img", "link"));
 
     public List<RuleNode> parse(String dsl) {
-        List<RuleNode> sections = new ArrayList<RuleNode>();
+        List<RuleNode> sections = new ArrayList<>();
         if (dsl == null || dsl.trim().isEmpty()) return sections;
 
         Pattern sectionP = Pattern.compile(
