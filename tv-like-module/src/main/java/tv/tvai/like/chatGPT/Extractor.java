@@ -43,98 +43,88 @@ public class Extractor {
         }
     }
 
+    // 统一负责解析一个 Section（含字段 + items）
     private Map<String, Object> extractSection(Element el, RuleNode rule) {
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        Map<String, Object> result = new LinkedHashMap<>();                 // 存放当前 section 的解析结果
 
-        // text / img / link
-        for (Map.Entry<String, String> en : rule.getFieldSelectors().entrySet()) {
-            String field = en.getKey();
-            String sel = en.getValue();
-            String attr = null;
+        extractFields(el, rule, result);                                    // 解析 section 自己的字段(text/img/link)
 
-            Map<String, RuleNode.Options> fieldOptions = rule.getFieldOptions();
-            if (fieldOptions != null) {
-                RuleNode.Options options = fieldOptions.get(field);
-                if (options != null) {
-                    Map<String, Object> values = options.getValues();
-                    attr = values == null || values.get("attr") == null ? null : values.get("attr").toString();
-                }
+        RuleNode itemTemplate = rule.getItemTemplate();                     // 获取 items 模板
+        if (itemTemplate != null) {                                         // 如果存在 items 配置
+            Elements elements = el.select(itemTemplate.getSelector());      // 根据 selector 查询所有 item 节点
+            List<Map<String, Object>> items = new ArrayList<>();            // 用于存放 items 数组
+
+            for (Element itemEl : elements) {                               // 遍历每个 item DOM 节点
+                Map<String, Object> itemMap = new LinkedHashMap<>();        // 单个 item 的解析结果
+                extractFields(itemEl, itemTemplate, itemMap);               // 解析每个 item 的字段
+                items.add(itemMap);                                         // 加入 items 数组
             }
 
-            String value = null;
-            if (sel != null) {
-                if ("text".equals(field)) {
-                    //先尝试获取attr
-                    if (attr != null) {
-                        value = selectAttr(el, sel, attr);
-                    }
-                    //attr 获取失败则获取默认文本
-                    if (value == null || "".equals(value)) {
-                        value = selectText(el, sel);
-                    }
-                } else if ("img".equals(field)) {
-                    value = selectAttr(el, sel, attr == null ? "src" : attr);
-                } else if ("link".equals(field)) {
-                    value = selectAttr(el, sel, attr == null ? "href" : attr);
-                }
-            }
-
-            // ★★★ null 不 put
-            if (value != null && !map.containsKey(field)) {
-                map.put(field, value);
-            }
+            result.put("items", items);                                     // 将 items 放入最终结果
         }
 
-        // items
-        RuleNode item = rule.getItemTemplate();
-        if (item != null) {
-            Elements items = el.select(item.getSelector());
-            List<Map<String, Object>> arr = new ArrayList<Map<String, Object>>();
-
-            for (Element ie : items) {
-                Map<String, Object> mm = new LinkedHashMap<String, Object>();
-
-                for (Map.Entry<String, String> en : item.getFieldSelectors().entrySet()) {
-                    String field = en.getKey();
-                    String sel = en.getValue();
-
-                    String attr = null;
-
-                    Map<String, RuleNode.Options> fieldOptions = item.getFieldOptions();
-                    if (fieldOptions != null) {
-                        RuleNode.Options options = fieldOptions.get(field);
-                        if (options != null) {
-                            Map<String, Object> values = options.getValues();
-                            attr = values == null || values.get("attr") == null ? null : values.get("attr").toString();
-                        }
-                    }
-
-                    String value = null;
-                    if ("text".equals(field)) {
-                        //先尝试获取attr
-                        if (attr != null) {
-                            value = selectAttr(el, sel, attr);
-                        }
-                        //attr 获取失败则获取默认文本
-                        if (value == null || "".equals(value)) {
-                            value = selectText(ie, sel);
-                        }
-                    } else if ("img".equals(field)) {
-                        value = selectAttr(ie, sel, attr == null ? "src" : attr);
-                    } else if ("link".equals(field)) {
-                        value = selectAttr(ie, sel, attr == null ? "href" : attr);
-                    }
-                    if (value != null && !mm.containsKey(field)) mm.put(field, value);
-                }
-
-                arr.add(mm);
-            }
-
-            map.put("items", arr);
-        }
-
-        return map;
+        return result;                                                      // 返回最终解析结果
     }
+
+
+    // 统一解析字段(text/img/link)，避免重复代码
+    private void extractFields(Element el, RuleNode rule, Map<String, Object> out) {
+        for (Map.Entry<String, String> en : rule.getFieldSelectors().entrySet()) {
+            String field = en.getKey();                                     // 字段名：text / img / link
+            String selector = en.getValue();                                // CSS selector
+            String attr = resolveAttr(rule, field);                         // 获取字段自定义 attr（如 src/href）
+
+            if (selector == null) continue;                                 // 如果无 selector 直接跳过
+
+            String value = extractValue(el, field, selector, attr);         // 根据字段类型提取具体值
+
+            if (value != null && !value.isEmpty() && !out.containsKey(field)) {
+                out.put(field, value);                                      // 仅在 value 非空 且不存在时才 put
+            }
+        }
+    }
+
+
+    // 从 RuleNode 读取字段的 attr 配置（可复用）
+    private String resolveAttr(RuleNode rule, String field) {
+        Map<String, RuleNode.Options> fieldOptions = rule.getFieldOptions(); // 获取字段配置
+        if (fieldOptions == null) return null;
+
+        RuleNode.Options opt = fieldOptions.get(field);                      // 获取当前字段的配置
+        if (opt == null) return null;
+
+        Map<String, Object> values = opt.getValues();                        // 取出 values
+        if (values == null) return null;
+
+        Object attr = values.get("attr");                                    // 读取 attr 配置
+        return attr == null ? null : attr.toString();
+    }
+
+
+    // 根据 field 类型统一提取值
+    private String extractValue(Element el, String field, String selector, String attr) {
+        Element target = el.selectFirst(selector);                           // 找到第一个匹配元素
+        if (target == null) return null;
+
+        switch (field) {
+            case "text":
+                if (attr != null) {                                          // 若配置了 attr，则优先取 attr
+                    String v = selectAttr(el, selector, attr);
+                    if (v != null && !v.isEmpty()) return v;                 // attr 非空则返回
+                }
+                return selectText(el, selector);                             // 否则取文本
+
+            case "img":
+                return selectAttr(el, selector, attr == null ? "src" : attr);// 默认 src
+
+            case "link":
+                return selectAttr(el, selector, attr == null ? "href" : attr);// 默认 href
+
+            default:
+                return null;                                                 // 未知字段类型
+        }
+    }
+
 
     private String selectText(Element el, String selector) {
         Element e = el.selectFirst(selector);
@@ -144,27 +134,5 @@ public class Extractor {
     private String selectAttr(Element el, String selector, String attr) {
         Element e = el.selectFirst(selector);
         return e != null ? e.attr(attr).trim() : null;
-    }
-
-
-    /** 去掉 selector 中的 [attr: xxx] 部分 */
-    private static String stripAttr(String selector) {
-        int idx = selector.indexOf("[attr:");
-        if (idx >= 0) {
-            return selector.substring(0, idx).trim();
-        }
-        return selector;
-    }
-
-    /** 提取 [attr: xxx] 中的属性名 */
-    private static String extractAttrName(String selector) {
-        int start = selector.indexOf("[attr:");
-        if (start >= 0) {
-            int end = selector.indexOf("]", start);
-            if (end > start) {
-                return selector.substring(start + 6, end).trim();
-            }
-        }
-        return null;
     }
 }
