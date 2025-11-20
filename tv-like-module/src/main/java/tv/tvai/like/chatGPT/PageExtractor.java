@@ -20,6 +20,7 @@ public class PageExtractor {
             System.err.println("找不到 HTML 文件！");
             return;
         }
+        String path = "/vodtype/index.html";
 
         // === 2️⃣ 解析 HTML ===
         Document doc = Jsoup.parse(inputStream, "UTF-8", "");
@@ -33,7 +34,9 @@ public class PageExtractor {
 
         // === 4️⃣ 解析 DSL → RuleNode 列表 ===
         RuleParser parser = new RuleParser();
-        List<RuleNode> rules = parser.parse(dsl);
+        parser.parse(dsl);
+
+        List<RuleNode> rules = parser.getPathRule(path);
 
         // === 5️⃣ 用 Extractor 解析 HTML，按 DOM 顺序输出 ===
         Extractor extractor = new Extractor();
@@ -44,7 +47,9 @@ public class PageExtractor {
 
         ObjectMapper om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         System.out.println(om.writeValueAsString(sections));
+
     }
+
 
     /**
      * 从 <script type="text/plain" name="tv-like"> 中提取 DSL 内容
@@ -57,6 +62,7 @@ public class PageExtractor {
         return script.html()
                 .replace("&#10;", "\n")
                 .replace("&#13;", "\r\n")
-                .replace("\r\n", "\n");
+                .replace("\r\n", "\n")
+                .replaceAll("/\\*.*?\\*/", ""); //去掉注释行
     }
 }

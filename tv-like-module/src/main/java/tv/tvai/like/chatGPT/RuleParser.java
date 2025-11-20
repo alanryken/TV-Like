@@ -1,5 +1,8 @@
 package tv.tvai.like.chatGPT;
 
+import tv.tvai.like.util.AntPathMatcher;
+import tv.tvai.like.util.PathMatcher;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,13 +12,62 @@ public class RuleParser {
     private static final Set<String> ALLOWED_FIELDS =
             new HashSet<>(Arrays.asList("text", "img", "link"));
 
-    public List<RuleNode> parse(String dsl) {
+    private Map<String, List<RuleNode>> pathRuleMap;
+
+
+    private boolean matchPath(String pattern, String path) {
+        PathMatcher pathMatcher = new AntPathMatcher();
+        return pathMatcher.match(pattern, path);
+    }
+
+    public List<RuleNode> getPathRule(String path) {
+        for (Map.Entry<String, List<RuleNode>> entry : pathRuleMap.entrySet()) {
+            String pattern = entry.getKey();
+            boolean matched = this.matchPath(pattern, path);
+            if (matched) {
+                return entry.getValue();
+            }
+        }
+        //匹配失败 返回空
+        return new ArrayList<>();
+    }
+
+    /**
+     * 获取路径规则
+     * @param dsl
+     * @return
+     */
+    public void parse(String dsl) {
+        pathRuleMap = new LinkedHashMap<>();
+        Pattern pathP = Pattern.compile("path\\s*:\\s*([^\\{]+)\\{", Pattern.CASE_INSENSITIVE);
+
+        Matcher m = pathP.matcher(dsl);
+        while (m.find()) {
+            String pathPattern = m.group(1).trim();
+            int open = m.end() - 1;
+            int close = findMatchingBrace(dsl, open);
+            if (close < 0) continue;
+            String body = dsl.substring(open + 1, close);
+            List<RuleNode> nodeList = this.parseSectionDsl(body);
+            if (!nodeList.isEmpty()) {
+                pathRuleMap.put(pathPattern, nodeList);
+            }
+        }
+        if (pathRuleMap.isEmpty()) {
+            List<RuleNode> nodeList = this.parseSectionDsl(dsl);
+            pathRuleMap.put("/**", nodeList);
+        }
+    }
+
+    private List<RuleNode> parseSectionDsl(String dsl) {
         List<RuleNode> sections = new ArrayList<>();
         if (dsl == null || dsl.trim().isEmpty()) return sections;
 
         Pattern sectionP = Pattern.compile(
-                "section\\s*:\\s*(\\w+)\\s+([^\\{]+)\\{",
-                Pattern.CASE_INSENSITIVE);
+                "section\\s*:\\s*([\\w-]+)\\s+([^\\{]+)\\{",
+                Pattern.CASE_INSENSITIVE
+        );
+
 
         Matcher m = sectionP.matcher(dsl);
         while (m.find()) {
@@ -184,7 +236,7 @@ public class RuleParser {
         }
     }
 
-    public static RuleNode.Options parseOptionsNear(String str, int start) {
+    private static RuleNode.Options parseOptionsNear(String str, int start) {
         RuleNode.Options opts = new RuleNode.Options();
         Matcher m = Pattern.compile("\\[(.*?)]").matcher(str);
         while (m.find()) {
@@ -199,7 +251,7 @@ public class RuleParser {
      * @param openIndex
      * @return
      */
-    public static int findMatchingBrace(String text, int openIndex) {
+    private static int findMatchingBrace(String text, int openIndex) {
         int level = 0;
         for (int i = openIndex; i < text.length(); i++) {
             char c = text.charAt(i);

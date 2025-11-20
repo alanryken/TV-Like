@@ -22,10 +22,13 @@ public class Extractor {
 
             // 按 DOM 顺序匹配所有 section
             for (RuleNode rule : rules) {
-                if (matches(el, rule.getSelector())) {
+                boolean matches = this.matches(el, rule.getSelector());
+                if (matches) {
                     Map<String, Object> parsed = this.extractSection(el, rule);
+                    if (parsed.isEmpty()) continue;
                     parsed.put("type", rule.getName());
                     result.add(parsed);
+                    break;
                 }
             }
         }
@@ -59,8 +62,9 @@ public class Extractor {
                 this.extractFields(itemEl, itemTemplate, itemMap);               // 解析每个 item 的字段
                 items.add(itemMap);                                         // 加入 items 数组
             }
-
-            result.put("items", items);                                     // 将 items 放入最终结果
+            if (!items.isEmpty()) {
+                result.put("items", items);                                     // 将 items 放入最终结果
+            }
         }
 
         return result;                                                      // 返回最终解析结果
