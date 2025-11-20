@@ -9,17 +9,14 @@ public class Extractor {
 
     public List<Map<String, Object>> extract(Document doc, List<RuleNode> rules) {
         List<Map<String, Object>> result = new ArrayList<>();
-
         Element body = doc.body();
         this.traverse(body, rules, result);
-
         return result;
     }
 
     private void traverse(Node node, List<RuleNode> rules, List<Map<String, Object>> result) {
         if (node instanceof Element) {
             Element el = (Element) node;
-
             // 按 DOM 顺序匹配所有 section
             for (RuleNode rule : rules) {
                 boolean matches = this.matches(el, rule.getSelector());
@@ -28,7 +25,6 @@ public class Extractor {
                     if (parsed.isEmpty()) continue;
                     parsed.put("type", rule.getName());
                     result.add(parsed);
-                    break;
                 }
             }
         }
@@ -57,10 +53,14 @@ public class Extractor {
             Elements elements = el.select(itemTemplate.getSelector());      // 根据 selector 查询所有 item 节点
             List<Map<String, Object>> items = new ArrayList<>();            // 用于存放 items 数组
 
+            long limit = this.resolveLimit(itemTemplate);
+            int i = 0;
             for (Element itemEl : elements) {                               // 遍历每个 item DOM 节点
+                if (limit > 0 && i >= limit) break;
                 Map<String, Object> itemMap = new LinkedHashMap<>();        // 单个 item 的解析结果
                 this.extractFields(itemEl, itemTemplate, itemMap);               // 解析每个 item 的字段
                 items.add(itemMap);                                         // 加入 items 数组
+                i++;
             }
             if (!items.isEmpty()) {
                 result.put("items", items);                                     // 将 items 放入最终结果
@@ -71,7 +71,7 @@ public class Extractor {
     }
 
 
-    // 统一解析字段(text/img/link)，避免重复代码
+    // 统一解析字段(text/img/link)
     private void extractFields(Element el, RuleNode rule, Map<String, Object> out) {
         for (Map.Entry<String, String> en : rule.getFieldSelectors().entrySet()) {
             String field = en.getKey();                                     // 字段名：text / img / link
@@ -86,6 +86,14 @@ public class Extractor {
                 out.put(field, value);                                      // 仅在 value 非空 且不存在时才 put
             }
         }
+    }
+
+    private long resolveLimit(RuleNode rule) {
+        RuleNode.Options sectionOptions = rule.getSectionOptions();
+        if (sectionOptions == null || sectionOptions.getValues() == null || sectionOptions.getValues().isEmpty() || !sectionOptions.getValues().containsKey("limit")) {
+            return -1;
+        }
+        return Long.parseLong(sectionOptions.getValues().get("limit").toString());
     }
 
 
