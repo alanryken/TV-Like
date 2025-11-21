@@ -1,9 +1,8 @@
-package tv.tvai.like.chatGPT;
+package tv.tvai.like;
 
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.*;
 
 public class RuleNode {
     private String name;                // section 名称，如：tab / episodes / recommend

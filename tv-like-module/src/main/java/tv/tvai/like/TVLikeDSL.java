@@ -1,4 +1,4 @@
-package tv.tvai.like.chatGPT;
+package tv.tvai.like;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,15 +13,15 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 
-public class DSL {
+public class TVLikeDSL {
 
-    private String tv_like_dsl_hub = "";
+    private String tv_like_dsl_hub = "htts://like.tvai.tv/";
 
-    public DSL() {
+    public TVLikeDSL() {
 
     }
 
-    public DSL(String dslHub) {
+    public TVLikeDSL(String dslHub) {
         if (StringUtils.isNotBlank(dslHub)) {
             tv_like_dsl_hub = dslHub;
         }

@@ -1,4 +1,4 @@
-package tv.tvai.like.chatGPT;
+package tv.tvai.like;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -9,24 +9,29 @@ import java.util.*;
 
 public class TV {
 
-    private Document doc;
-    private String dsl;
-    private String path;
+    private final Document doc;
+    private final String dslHub;
+    private final String path;
 
     public TV(String html, String url) throws MalformedURLException {
         this.doc = Jsoup.parse(html);
         this.path = new URL(url).getPath();
+        this.dslHub = null;
     }
 
-    public TV(String html, String url, String dsl) throws MalformedURLException {
+    public TV(String html, String url, String dslHub) throws MalformedURLException {
         this.doc = Jsoup.parse(html);
         this.path = new URL(url).getPath();
-        this.dsl = dsl;
+        this.dslHub = dslHub;
     }
+
 
     public List<Map<String, Object>> like() {
 
-        this.dsl = new DSL().getDSL(doc);
+        TVLikeDSL tvLikeDSL = dslHub == null ? new TVLikeDSL() : new TVLikeDSL(dslHub);
+
+        String dsl = tvLikeDSL.getDSL(doc);
+
         RuleParser parser = new RuleParser();
         parser.parse(dsl);
         List<RuleNode> rules = parser.getPathRule(path);

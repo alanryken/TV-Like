@@ -1,4 +1,4 @@
-package tv.tvai.like.chatGPT;
+package tv.tvai.like;
 
 import org.jsoup.nodes.*;
 import org.jsoup.select.Elements;

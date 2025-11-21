@@ -1,4 +1,4 @@
-package tv.tvai.like.chatGPT;
+package tv.tvai.like;
 
 import tv.tvai.like.util.AntPathMatcher;
 import tv.tvai.like.util.PathMatcher;

@@ -1,9 +1,7 @@
-package tv.tvai.like.chatGPT;
+package tv.tvai.like;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,7 +29,7 @@ public class TVLikeTest {
     public static String inputStreamToString() throws IOException {
         // 1️⃣ 读取本地 HTML 文件
         // 1. 获取类路径下的 InputStream（自动关闭资源）
-        try (InputStream inputStream = TV.class.getClassLoader().getResourceAsStream("mtyy1_com_index.html")) {
+        try (InputStream inputStream = TV.class.getClassLoader().getResourceAsStream("mtyy1_com_index2.html")) {
             if (inputStream == null) {
                 throw new IllegalArgumentException("类路径下未找到文件：");
             }
