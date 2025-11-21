@@ -16,10 +16,11 @@ public class TVLikeTest {
     public static void main(String[] args) throws IOException {
 
         String html = inputStreamToString();
-        String path = "https://www.mtyy1.com/vodtype/index.html";
+        String path = "https://www.dadaqu.cc/";
 
+        String hub = "https://raw.githubusercontent.com/tv-like/dsl/refs/heads/main";
 
-        List<Map<String, Object>> like = new TV(html, path).like();
+        List<Map<String, Object>> like = new TV(html, path, hub).like();
 
         ObjectMapper om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         System.out.println(om.writeValueAsString(like));
@@ -29,7 +30,7 @@ public class TVLikeTest {
     public static String inputStreamToString() throws IOException {
         // 1️⃣ 读取本地 HTML 文件
         // 1. 获取类路径下的 InputStream（自动关闭资源）
-        try (InputStream inputStream = TV.class.getClassLoader().getResourceAsStream("mtyy1_com_index2.html")) {
+        try (InputStream inputStream = TV.class.getClassLoader().getResourceAsStream("ddqu.cc.index.html")) {
             if (inputStream == null) {
                 throw new IllegalArgumentException("类路径下未找到文件：");
             }

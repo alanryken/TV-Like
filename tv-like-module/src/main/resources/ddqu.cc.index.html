@@ -1,0 +1,1490 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="force-rendering" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="referrer" content="no-referrer">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <script>var maccms={"path":"","mid":"","url":"www.dadaqu.cc","wapurl":"www.dadaqu.cc","mob_status":"0"};</script>
+    <link rel="shortcut icon" href="/mxtheme/images/favicon.png">
+    <link rel="stylesheet" href="/mxtheme/css/style.css" type="text/css">
+    <link id="cssFile" rel="stylesheet" href="/mxtheme/css/black.css" type="text/css">
+    <script>
+        function getCookieItem(name){
+            var arr = document.cookie.match(new RegExp("(^| )"+name+"=([^;]*)(;|$)"));
+            if(arr != null){ return decodeURIComponent(arr[2]); return null; }
+        }
+        let cookieItem = getCookieItem('mx_style')
+        if(cookieItem && cookieItem !=='white') {
+            document.querySelector('#cssFile').href = '/mxtheme/css/'+getCookieItem('mx_style')+'.css'
+        }
+    </script>
+    <link rel="stylesheet" href="/mxtheme/css/swiper-bundle.min.css" type="text/css">
+    <script src="/mxtheme/js/jquery.min.js"></script>
+    <script src="/mxtheme/js/home.js"></script>
+    <script src="/mxtheme/js/jquery.lazyload.js"></script>
+    <script src="/static/js/jquery.cookie.js"></script>
+    <script src="/static/js/jquery.clipboard.js"></script>
+    <script type="text/javascript"  src="/mxtheme/js/jquery.qrcode.min.js"></script>
+    <script src="/mxtheme/js/script.js"></script>
+    <script src="/mxtheme/js/swiper-bundle.min.js"></script>
+    <script src="/mxtheme/js/layer.min.js"></script>
+    <link rel="stylesheet" href="/mxtheme/js/theme/default/layer.css" type="text/css">
+    <style></style>
+    <script>
+        $(function(){
+            $('#searchbutton').click(function() {
+                if ($('.search-input').val()  == '') { layer.msg('请输入搜索关键词！',{time:1000,shade: 0.8}); $(".search-input").focus(); return false; }
+            })
+        });
+    </script>
+
+    <script type="text/plain" name="tv-like">
+        page-type: video-detail
+        globals {
+            base-url: "https://www.dadaqu.cc/"
+        }
+        path: / {
+
+            /* 导航 */
+            section:tab .sidebar ul.navbar-items.swiper-wrapper {
+                items: li.swiper-slide.navbar-item {
+                    text: a.links > span
+                    link: a [attr: href]
+                }
+            }
+
+            /* title a */
+            section:top .content .module  {
+                text:
+                    - .module-heading h2.module-title  a
+                    - .module-heading h2.module-title
+                link: .module-heading a
+                items: .module-main .module-items a {
+                    text: a [attr: title]
+                    link: a [attr: href]
+                    img: a  div.module-item-pic img [attr: data-original]
+                }
+            }
+        }
+    </script>
+
+    <title>达达趣</title>
+    <meta name="keywords" content="达达趣" />
+    <meta name="description" content="达达趣提供最新最快的视频分享数据" />
+</head>
+<body>
+<div class="homepage">
+    <div class="header">
+        <div class="header-box">
+            <div class="logo ">
+                <a href="/" title="达达趣"><img class="logo2"  src="/mxtheme/images/logo_black.png" alt="达达趣" >
+                    <img class="logo1" src="/mxtheme/images/logo.png" /></a>
+            </div>
+
+            <div class="search-box ">
+                <div class="searchbar-main">
+                    <form name="search" method="get" action="/search/-------------.html" onSubmit="return qrsearch();">
+                        <div class="searchbar">
+                            <input class="search-input"  type="text" name="wd" autocomplete="off" placeholder="搜索电影、电视剧、综艺、动漫">
+                            <button class="search-btn search-go" id="searchbutton" type="submit"><i class="icon-search"></i></button>
+                            <button class="cancel-btn" type="button">取消</button></div>
+                        <div class="search-recommend-box">
+                            <div class="search-recommend">
+                                <div class="search-recommend-title"><strong>大家都在搜</strong></div>
+                                <div class="search-tag">
+                                    <a href="/search/%E5%8F%98%E5%BD%A2%E9%87%91%E5%88%9A-------------.html" class="hot "><i class="icon-hot"></i>变形金刚</a>
+                                    <a href="/search/%E7%81%AB%E5%BD%B1%E5%BF%8D%E8%80%85-------------.html" class="hot "><i class="icon-hot"></i>火影忍者</a>
+                                    <a href="/search/%E5%A4%8D%E4%BB%87%E8%80%85%E8%81%94%E7%9B%9F-------------.html" class="hot "><i class="icon-hot"></i>复仇者联盟</a>
+                                    <a href="/search/%E6%88%98%E7%8B%BC-------------.html" class="hot "><i class="icon-hot"></i>战狼</a>
+                                    <a href="/search/%E7%BA%A2%E6%B5%B7%E8%A1%8C%E5%8A%A8-------------.html" class=""><i class="icon-hot"></i>红海行动</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="header-op">
+                <div class="header-op-list">
+                    <div class="drop">
+                        <div class="header-op-list-btn header-op-history"><i class="icon icon-history-o"></i><span>观看记录</span></div>
+                        <div class="drop-content drop-history">
+                            <div class="drop-content-box">
+                                <ul class="drop-content-items historical">
+                                    <li class="drop-item drop-item-title"><i class="icon icon-history"></i><strong>我的观影记录</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="shortcuts-mobile-overlay"></div>
+                    </div>
+                    <div class="header-op-list-btn header-op-search"><i class="icon icon-search"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <div class="navbar ">
+            <ul class="navbar-items swiper-wrapper">
+                <li class="swiper-slide navbar-item active">
+                    <a href="/" class="links">
+                        <div class="current"></div><i class="icon-arrow-go"></i><i class="icon icon-home-o"></i><span>首页</span></a>
+                </li>
+                <li class="navbar-hr"></li>
+                <li class="swiper-slide navbar-item ">
+                    <a href="/type/1.html" title="电影" class="links">
+                        <i class="icon-arrow-go"></i>
+                        <i class="icon-dy-o"></i>
+                        <span>电影</span></a>
+                </li>
+                <li class="swiper-slide navbar-item ">
+                    <a href="/type/2.html" title="剧集" class="links">
+                        <i class="icon-arrow-go"></i>
+                        <i class="icon-tv-o"></i>
+                        <span>剧集</span></a>
+                </li>
+                <li class="swiper-slide navbar-item ">
+                    <a href="/type/3.html" title="综艺" class="links">
+                        <i class="icon-arrow-go"></i>
+                        <i class="icon-zy-o"></i>
+                        <span>综艺</span></a>
+                </li>
+                <li class="swiper-slide navbar-item ">
+                    <a href="/type/4.html" title="动漫" class="links">
+                        <i class="icon-arrow-go"></i>
+                        <i class="icon-dm-o"></i>
+                        <span>动漫</span></a>
+                </li>
+                <li class="navbar-hr"></li>
+                <li class="swiper-slide navbar-item  ">
+                    <a href="/label/new.html" class="links">
+                        <i class="icon-arrow-go"></i><i class="icon icon-update-o"></i><span>今日更新</span><small>487</small></a>
+                </li>
+                <li class="swiper-slide navbar-item  ">
+                    <a href="/label/hot.html" class="links">
+                        <i class="icon-arrow-go"></i><i class="icon icon-ranking-o"></i><span>热榜</span></a>
+                </li>
+                <li class="swiper-slide navbar-item">
+                    <a href="https://www.dadaqu.vip/" class="links" target="_blank" title="发布页">
+                        <i class="icon-arrow-go"></i><i class="icon icon-link"></i><span>发布页</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="side-op">
+            <div class="header-op-list">
+                <div class="drop">
+                    <div class="header-op-list-btn header-op-history"><i class="icon icon-history-o"></i><span>观看记录</span></div>
+                    <div class="drop-content drop-history">
+                        <div class="drop-content-box">
+                            <ul class="drop-content-items historical">
+                                <li class="drop-item drop-item-title"><i class="icon icon-history"></i><strong>我的观影记录</strong></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="shortcuts-mobile-overlay"></div>
+                </div>
+                <div class="header-op-list-btn header-op-search"><i class="icon icon-search"></i></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).scroll(function() {
+            var H = $(document).scrollTop();
+            if(H > 20) {
+                $(".sidebar").addClass("sidebar-bg");
+            } else {
+                $(".sidebar").removeClass("sidebar-bg");
+            }
+            if(H > 140) {
+                $(".navbar").addClass("open");
+                $(".side-op").addClass("open");
+            } else {
+                $(".navbar").removeClass("open");
+                $(".side-op").removeClass("open");
+            }
+        });
+    </script>
+    <style>
+        @media (max-width: 559px){.homepage .header{0}.homepage .sidebar{0}}</style>
+
+    <div class="main">
+        <div class="content">
+            <div class="container-slide">
+                <div class="swiper swiper-big">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide">
+                            <a href="/detail/116792.html" class="banner" style="background: url(https://tv.puui.qpic.cn/tv/0/mz_tv_image_frontend_442f1e-8_28472604_1763552346696990_pic_1920x800/0)center no-repeat;background-size: cover;">
+                            </a>
+                            <div class="mobile-v-info">
+                                <div class="v-title">
+                                    <span>四喜</span>
+                                </div>
+                                <div class="v-ins">
+                                    <p>更新至30集</p>
+                                    <p>  家庭幸福、爱情甜蜜的明珠刚领证、怀孕，丈夫建奇就因见义勇为去世。明珠在众说纷纭中自己拿定主意，决定生下孩子，却遇见来寻亲的亲生父母一家。明珠在心有戚戚的亲情中走出伤痛，但公公意外猝死暴露了婆家的资不抵</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="/detail/116805.html" class="banner" style="background: url(https://pic3.iqiyipic.com/lequ/common/lego/20251108/8826ee33692f45b3bb903efb55fb8b91.jpg)center no-repeat;background-size: cover;">
+                            </a>
+                            <div class="mobile-v-info">
+                                <div class="v-title">
+                                    <span>唐朝诡事录之长安</span>
+                                </div>
+                                <div class="v-ins">
+                                    <p>更新至30集</p>
+                                    <p>  先天二年夏秋之交，天子虽已登基，但大长公主势力更盛，长安局势阴晴难定。卢凌风（杨旭文 饰）和苏无名（杨志刚 饰），奉命带着由裴喜君、费鸡师、樱桃和薛环组成的探案小队，以护送康国所献金桃的名义重返长安。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide">
+                            <a href="/detail/116926.html" class="banner" style="background: url(https://tv.puui.qpic.cn/tv/0/mz_tv_image_frontend_42f1e-14_1764465330_1763546439360042_pic_1920x800/0)center no-repeat;background-size: cover;">
+                            </a>
+                            <div class="mobile-v-info">
+                                <div class="v-title">
+                                    <span>他为什么依然单身</span>
+                                </div>
+                                <div class="v-ins">
+                                    <p>更新至11集</p>
+                                    <p>  一个貌似怪咖、实则善良的人，最终被世界宽容的故事。通过塑造一个极致怪癖的男人，引发吐槽、笑料百出的同时，带来有关人与世界的思考。热爱生活的男人年至不惑，却宣称“不婚”，是众星拱月的男神，还是女人避之不</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="sm-swiper">
+                    <div class="swiper swiper-small">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="pic">
+                                    <a href="/detail/116792.html">
+                                        <img src="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2922743016.jpg" alt="四喜">
+                                    </a>
+                                </div>
+                                <div class="title"><a href="/detail/116792.html">四喜</a></div>
+                                <div class="ins">
+                                    <p>更新至30集</p>
+                                    <p class="ins">  家庭幸福、爱情甜蜜的明珠刚领证、怀孕，丈夫建奇就因见义勇为去世。明珠在众说纷纭中自己拿定主意，决定生下孩子，却遇见来寻亲的亲生父母一家。明珠在心有戚戚的亲情中走出伤痛，但公公意外猝死暴露了婆家的资不抵</p>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="pic">
+                                    <a href="/detail/116805.html">
+                                        <img src="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2911439080.jpg" alt="唐朝诡事录之长安">
+                                    </a>
+                                </div>
+                                <div class="title"><a href="/detail/116805.html">唐朝诡事录之长安</a></div>
+                                <div class="ins">
+                                    <p>更新至30集</p>
+                                    <p class="ins">  先天二年夏秋之交，天子虽已登基，但大长公主势力更盛，长安局势阴晴难定。卢凌风（杨旭文 饰）和苏无名（杨志刚 饰），奉命带着由裴喜君、费鸡师、樱桃和薛环组成的探案小队，以护送康国所献金桃的名义重返长安。</p>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="pic">
+                                    <a href="/detail/116926.html">
+                                        <img src="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2927069382.jpg" alt="他为什么依然单身">
+                                    </a>
+                                </div>
+                                <div class="title"><a href="/detail/116926.html">他为什么依然单身</a></div>
+                                <div class="ins">
+                                    <p>更新至11集</p>
+                                    <p class="ins">  一个貌似怪咖、实则善良的人，最终被世界宽容的故事。通过塑造一个极致怪癖的男人，引发吐槽、笑料百出的同时，带来有关人与世界的思考。热爱生活的男人年至不惑，却宣称“不婚”，是众星拱月的男神，还是女人避之不</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-button-prev"><svg rseat="712211_banner_left" width="20" height="20"
+                                                         xmlns="http://www.w3.org/2000/svg" class="qy20-h-carousel__arrow left" data-v-1ea95016="">
+                        <path
+                                d="M10 0c5.523 0 10 4.477 10 10s-4.477 10-10 10S0 15.523 0 10 4.477 0 10 0zm2.439 4.95a1.429 1.429 0 00-2.02 0L5.367 10l5.05 5.05.125.112c.56.444 1.378.407 1.896-.111l.11-.125a1.429 1.429 0 00-.11-1.896L9.409 10l3.03-3.03.11-.125a1.429 1.429 0 00-.11-1.896z" fill="#FFF" fill-rule="evenodd" data-v-1ea95016=""></path>
+                    </svg></div>
+                    <div class="swiper-button-next"><svg rseat="712211_banner_right" width="20" height="20"
+                                                         xmlns="http://www.w3.org/2000/svg" class="qy20-h-carousel__arrow right" data-v-1ea95016="">
+                        <path
+                                d="M10 0C4.477 0 0 4.477 0 10s4.477 10 10 10 10-4.477 10-10S15.523 0 10 0zM7.561 4.95a1.429 1.429 0 012.02 0L14.633 10l-5.05 5.05-.125.112a1.429 1.429 0 01-1.896-.111l-.11-.125a1.429 1.429 0 01.11-1.896l3.03-3.03-3.03-3.03-.11-.125a1.429 1.429 0 01.11-1.896z"  fill="#FFF" fill-rule="evenodd" data-v-1ea95016=""></path>
+                    </svg></div>
+
+                    <div class="swiper-pagination"></div>
+                </div>
+
+            </div><div class="module">
+            <div class="module-heading">
+                <i class="icon-hot" style="color:#FF0000"></i>
+                <h2 class="module-title">热播🔥</h2></div>
+            <div class="module-main scroll-box">
+                <div class="module-items module-poster-items-base">
+                    <a href="/detail/116805.html" title="唐朝诡事录之长安" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">更新至30集</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2911439080.jpg" alt="唐朝诡事录之长安"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">唐朝诡事录之长安</div>
+                        </div>
+                    </a>
+                    <a href="/detail/116926.html" title="他为什么依然单身" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">更新至11集</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2927069382.jpg" alt="他为什么依然单身"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">他为什么依然单身</div>
+                        </div>
+                    </a>
+                    <a href="/detail/116792.html" title="四喜" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">更新至30集</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2922743016.jpg" alt="四喜"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">四喜</div>
+                        </div>
+                    </a>
+                    <a href="/detail/115749.html" title="喜人奇妙夜2" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">连载中</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2922650808.jpg" alt="喜人奇妙夜2"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">喜人奇妙夜2</div>
+                        </div>
+                    </a>
+                    <a href="/detail/116746.html" title="新闻女王2" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">更新至21集</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2926641019.jpg" alt="新闻女王2"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">新闻女王2</div>
+                        </div>
+                    </a>
+                    <a href="/detail/116419.html" title="现在就出发 第三季" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">连载中</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2926188714.jpg" alt="现在就出发 第三季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">现在就出发 第三季</div>
+                        </div>
+                    </a>
+                    <a href="/detail/116893.html" title="凤凰台上" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">更新至15集</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2927097076.jpg" alt="凤凰台上"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">凤凰台上</div>
+                        </div>
+                    </a>
+                    <a href="/detail/86155.html" title="唐朝诡事录" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">36集全</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2883995667.jpg" alt="唐朝诡事录"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">唐朝诡事录</div>
+                        </div>
+                    </a>
+                    <a href="/detail/35740.html" title="完美世界 第一季" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">更新至242集</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2912507200.jpg" alt="完美世界 第一季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">完美世界 第一季</div>
+                        </div>
+                    </a>
+                    <a href="/detail/105273.html" title="唐朝诡事录之西行" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">40集全</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2910162228.jpg" alt="唐朝诡事录之西行"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">唐朝诡事录之西行</div>
+                        </div>
+                    </a>
+                    <a href="/detail/116766.html" title="亲爱的X" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">更新至08集</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2926395595.jpg" alt="亲爱的X"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">亲爱的X</div>
+                        </div>
+                    </a>
+                    <a href="/detail/36622.html" title="凡人修仙传：风起天南" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">更新至169集</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2610801866.jpg" alt="凡人修仙传：风起天南"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">凡人修仙传：风起天南</div>
+                        </div>
+                    </a>
+                    <a href="/detail/116657.html" title="山河枕" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">40集全</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2926425227.jpg" alt="山河枕"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">山河枕</div>
+                        </div>
+                    </a>
+                    <a href="/detail/97309.html" title="仙逆" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">更新至115集</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2896563963.jpg" alt="仙逆"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">仙逆</div>
+                        </div>
+                    </a>
+                    <a href="/detail/42907.html" title="吞噬星空 第1季" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">更新至198集</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2616542123.jpg" alt="吞噬星空 第1季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">吞噬星空 第1季</div>
+                        </div>
+                    </a>
+                    <a href="/detail/116834.html" title="隐锋" class="module-poster-item module-item">
+                        <div class="module-item-cover">
+                            <div class="module-item-note">更新至21集</div>
+                            <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2926988044.jpg" alt="隐锋"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                        </div>
+                        <div class="module-poster-item-info">
+                            <div class="module-poster-item-title">隐锋</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+            <div class="module">
+                <div class="module-heading">
+                    <h2 class="module-title"><a href="/type/1.html">电影<span class="module-title-en">fenlei1</span></a></h2>
+                    <div class="module-tab-items">
+                        <div class="module-tab-title">选择类型<span class="close-drop"><i class="icon-close"></i></span></div>
+                        <a class="module-heading-more" href="/type/1.html">更多<i class="icon-arrow-right"></i></a>
+                    </div>
+                    <div class="shortcuts-mobile-overlay"></div>
+                </div>
+                <div class="module-main tab-list  active">
+                    <div class="module-items  module-poster-items-base ">
+                        <a href="/detail/114931.html" title="捕风追影" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2924069675.jpg" alt="捕风追影"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">捕风追影</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116870.html" title="惊天魔盗团3" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2926399098.jpg" alt="惊天魔盗团3"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">惊天魔盗团3</div>
+                            </div>
+                        </a>
+                        <a href="/detail/108843.html" title="蛟龙行动" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2917596815.jpg" alt="蛟龙行动"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">蛟龙行动</div>
+                            </div>
+                        </a>
+                        <a href="/detail/114477.html" title="鬼灭之刃 剧场版 无限城篇 第一章 猗窝座再来" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">抢先</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img2.doubanio.com/view/photo/s_ratio_poster/public/p2922908971.jpg" alt="鬼灭之刃 剧场版 无限城篇 第一章 猗窝座再来"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">鬼灭之刃 剧场版 无限城篇 第一章 猗窝座再来</div>
+                            </div>
+                        </a>
+                        <a href="/detail/112385.html" title="铁血战士：杀戮之地" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2920764915.jpg" alt="铁血战士：杀戮之地"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">铁血战士：杀戮之地</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116901.html" title="咒术回战 涩谷事变×死灭回游 剧场版" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2926215249.jpg" alt="咒术回战 涩谷事变×死灭回游 剧场版"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">咒术回战 涩谷事变×死灭回游 剧场版</div>
+                            </div>
+                        </a>
+                        <a href="/detail/115925.html" title="一战再战" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2924927334.jpg" alt="一战再战"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">一战再战</div>
+                            </div>
+                        </a>
+                        <a href="/detail/114577.html" title="罗小黑战记2" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2923537864.jpg" alt="罗小黑战记2"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">罗小黑战记2</div>
+                            </div>
+                        </a>
+                        <a href="/detail/114788.html" title="浪浪山小妖怪" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2923770138.jpg" alt="浪浪山小妖怪"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">浪浪山小妖怪</div>
+                            </div>
+                        </a>
+                        <a href="/detail/114500.html" title="聊斋：兰若寺" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2923191863.jpg" alt="聊斋：兰若寺"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">聊斋：兰若寺</div>
+                            </div>
+                        </a>
+                        <a href="/detail/108794.html" title="封神第二部：战火西岐" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2917559392.jpg" alt="封神第二部：战火西岐"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">封神第二部：战火西岐</div>
+                            </div>
+                        </a>
+                        <a href="/detail/115264.html" title="无名之辈：否极泰来" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2923003278.jpg" alt="无名之辈：否极泰来"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">无名之辈：否极泰来</div>
+                            </div>
+                        </a>
+                        <a href="/detail/114646.html" title="南京照相馆" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img2.doubanio.com/view/photo/s_ratio_poster/public/p2923603651.jpg" alt="南京照相馆"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">南京照相馆</div>
+                            </div>
+                        </a>
+                        <a href="/detail/117019.html" title="永生战士2" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">抢先</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2924685252.jpg" alt="永生战士2"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">永生战士2</div>
+                            </div>
+                        </a>
+                        <a href="/detail/117042.html" title="棋拳风暴" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img2.doubanio.com/view/photo/s_ratio_poster/public/p2926793721.jpg" alt="棋拳风暴"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">棋拳风暴</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116460.html" title="无可奈何" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">正片</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2925885108.jpg" alt="无可奈何"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">无可奈何</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module">
+                <div class="module-heading">
+                    <h2 class="module-title"><a href="/type/2.html">剧集<span class="module-title-en">fenlei2</span></a></h2>
+                    <div class="module-tab-items">
+                        <div class="module-tab-title">选择类型<span class="close-drop"><i class="icon-close"></i></span></div>
+                        <a class="module-heading-more" href="/type/2.html">更多<i class="icon-arrow-right"></i></a>
+                    </div>
+                    <div class="shortcuts-mobile-overlay"></div>
+                </div>
+                <div class="module-main tab-list  active">
+                    <div class="module-items  module-poster-items-base ">
+                        <a href="/detail/116805.html" title="唐朝诡事录之长安" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至30集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2911439080.jpg" alt="唐朝诡事录之长安"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">唐朝诡事录之长安</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116926.html" title="他为什么依然单身" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至11集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2927069382.jpg" alt="他为什么依然单身"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">他为什么依然单身</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116792.html" title="四喜" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至30集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2922743016.jpg" alt="四喜"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">四喜</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116746.html" title="新闻女王2" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至21集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2926641019.jpg" alt="新闻女王2"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">新闻女王2</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116893.html" title="凤凰台上" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至15集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2927097076.jpg" alt="凤凰台上"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">凤凰台上</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116748.html" title="操控游戏" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至08集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2926183322.jpg" alt="操控游戏"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">操控游戏</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116657.html" title="山河枕" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">40集全</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2926425227.jpg" alt="山河枕"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">山河枕</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116766.html" title="亲爱的X" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至08集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2926395595.jpg" alt="亲爱的X"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">亲爱的X</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116525.html" title="水龙吟" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">40集全</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2915505958.jpg" alt="水龙吟"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">水龙吟</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116458.html" title="暗河传" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">38集全</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2926353163.jpg" alt="暗河传"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">暗河传</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116834.html" title="隐锋" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至21集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2926988044.jpg" alt="隐锋"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">隐锋</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116177.html" title="入青云" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">36集全</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2925677915.jpg" alt="入青云"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">入青云</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116861.html" title="乌蒙深处" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至14集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2927027824.jpg" alt="乌蒙深处"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">乌蒙深处</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116553.html" title="天地剑心" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">36集全</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2926023366.jpg" alt="天地剑心"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">天地剑心</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116757.html" title="灵指" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至10集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2925518724.jpg" alt="灵指"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">灵指</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116690.html" title="树影迷宫" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">18集全</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2925523648.jpg" alt="树影迷宫"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">树影迷宫</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module">
+                <div class="module-heading">
+                    <h2 class="module-title"><a href="/type/3.html">综艺<span class="module-title-en">fenlei3</span></a></h2>
+                    <div class="module-tab-items">
+                        <div class="module-tab-title">选择类型<span class="close-drop"><i class="icon-close"></i></span></div>
+                        <a class="module-heading-more" href="/type/3.html">更多<i class="icon-arrow-right"></i></a>
+                    </div>
+                    <div class="shortcuts-mobile-overlay"></div>
+                </div>
+                <div class="module-main tab-list  active">
+                    <div class="module-items  module-poster-items-base ">
+                        <a href="/detail/116419.html" title="现在就出发 第三季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2926188714.jpg" alt="现在就出发 第三季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">现在就出发 第三季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/115749.html" title="喜人奇妙夜2" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2922650808.jpg" alt="喜人奇妙夜2"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">喜人奇妙夜2</div>
+                            </div>
+                        </a>
+                        <a href="/detail/115753.html" title="向往的生活 第八季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2924437402.jpg" alt="向往的生活 第八季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">向往的生活 第八季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/114801.html" title="花儿与少年·同心季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2924183269.jpg" alt="花儿与少年·同心季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">花儿与少年·同心季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/115201.html" title="王牌对王牌 第九季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2924611340.jpg" alt="王牌对王牌 第九季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">王牌对王牌 第九季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116404.html" title="音乐缘计划2" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2925292679.jpg" alt="音乐缘计划2"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">音乐缘计划2</div>
+                            </div>
+                        </a>
+                        <a href="/detail/115830.html" title="偏爱之恋" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2925445616.jpg" alt="偏爱之恋"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">偏爱之恋</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116354.html" title="再见爱人 第五季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2926201739.jpg" alt="再见爱人 第五季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">再见爱人 第五季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116507.html" title="你好种地少年3" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2920826755.jpg" alt="你好种地少年3"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">你好种地少年3</div>
+                            </div>
+                        </a>
+                        <a href="/detail/115363.html" title="令人心动的offer 第七季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">完结</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2924817257.jpg" alt="令人心动的offer 第七季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">令人心动的offer 第七季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/114487.html" title="地球超新鲜" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">完结</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2922651767.jpg" alt="地球超新鲜"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">地球超新鲜</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116035.html" title="换乘恋爱 第四季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2925754760.jpg" alt="换乘恋爱 第四季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">换乘恋爱 第四季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/110414.html" title="开始推理吧 第三季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">完结</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2920693877.jpg" alt="开始推理吧 第三季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">开始推理吧 第三季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116527.html" title="一路繁花2" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2926377633.jpg" alt="一路繁花2"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">一路繁花2</div>
+                            </div>
+                        </a>
+                        <a href="/detail/110480.html" title="奔跑吧 第九季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">12期全</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2919493672.jpg" alt="奔跑吧 第九季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">奔跑吧 第九季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116857.html" title="伟大的导游2.5" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">连载中</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2926852035.jpg" alt="伟大的导游2.5"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">伟大的导游2.5</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="module">
+                <div class="module-heading">
+                    <h2 class="module-title"><a href="/type/4.html">动漫<span class="module-title-en">fenlei4</span></a></h2>
+                    <div class="module-tab-items">
+                        <div class="module-tab-title">选择类型<span class="close-drop"><i class="icon-close"></i></span></div>
+                        <a class="module-heading-more" href="/type/4.html">更多<i class="icon-arrow-right"></i></a>
+                    </div>
+                    <div class="shortcuts-mobile-overlay"></div>
+                </div>
+                <div class="module-main tab-list  active">
+                    <div class="module-items  module-poster-items-base ">
+                        <a href="/detail/114655.html" title="紫川 第二季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至25集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2923624930.jpg" alt="紫川 第二季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">紫川 第二季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/117036.html" title="武动乾坤 第六季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至02集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2926702094.jpg" alt="武动乾坤 第六季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">武动乾坤 第六季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116281.html" title="一拳超人 第三季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至06集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2919113540.jpg" alt="一拳超人 第三季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">一拳超人 第三季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/114445.html" title="龙族 第二季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至21集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2923193936.jpg" alt="龙族 第二季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">龙族 第二季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116332.html" title="天相" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至07集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2925912623.jpg" alt="天相"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">天相</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116102.html" title="间谍过家家 第三季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至07集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2924788556.jpg" alt="间谍过家家 第三季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">间谍过家家 第三季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/114779.html" title="神墓 年番" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至17集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2923987322.jpg" alt="神墓 年番"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">神墓 年番</div>
+                            </div>
+                        </a>
+                        <a href="/detail/113904.html" title="云深不知梦" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至21集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2926009817.jpg" alt="云深不知梦"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">云深不知梦</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116172.html" title="拥有超常技能的异世界流浪美食家 第二季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至07集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2924740065.jpg" alt="拥有超常技能的异世界流浪美食家 第二季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">拥有超常技能的异世界流浪美食家 第二季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/112665.html" title="诛仙 第三季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">26集全</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2911626252.jpg" alt="诛仙 第三季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">诛仙 第三季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/115985.html" title="神在囧途" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至19集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2925056048.jpg" alt="神在囧途"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">神在囧途</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116585.html" title="仙帝归来" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至06集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2926543979.jpg" alt="仙帝归来"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">仙帝归来</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116006.html" title="谷围南亭 第一卷" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至09集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2925269176.jpg" alt="谷围南亭 第一卷"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">谷围南亭 第一卷</div>
+                            </div>
+                        </a>
+                        <a href="/detail/112081.html" title="君有云 第二季" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至28集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img1.doubanio.com/view/photo/s_ratio_poster/public/p2919764520.jpg" alt="君有云 第二季"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">君有云 第二季</div>
+                            </div>
+                        </a>
+                        <a href="/detail/115862.html" title="无职英雄 ～技能什么的毫无用处～" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至09集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img3.doubanio.com/view/photo/s_ratio_poster/public/p2923504237.jpg" alt="无职英雄 ～技能什么的毫无用处～"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">无职英雄 ～技能什么的毫无用处～</div>
+                            </div>
+                        </a>
+                        <a href="/detail/116149.html" title="身为暗杀者的我明显比勇者还强" class="module-poster-item module-item">
+                            <div class="module-item-cover">
+                                <div class="module-item-note">更新至07集</div>
+                                <div class="module-item-pic"><img class="lazy lazyload" data-original="https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2923543806.jpg" alt="身为暗杀者的我明显比勇者还强"  referrerpolicy="no-referrer" src="/mxtheme/images/load.gif"></div>
+                            </div>
+                            <div class="module-poster-item-info">
+                                <div class="module-poster-item-title">身为暗杀者的我明显比勇者还强</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="module module-shadow">
+                <div class="module-heading">
+                    <h2 class="module-title"><a href="/label/hot.html">热榜<span class="module-title-en">RANKING</span></a></h2>
+                    <a class="module-heading-more" href="/label/hot.html">更多<i class="icon-arrow-right"></i></a>
+                </div>
+                <div class="module-main scroll-box">
+                    <div class="module-items scroll-content">
+
+                        <div class="module-paper-item module-item">
+                            <div class="module-paper-item-header"><i class="icon64 icon64 icon-dy"></i>
+                                <h3 class="module-paper-item-title">电影榜</h3></div>
+                            <div class="module-paper-item-main">
+                                <a href="/detail/114931.html">
+                                    <div class="module-paper-item-num module-paper-item-num-first">1</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">捕风追影</span>
+                                        <p>正片</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116870.html">
+                                    <div class="module-paper-item-num module-paper-item-num-second">2</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">惊天魔盗团3</span>
+                                        <p>正片</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/108843.html">
+                                    <div class="module-paper-item-num module-paper-item-num-third">3</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">蛟龙行动</span>
+                                        <p>正片</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/114477.html">
+                                    <div class="module-paper-item-num ">4</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">鬼灭之刃 剧场版 无限城篇 第一章 猗窝座再来</span>
+                                        <p>抢先</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/112385.html">
+                                    <div class="module-paper-item-num ">5</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">铁血战士：杀戮之地</span>
+                                        <p>正片</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116901.html">
+                                    <div class="module-paper-item-num ">6</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">咒术回战 涩谷事变×死灭回游 剧场版</span>
+                                        <p>正片</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/114577.html">
+                                    <div class="module-paper-item-num ">7</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">罗小黑战记2</span>
+                                        <p>正片</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/115925.html">
+                                    <div class="module-paper-item-num ">8</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">一战再战</span>
+                                        <p>正片</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/114788.html">
+                                    <div class="module-paper-item-num ">9</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">浪浪山小妖怪</span>
+                                        <p>正片</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/114500.html">
+                                    <div class="module-paper-item-num ">10</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">聊斋：兰若寺</span>
+                                        <p>正片</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="module-paper-item module-item">
+                            <div class="module-paper-item-header"><i class="icon64 icon64 icon-tv"></i>
+                                <h3 class="module-paper-item-title">剧集榜</h3></div>
+                            <div class="module-paper-item-main">
+                                <a href="/detail/116805.html">
+                                    <div class="module-paper-item-num module-paper-item-num-first">1</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">唐朝诡事录之长安</span>
+                                        <p>更新至30集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116926.html">
+                                    <div class="module-paper-item-num module-paper-item-num-second">2</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">他为什么依然单身</span>
+                                        <p>更新至11集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116792.html">
+                                    <div class="module-paper-item-num module-paper-item-num-third">3</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">四喜</span>
+                                        <p>更新至30集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116746.html">
+                                    <div class="module-paper-item-num ">4</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">新闻女王2</span>
+                                        <p>更新至21集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116893.html">
+                                    <div class="module-paper-item-num ">5</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">凤凰台上</span>
+                                        <p>更新至15集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/105273.html">
+                                    <div class="module-paper-item-num ">6</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">唐朝诡事录之西行</span>
+                                        <p>40集全</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116748.html">
+                                    <div class="module-paper-item-num ">7</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">操控游戏</span>
+                                        <p>更新至08集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116657.html">
+                                    <div class="module-paper-item-num ">8</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">山河枕</span>
+                                        <p>40集全</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116766.html">
+                                    <div class="module-paper-item-num ">9</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">亲爱的X</span>
+                                        <p>更新至08集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116525.html">
+                                    <div class="module-paper-item-num ">10</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">水龙吟</span>
+                                        <p>40集全</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="module-paper-item module-item">
+                            <div class="module-paper-item-header"><i class="icon64 icon64 icon icon-zy"></i>
+                                <h3 class="module-paper-item-title">综艺榜</h3></div>
+                            <div class="module-paper-item-main">
+                                <a href="/detail/116419.html">
+                                    <div class="module-paper-item-num module-paper-item-num-first">1</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">现在就出发 第三季</span>
+                                        <p>连载中</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/115749.html">
+                                    <div class="module-paper-item-num module-paper-item-num-second">2</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">喜人奇妙夜2</span>
+                                        <p>连载中</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/106707.html">
+                                    <div class="module-paper-item-num module-paper-item-num-third">3</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">现在就出发 第二季</span>
+                                        <p>10期全</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/115753.html">
+                                    <div class="module-paper-item-num ">4</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">向往的生活 第八季</span>
+                                        <p>连载中</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/114801.html">
+                                    <div class="module-paper-item-num ">5</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">花儿与少年·同心季</span>
+                                        <p>连载中</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/115201.html">
+                                    <div class="module-paper-item-num ">6</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">王牌对王牌 第九季</span>
+                                        <p>连载中</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116404.html">
+                                    <div class="module-paper-item-num ">7</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">音乐缘计划2</span>
+                                        <p>连载中</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/115830.html">
+                                    <div class="module-paper-item-num ">8</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">偏爱之恋</span>
+                                        <p>连载中</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116354.html">
+                                    <div class="module-paper-item-num ">9</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">再见爱人 第五季</span>
+                                        <p>连载中</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116507.html">
+                                    <div class="module-paper-item-num ">10</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">你好种地少年3</span>
+                                        <p>连载中</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="module-paper-item module-item">
+                            <div class="module-paper-item-header"><i class="icon64 icon64 icon icon-dm"></i>
+                                <h3 class="module-paper-item-title">动漫榜</h3></div>
+                            <div class="module-paper-item-main">
+                                <a href="/detail/114655.html">
+                                    <div class="module-paper-item-num module-paper-item-num-first">1</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">紫川 第二季</span>
+                                        <p>更新至25集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/107354.html">
+                                    <div class="module-paper-item-num module-paper-item-num-second">2</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">牧神记</span>
+                                        <p>更新至57集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/117036.html">
+                                    <div class="module-paper-item-num module-paper-item-num-third">3</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">武动乾坤 第六季</span>
+                                        <p>更新至02集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116281.html">
+                                    <div class="module-paper-item-num ">4</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">一拳超人 第三季</span>
+                                        <p>更新至06集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/114445.html">
+                                    <div class="module-paper-item-num ">5</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">龙族 第二季</span>
+                                        <p>更新至21集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/104021.html">
+                                    <div class="module-paper-item-num ">6</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">鬼灭之刃 柱训练篇</span>
+                                        <p>完结</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116332.html">
+                                    <div class="module-paper-item-num ">7</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">天相</span>
+                                        <p>更新至07集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/116102.html">
+                                    <div class="module-paper-item-num ">8</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">间谍过家家 第三季</span>
+                                        <p>更新至07集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/114779.html">
+                                    <div class="module-paper-item-num ">9</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">神墓 年番</span>
+                                        <p>更新至17集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                                <a href="/detail/113904.html">
+                                    <div class="module-paper-item-num ">10</div>
+                                    <div class="module-paper-item-info"><span class="module-paper-item-infotitle">云深不知梦</span>
+                                        <p>更新至21集</p>
+                                    </div>
+                                    <div class="icon-arrow-right"></div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>						</div>
+    </div>
+    <div class="fixedGroup">
+        <div class="fixedGroup-item">
+            <div class="fixedGroup__cell">
+                <span class="fixedGroup__triangle"></span>
+                <div class="txt" id="changeAppearance">切换深色外观</div>
+            </div>
+            <i  class="icon-yejian" data-id="black"></i>
+            <i class="icon-rijian" data-id="white"></i>
+        </div>
+        <div class="fixedGroup-item retop">
+            <div class="fixedGroup__cell">
+                <span class="fixedGroup__triangle"></span>
+                <div>回到顶部</div>
+            </div>
+            <i class="icon-top"></i>
+        </div>
+    </div>
+    <div class="footer">
+        <div class="content">
+            <div class="module links-list" id="friendlink">
+                <div class="module-heading">
+                    <h3>友情链接</h3>
+                </div>
+                <div class="module-main">
+                </div>
+            </div>							<div class="footer-content">
+            <div class="foot-logo"><img class="logo2"  src="/mxtheme/images/logo_black.png" alt="达达趣" >
+                <img class="logo1" src="/mxtheme/images/logo.png" /></div>
+            <div class="foot-copyright">
+
+                <a target="_blank" href="/rss/index.xml">RSS</a>
+                <a target="_blank" href="/rss/baidu.xml">Baidu</a>
+                <a target="_blank" href="/rss/baidu.xml">Google</a>
+                <a target="_blank" href="/rss/sogou.xml">Sogou</a>
+                <p>达达趣本站所有内容均来自互联网分享站点所提供的公开引用资源，未提供资源上传、存储服务	<span class="none">统计代码</span></p>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        document.onkeydown=function(){
+
+            var e = window.event||arguments[0];
+
+        }
+    </script>
+    <div>
+        <div class="popup popup-tips none" id="popup">
+            <div class="popup-header">
+                <h3 class="popup-title">来自站长的叮嘱🤪</h3></div>
+            <div class="popup-main">
+                <div class="popup-main">
+                    <p>🎉 不同线路适合不同网络，觉得卡就切换线路，选择适合自己网络的🚀</p>
+                    <p>❌ 剧中<strong>广告🎬</strong>均采集网络资源，<strong>请勿相信！！！</strong></p>
+                    <p>域名发布页：👉<a style="color: #10AEFF;" href="https://www.dadaqu.vip" target="_blank">https://www.dadaqu.vip</a>👈</p>
+                    <div style="margin-top: 10px;">网站地址定期更换，请及时收藏网址，如果觉得不错，请推荐给好友！</div>
+                </div>							</div>
+            <div class="popup-footer">
+                <div class="popup-btn close-pop">好的，我记住啦</div>
+            </div>
+        </div>
+        <div class="shortcuts-mobile-overlay"></div>
+    </div>
+</div>
+</body>
+
+</html>
