@@ -1,12 +1,11 @@
 package tv.tvai.like;
 
+import tv.tvai.like.util.AntPathMatcher;
+import tv.tvai.like.util.PathMatcher;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import tv.tvai.like.util.AntPathMatcher;
-import tv.tvai.like.util.PathMatcher;
 
 public class RuleParser {
 
@@ -92,9 +91,7 @@ public class RuleParser {
         }
 
         // 正则匹配 section: name selector {
-        Pattern sectionPattern = Pattern.compile(
-                "section\\s*:\\s*([\\w-]+)\\s+([^\\{]+)\\{",
-                Pattern.CASE_INSENSITIVE);
+        Pattern sectionPattern = Pattern.compile("section\\s*:\\s*([\\w-]+)\\s+([^\\{]+)\\{", Pattern.CASE_INSENSITIVE);
 
         Matcher matcher = sectionPattern.matcher(dsl);
         while (matcher.find()) {
@@ -106,7 +103,12 @@ public class RuleParser {
 
             String body = dsl.substring(bodyStart + 1, bodyEnd); // 大括号内的内容
 
+            String afterBlock = bodyEnd + 1 < dsl.length() ? extractTrailingOptions(dsl, bodyEnd + 1) : "";
+
+            RuleNode.Options sectionOptions = extractOptionsFromText(afterBlock);
+
             RuleNode node = new RuleNode(sectionName, selector);
+            node.setSectionOptions(sectionOptions);
             parseSectionBody(body, node);                        // 解析内部字段、items 等
             sections.add(node);
         }
@@ -154,7 +156,8 @@ public class RuleParser {
         String innerBody = text.substring(blockStart + 1, blockEnd); // items 大括号内部
 
         // 提取 items 块后的 [options]
-        String afterBlock = blockEnd + 1 < text.length() ? text.substring(blockEnd + 1) : "";
+        String afterBlock = blockEnd + 1 < text.length() ? extractTrailingOptions(text, blockEnd + 1) : "";
+
         RuleNode.Options itemOptions = extractOptionsFromText(afterBlock);
 
         // 构建 items 模板节点
@@ -180,6 +183,44 @@ public class RuleParser {
                 node.getFieldSelectors(),
                 node.getFieldOptions());
     }
+
+    private static String extractTrailingOptions(String text, int start) {
+        int i = start;
+
+        // 跳过空白
+        while (i < text.length() && Character.isWhitespace(text.charAt(i))) {
+            i++;
+        }
+
+        int optionsStart = i;
+        int bracketDepth = 0;
+        boolean inOption = false;
+
+        while (i < text.length()) {
+            char c = text.charAt(i);
+
+            if (c == '[') {
+                bracketDepth++;
+                inOption = true;
+            } else if (c == ']') {
+                bracketDepth--;
+                if (bracketDepth == 0) {
+                    inOption = false;
+                }
+            } else {
+                // ❗遇到非空白、非 [ 且不在 option 内 → 结束
+                if (!inOption && !Character.isWhitespace(c)) {
+                    break;
+                }
+            }
+
+            i++;
+        }
+
+        // 只返回真正的 options 区
+        return text.substring(optionsStart, i).trim();
+    }
+
 
     // ===================================================================
     // 通用字段解析（text/img/link）——核心复用方法

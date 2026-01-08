@@ -47,8 +47,8 @@
                 items: ul.swiper-wrapper li.swiper-slide {
                     text: a [transform: trim]
                     link: a [attr: href]
-                } [limit: 6]
-            }
+                } [limit: 6] [show: test]
+            } [show: test-tab]
             section:top-title .title > h4.title-h.cor4 {
                 text: a span:first-child
                 link: a
@@ -73,7 +73,7 @@
                     text: .public-list-button a.time-title
                     img: .public-list-div a.public-list-exp img [attr: data-src]
                     link: .public-list-button a.time-title
-                }
+                } [img-ratio: 4/3]
             }
         }
     </script>
