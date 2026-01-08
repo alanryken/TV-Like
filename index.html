@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Like - Convert Web Pages to TV Style</title>
+    <link rel="icon" href="images/1767871810.png">
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        header, footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            background-color: #fff;
+            color: #222;
+        }
+        header img {
+            max-width: 400px;
+            margin-bottom: 1rem;
+        }
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        h2 {
+            margin-top: 2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 1rem;
+            overflow-x: auto;
+            border-radius: 4px;
+        }
+        code {
+            font-family: "Courier New", Courier, monospace;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .section-divider {
+            margin: 2rem 0;
+            border-top: 1px solid #ddd;
+        }
+        ul {
+            padding-left: 1.5rem;
+        }
+        .github-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background-color: #24292e;
+            color: #fff;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+        .github-link:hover {
+            background-color: #444c56;
+        }
+        .footer-small {
+            font-size: 0.85rem;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img src="images/1767871810.png" alt="TV-Like Logo">
+    <p>Convert Web Pages to TV Style</p>
+    <p>可以将任何网站像电视机原生程序一样浏览</p>
+    <a class="github-link" href="https://github.com/alanryken/TV-Like" target="_blank">View on GitHub</a>
+</header>
+
+<main>
+    <section>
+        <h2>English / 英文</h2>
+        <ul>
+            <li><a href="https://github.com/alanryken/TV-Like/blob/main/README.en.md" target="_blank">📖 Full English Documentation</a></li>
+            <li><a href="https://github.com/alanryken/TV-Like/blob/main/README.zh.md" target="_blank">📖 完整中文文档</a></li>
+        </ul>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section>
+        <h2>中文 / Chinese</h2>
+        <ul>
+            <li><a href="https://github.com/alanryken/TV-Like/blob/main/README.en.md" target="_blank">📖 Full English Documentation</a></li>
+            <li><a href="https://github.com/alanryken/TV-Like/blob/main/README.zh.md" target="_blank">📖 完整中文文档</a></li>
+        </ul>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section>
+        <h2>Project Overview / 项目介绍</h2>
+        <ul>
+            <li>TV Like : Convert web pages to TV style</li>
+            <li>TV Like : 可以将任何网站像电视机原生程序一样浏览</li>
+        </ul>
+        <p><strong>TV Like</strong> is an AI-driven experimental project, providing a simple, readable extraction specification to pull key elements from web pages—such as images, text, videos, and hyperlinks—and outputs a unified structure optimized for TV interfaces. Powered by <a href="https://github.com/quicktvui/quicktvui">QuickUI</a>.</p>
+        <p><strong>TV Like</strong> 是一个由 AI 主导的实验性项目，提供简单、易读的提取规范，用于从网页中提取主要元素（如图片、文字、视频、超链接），并输出统一的 TV 端适配结构，由 <a href="https://github.com/quicktvui/quicktvui"  target="_blank">QuickUI</a> 支持。</p>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <section>
+        <h2>TV Like</h2>
+        <p><strong>TV Like</strong> 是一个由 AI 主导的实验性开源项目，将普通网页转换为适合电视大屏浏览的样式和结构。</p>
+        <p>提供简单易读的 DSL（领域特定语言）来提取网页核心元素，并输出统一 JSON 数据结构，可交给电视端 UI 框架（如 <a href="https://github.com/quicktvui/quicktvui" target="_blank">QuickUI</a>）渲染，实现遥控器交互体验。</p>
+    </section>
+
+    <section>
+        <h2>Features</h2>
+        <ul>
+            <li><strong>网页内容提取</strong>：使用类 CSS 选择器的 DSL 精准提取网页主要内容</li>
+            <li><strong>标准化输出</strong>：统一 JSON 数据结构，便于电视端模板渲染</li>
+            <li><strong>DSL 加载</strong>：
+                <ul>
+                    <li>内嵌 DSL 脚本到目标网页</li>
+                    <li>上传至远程 DSL Hub（默认：https://tvai.tv），页面中不存在 DSL 时尝试读取</li>
+                </ul>
+            </li>
+            <li><strong>灵活配置</strong>：支持页面级别规则配置，如路径匹配、条件显示、图片比例、文本变换</li>
+            <li><strong>电视适配优化</strong>：使用 QuickUI 框架，专为大屏焦点导航设计</li>
+            <li><strong>运行环境</strong>：Java 8+</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Usage</h2>
+        <h3>1. DSL 编写方式</h3>
+        <p>在网页 <code>&lt;head&gt;</code> 或 <code>&lt;body&gt;</code> 中内嵌以下 DSL 脚本：</p>
+        <pre><code>&lt;script type="text/plain" name="tv-like"&gt;
+# 页面类型
+page-type: video-detail
+# 全局配置
+globals {
+    base-url: "https://example.com"
+    exclude: ".ads"
+}
+# 分类页规则示例
+path: /category/** {
+    section:tab .top-navigation {
+        items: ul.nav-list li.nav-item {
+            text: a
+            link: a [attr: href]
+        } [limit: 8]
+    }
+    section:top-title .page-header h1 {
+        text: span.title-text
+        link: a.header-link
+    }
+    section:recommend .grid-container {
+        items: .item-card.type-a {
+            text: .item-title a
+            img: .item-poster img [attr: data-src]
+            link: .item-title a
+        }
+    }
+}
+&lt;/script&gt;</code></pre>
+
+        <h3>2. JSON 输出示例</h3>
+        <pre><code>[
+  {
+    "section": "tab",
+    "items": {
+      "value": [
+        { "link": { "value": "/" }, "text": { "value": "首页" } },
+        { "link": { "value": "/category/1.html" }, "text": { "value": "分类A" } }
+      ]
+    }
+  }
+]</code></pre>
+
+        <h3>3. 与 QuickUI 集成</h3>
+        <p>解析得到的 JSON 数据可直接传入 QuickUI 的电视模板组件，实现焦点移动、遥控器操作等原生电视交互体验。</p>
+    </section>
+
+    <section>
+        <h2>Contributing</h2>
+        <p>欢迎贡献！尤其欢迎：</p>
+        <ul>
+            <li>新网站的 DSL 规则贡献</li>
+            <li>DSL 语法增强建议</li>
+            <li>性能优化</li>
+            <li>文档改进</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>License</h2>
+        <p>本项目采用 MIT License，详见 <a href="LICENSE">LICENSE</a> 文件。</p>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-small">
+        Built with ❤️ by AI & Humans | Last Updated: October 21, 2025
+    </div>
+</footer>
+</body>
+</html>
