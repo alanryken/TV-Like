@@ -39,7 +39,7 @@
 - **标准化输出**：统一 JSON 数据结构，便于电视端模板渲染
 - **DSL 加载**：
   - 在目标网页中内嵌 DSL 脚本
-  - 上传到远程 DSL Hub (默认仓库：https://hub.tvai.tv）,页面中不存在DSL时尝试读取DSL Hub
+  - 上传到远程 DSL Hub (默认仓库： https://tvai.tv ）,页面中不存在DSL时尝试读取DSL Hub
 - **灵活配置**：
     - 支持页面级别规则配置,路径匹配、条件显示、图片比例、文本变换等
 - **电视适配优化**：使用 QuickUI 框架 -- 专为大屏焦点导航设计
@@ -116,7 +116,7 @@ TV Like 使用一种类似于 CSS 选择器的领域特定语言（DSL）来描�
 
 #### 远程 DSL Hub
 
-也可以将 DSL 文件上传至 https://hub.tvai.tv，页面中不存在 DSL 代码块时尝试读取DSL Hub。
+也可以将 DSL 文件上传至 https://tvai.tv ，页面中不存在 DSL 代码块时尝试读取DSL Hub。
 
 
 ### 2. DSL 语法详解
@@ -364,4 +364,6 @@ TV Like 使用一种类似于 CSS 选择器的领域特定语言（DSL）来描�
 
 <div align="center">
   <small>Built with ❤️ by AI & Humans | Last Updated: October 21, 2025</small>
+
 </div>
+
