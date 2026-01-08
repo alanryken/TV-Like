@@ -30,7 +30,7 @@ public class TVLikeTest {
     public static String inputStreamToString() throws IOException {
         // 1️⃣ 读取本地 HTML 文件
         // 1. 获取类路径下的 InputStream（自动关闭资源）
-        try (InputStream inputStream = TV.class.getClassLoader().getResourceAsStream("myyy1_com_index3.html")) {
+        try (InputStream inputStream = TV.class.getClassLoader().getResourceAsStream("mtyy1_com_index4.html")) {
             if (inputStream == null) {
                 throw new IllegalArgumentException("类路径下未找到文件：");
             }

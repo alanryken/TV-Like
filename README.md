@@ -355,6 +355,11 @@ TV Like 使用一种类似于 CSS 选择器的领域特定语言（DSL）来描�
 - 性能优化
 - 文档改进
 
+## 升级路线
+    - 1 支持页面播放地址嗅探
+    - 2 还没想好
+
+
 ## License
 
 本项目采用 MIT License，详见 [LICENSE](LICENSE) 文件。
