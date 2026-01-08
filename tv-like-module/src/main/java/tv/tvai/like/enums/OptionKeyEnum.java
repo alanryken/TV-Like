@@ -3,6 +3,7 @@ package tv.tvai.like.enums;
 public enum OptionKeyEnum {
     ATTR("attr", true),
     LIMIT("limit", true),
+    TRANSFORM("transform", true),
     IMG_RATIO("img-ratio");
 
     private final String key;
