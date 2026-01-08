@@ -18,8 +18,8 @@
 ## Project Overview / 项目介绍
 
 
--  TV Like : Convert web pages to TV style
--  TV Like : 将网页转换为电视样式
+-  TV Like : Any website, like a TV app.
+-  TV Like : 让任何网站，都能像原生应用一样在电视机浏览
 
 **TV Like** is an AI-driven experimental project, where most components are generated and directionally guided by AI. It provides a simple, readable extraction specification to pull key elements from web pages—such as images, text, videos, and hyperlinks—and outputs a unified structure optimized for TV interfaces. This structure is designed for easy adaptation into TV templates for re-rendering, powered by [QuickUI](https://github.com/quicktvui/quicktvui).
 
