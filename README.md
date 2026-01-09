@@ -357,7 +357,9 @@ TV Like 使用一种类似于 CSS 选择器的领域特定语言（DSL）来描�
 
 ## 升级路线
     - 1 支持页面播放地址嗅探
-    - 2 还没想好
+    - 2 历史记录
+    - 3 跳过片头片尾
+    - 4 还没想好
 
 
 ## License
@@ -371,4 +373,5 @@ TV Like 使用一种类似于 CSS 选择器的领域特定语言（DSL）来描�
   <small>Built with ❤️ by AI & Humans | Last Updated: October 21, 2025</small>
 
 </div>
+
 
