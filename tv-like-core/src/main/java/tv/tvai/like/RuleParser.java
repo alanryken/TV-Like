@@ -2,6 +2,7 @@ package tv.tvai.like;
 
 import tv.tvai.like.util.AntPathMatcher;
 import tv.tvai.like.util.PathMatcher;
+import tv.tvai.like.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,18 +17,27 @@ import java.util.regex.Pattern;
 
 public class RuleParser {
 
+    private static final Pattern PATH_PATTERN = Pattern.compile("path\\s*:\\s*([^\\{]+)\\{", Pattern.CASE_INSENSITIVE);
+    private static final Pattern SECTION_PATTERN = Pattern.compile("section\\s*:\\s*([\\w-]+)\\s+([^\\{]+)\\{", Pattern.CASE_INSENSITIVE);
+    private static final Pattern ITEMS_PATTERN = Pattern.compile("items\\s*:\\s*([^\\{\\n]+)\\{", Pattern.CASE_INSENSITIVE);
+    private static final Pattern FIELD_PATTERN = Pattern.compile("^(text|img|link)\\s*:\\s*(.+)$", Pattern.CASE_INSENSITIVE);
+    private static final Pattern OPTION_PATTERN = Pattern.compile("\\[(.*?)]");
     private static final Set<String> ALLOWED_FIELDS = new HashSet<>(Arrays.asList("text", "img", "link"));
     private final PathMatcher pathMatcher = new AntPathMatcher();
-    private Map<String, List<RuleNode>> pathRuleMap;
+    private Map<String, List<RuleNode>> pathRuleMap = new LinkedHashMap<>();
 
     private boolean matchPath(String pattern, String path) {
         return pathMatcher.match(pattern, path);
     }
 
     public List<RuleNode> getPathRule(String path) {
+        if (pathRuleMap == null || pathRuleMap.isEmpty()) {
+            return new ArrayList<>();
+        }
+        String normalizedPath = StringUtils.isBlank(path) ? "/" : path;
         for (Map.Entry<String, List<RuleNode>> entry : pathRuleMap.entrySet()) {
             String pattern = entry.getKey();
-            if (matchPath(pattern, path)) {
+            if (matchPath(pattern, normalizedPath)) {
                 return entry.getValue();
             }
         }
@@ -36,25 +46,28 @@ public class RuleParser {
 
     public void parse(String dsl) {
         pathRuleMap = new LinkedHashMap<>();
+        String normalizedDsl = normalizeDsl(dsl);
+        if (StringUtils.isBlank(normalizedDsl)) {
+            return;
+        }
 
-        Pattern pathPattern = Pattern.compile("path\\s*:\\s*([^\\{]+)\\{", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pathPattern.matcher(dsl);
+        Matcher matcher = PATH_PATTERN.matcher(normalizedDsl);
 
         while (matcher.find()) {
             String pathPatternStr = matcher.group(1).trim();
             int blockStart = matcher.end() - 1;
-            int blockEnd = findMatchingBrace(dsl, blockStart);
+            int blockEnd = findMatchingBrace(normalizedDsl, blockStart);
             if (blockEnd < 0) continue;
 
-            String body = dsl.substring(blockStart + 1, blockEnd);
+            String body = normalizedDsl.substring(blockStart + 1, blockEnd);
             List<RuleNode> nodes = parseSectionDsl(body);
             if (!nodes.isEmpty()) {
-                pathRuleMap.put(pathPatternStr, nodes);
+                putRulesForPatterns(pathPatternStr, nodes);
             }
         }
 
         if (pathRuleMap.isEmpty()) {
-            List<RuleNode> nodes = parseSectionDsl(dsl);
+            List<RuleNode> nodes = parseSectionDsl(normalizedDsl);
             pathRuleMap.put("/**", nodes);
         }
     }
@@ -65,9 +78,7 @@ public class RuleParser {
             return sections;
         }
 
-        Pattern sectionPattern = Pattern.compile("section\\s*:\\s*([\\w-]+)\\s+([^\\{]+)\\{", Pattern.CASE_INSENSITIVE);
-
-        Matcher matcher = sectionPattern.matcher(dsl);
+        Matcher matcher = SECTION_PATTERN.matcher(dsl);
         while (matcher.find()) {
             String sectionName = matcher.group(1).trim();
             String selector = matcher.group(2).trim();
@@ -97,8 +108,7 @@ public class RuleParser {
     }
 
     private static String parseItemsBlockIfPresent(String text, RuleNode parentNode) {
-        Pattern itemsPattern = Pattern.compile("items\\s*:\\s*([^\\{\\n]+)\\{", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = itemsPattern.matcher(text);
+        Matcher matcher = ITEMS_PATTERN.matcher(text);
 
         if (!matcher.find()) {
             return text;
@@ -125,7 +135,9 @@ public class RuleParser {
         parentNode.setItemTemplate(itemTemplate);
 
         String before = text.substring(0, matcher.start());
-        return before + "\n" + afterBlock;
+        int optionsEnd = findTrailingOptionsEnd(text, blockEnd + 1);
+        String after = optionsEnd >= text.length() ? "" : text.substring(optionsEnd);
+        return before + "\n" + after;
     }
 
     private static void parseItemFields(String inner, RuleNode node) {
@@ -133,6 +145,14 @@ public class RuleParser {
     }
 
     private static String extractTrailingOptions(String text, int start) {
+        int optionsEnd = findTrailingOptionsEnd(text, start);
+        if (start >= optionsEnd) {
+            return "";
+        }
+        return text.substring(start, optionsEnd).trim();
+    }
+
+    private static int findTrailingOptionsEnd(String text, int start) {
         int i = start;
 
         while (i < text.length() && Character.isWhitespace(text.charAt(i))) {
@@ -163,7 +183,7 @@ public class RuleParser {
             i++;
         }
 
-        return text.substring(optionsStart, i).trim();
+        return bracketDepth == 0 ? i : optionsStart;
     }
 
     private static void parseFieldLines(String text,
@@ -177,9 +197,7 @@ public class RuleParser {
             String line = scanner.nextLine().trim();
             if (line.isEmpty()) continue;
 
-            Matcher fieldMatcher = Pattern.compile(
-                    "^(text|img|link)\\s*:\\s*(.+)$",
-                    Pattern.CASE_INSENSITIVE).matcher(line);
+            Matcher fieldMatcher = FIELD_PATTERN.matcher(line);
 
             if (!fieldMatcher.find()) continue;
 
@@ -211,7 +229,7 @@ public class RuleParser {
 
     private static List<String> extractAllOptionTokens(String text) {
         List<String> tokens = new ArrayList<>();
-        Matcher matcher = Pattern.compile("\\[(.*?)]").matcher(text);
+        Matcher matcher = OPTION_PATTERN.matcher(text);
         while (matcher.find()) {
             tokens.add(matcher.group(1).trim());
         }
@@ -220,7 +238,7 @@ public class RuleParser {
 
     private static RuleNode.Options extractOptionsFromText(String text) {
         RuleNode.Options opts = new RuleNode.Options();
-        Matcher matcher = Pattern.compile("\\[(.*?)]").matcher(text);
+        Matcher matcher = OPTION_PATTERN.matcher(text);
         while (matcher.find()) {
             parseOptionToken(matcher.group(1).trim(), opts);
         }
@@ -236,9 +254,56 @@ public class RuleParser {
             if (kv.length == 1) {
                 options.putIfAbsent(kv[0].trim(), true);
             } else {
-                options.putIfAbsent(kv[0].trim(), kv[1].trim());
+                options.putIfAbsent(kv[0].trim(), trimWrappingQuotes(kv[1].trim()));
             }
         }
+    }
+
+    private void putRulesForPatterns(String pathPatternStr, List<RuleNode> nodes) {
+        for (String pattern : splitPathPatterns(pathPatternStr)) {
+            if (!pathRuleMap.containsKey(pattern)) {
+                pathRuleMap.put(pattern, nodes);
+            }
+        }
+    }
+
+    private List<String> splitPathPatterns(String pathPatternStr) {
+        List<String> patterns = new ArrayList<>();
+        if (StringUtils.isBlank(pathPatternStr)) {
+            return patterns;
+        }
+        String[] parts = pathPatternStr.split("\\|\\|");
+        for (String part : parts) {
+            String pattern = part.trim();
+            if (StringUtils.isNotBlank(pattern)) {
+                patterns.add(pattern);
+            }
+        }
+        if (patterns.isEmpty()) {
+            patterns.add(pathPatternStr.trim());
+        }
+        return patterns;
+    }
+
+    private static String normalizeDsl(String dsl) {
+        if (dsl == null) {
+            return "";
+        }
+        return dsl.replace("\r\n", "\n")
+                .replace("\r", "\n")
+                .replaceAll("(?s)/\\*.*?\\*/", "");
+    }
+
+    private static String trimWrappingQuotes(String value) {
+        if (value == null || value.length() < 2) {
+            return value;
+        }
+        char first = value.charAt(0);
+        char last = value.charAt(value.length() - 1);
+        if ((first == '"' && last == '"') || (first == '\'' && last == '\'')) {
+            return value.substring(1, value.length() - 1);
+        }
+        return value;
     }
 
     private static int findMatchingBrace(String text, int openIndex) {
