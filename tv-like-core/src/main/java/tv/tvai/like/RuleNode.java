@@ -1,16 +1,15 @@
 package tv.tvai.like;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class RuleNode {
-    private String name;                // section 名称，如：tab / episodes / recommend
-    private String selector;            // section 对应的 CSS 选择器
-    private Map<String, String> fieldSelectors = new HashMap<String, String>(); // text/img/link 的 selector
-    private Map<String, Options> fieldOptions = new HashMap<String, Options>(); // text/img/link 的 options
-    private RuleNode itemTemplate;      // items 子规则
-    private Options sectionOptions;     // section 层的 options
+    private String name;
+    private String selector;
+    private Map<String, String> fieldSelectors = new HashMap<String, String>();
+    private Map<String, Options> fieldOptions = new HashMap<String, Options>();
+    private RuleNode itemTemplate;
+    private Options sectionOptions;
 
     public RuleNode() {}
 
@@ -32,8 +31,6 @@ public class RuleNode {
             return values;
         }
     }
-
-    // ------------------- Getter / Setter -------------------
 
     public void setName(String name) {
         if (this.name == null) this.name = name;

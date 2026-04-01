@@ -7,7 +7,7 @@ public enum OptionKeyEnum {
     IMG_RATIO("img-ratio");
 
     private final String key;
-    private final boolean executable; //可执行的 代表需要处理
+    private final boolean executable;
 
     OptionKeyEnum(String key) {
         this.key = key;

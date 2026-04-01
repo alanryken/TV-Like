@@ -4,7 +4,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class TV {
 
@@ -16,7 +18,6 @@ public class TV {
         this.html = html;
         this.url = url;
         this.dslHub = null;
-
     }
 
     public TV(String html, String url, String dslHub) {
@@ -24,7 +25,6 @@ public class TV {
         this.url = url;
         this.dslHub = dslHub;
     }
-
 
     public List<Map<String, Object>> like() {
         try {
@@ -42,12 +42,9 @@ public class TV {
             List<RuleNode> rules = parser.getPathRule(path);
             Extractor extractor = new Extractor();
             return extractor.extract(doc, rules);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         return new ArrayList<>();
     }
-
-
 }

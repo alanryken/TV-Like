@@ -24,6 +24,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        main {
+            java.srcDir '../../tv-like-core/src/main/java'
+        }
+    }
     android.applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = "tv-like.apk"
