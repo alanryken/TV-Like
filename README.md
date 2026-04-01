@@ -20,6 +20,35 @@ TV-Like 的目标很直接：把普通网页的核心内容抽出来，转换成
 - `tv-like-android-plugin`：Android/TV 侧接入示例
 - `test/html`：一些网页样本
 - `doc`：本次及后续改动记录
+- `skills`：项目共享技能
+
+## 项目内置 Skill
+
+当前仓库已经内置可共享的技能：
+
+- `tvlike-dsl-generator`
+
+技能文件位置：
+
+- `skills/tvlike-dsl-generator/SKILL.md`
+
+这个技能的用途是：
+
+- 根据页面 HTML、页面文件或页面 URL 自动生成 TV-Like DSL 初稿
+- 自动推断 `path`、`section`、`items`、`text`、`img`、`link`
+- 自动补充合适的 `attr`、`limit`、`transform`、`img-ratio`
+
+适合的调用场景：
+
+- “根据这个页面生成 TV-Like DSL”
+- “基于这段 HTML 帮我写提取规则”
+- “给这个详情页/首页/分类页初始化 DSL”
+
+共享方式：
+
+- 该技能已直接放在仓库的 `skills/` 目录中，适合随 Git 一起共享
+- 其他人拉取项目后，可以直接查看、复制或按自己的工具链接入使用
+- 如需继续扩展，只需要在 `skills/<skill-name>/SKILL.md` 下新增或修改技能
 
 ## 适合解决什么问题
 
