@@ -40,6 +40,21 @@
             overflow-x: auto;
             border-radius: 4px;
         }
+        .code-pair {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .code-card h4 {
+            margin: 0 0 0.5rem 0;
+        }
+        .mapping-note {
+            background-color: #fff;
+            border-left: 4px solid #007bff;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+        }
         code {
             font-family: "Courier New", Courier, monospace;
         }
@@ -143,6 +158,80 @@
         <h2>Usage</h2>
         <h3>1. 编写 YAML 规则</h3>
         <p>在页面中内嵌 YAML，或把 YAML 规则放到远程 Hub，让核心引擎知道哪些 path、section、items 和字段需要被提取。</p>
+        <div class="code-pair">
+            <div class="code-card">
+                <h4>HTML</h4>
+                <pre><code>&lt;div class="page"&gt;
+  &lt;div class="hero-card"&gt;
+    &lt;a class="title" href="/detail/1"&gt;Movie One&lt;/a&gt;
+    &lt;img data-src="/poster/1.jpg" /&gt;
+  &lt;/div&gt;
+
+  &lt;ul class="recommend-list"&gt;
+    &lt;li class="card"&gt;
+      &lt;a class="item-link" href="/detail/1"&gt;
+        &lt;img data-src="/poster/1.jpg" /&gt;
+        &lt;span class="item-title"&gt;Movie One&lt;/span&gt;
+      &lt;/a&gt;
+    &lt;/li&gt;
+    &lt;li class="card"&gt;
+      &lt;a class="item-link" href="/detail/2"&gt;
+        &lt;img data-src="/poster/2.jpg" /&gt;
+        &lt;span class="item-title"&gt;Movie Two&lt;/span&gt;
+      &lt;/a&gt;
+    &lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+            </div>
+            <div class="code-card">
+                <h4>YAML</h4>
+                <pre><code>version: 1
+paths:
+  - match: /list/**
+    sections:
+      - name: hero
+        selector: .hero-card
+        fields:
+          text:
+            selector: .title
+            transforms: [trim]
+          link:
+            selector: .title
+            attr: href
+            transforms: [abs-url]
+          img:
+            selector: img[data-src]
+            attr: data-src
+            transforms: [abs-url]
+
+      - name: recommend
+        selector: .recommend-list
+        items:
+          selector: li.card
+          limit: 12
+          meta:
+            img-ratio: 2/3
+          fields:
+            text:
+              selector: .item-title
+              transforms: [trim]
+            link:
+              selector: .item-link
+              attr: href
+              transforms: [abs-url]
+            img:
+              selector: img[data-src]
+              attr: data-src
+              transforms: [abs-url]</code></pre>
+            </div>
+        </div>
+        <div class="mapping-note">
+            <strong>对应关系：</strong>
+            <code>.hero-card</code> 对应一个 `section`，
+            <code>.recommend-list</code> 对应一个列表型 `section`，
+            <code>li.card</code> 对应 `items.selector`，
+            <code>.item-title</code>、<code>.item-link</code>、<code>img[data-src]</code> 分别映射到每个列表项里的 `text`、`link`、`img`。
+        </div>
 
         <h3>2. 执行提取</h3>
         <p>将网页 HTML 与页面 URL 传给 <code>TV</code> 入口，核心模块会完成规则加载、路径命中、选择器提取与值变换。</p>
