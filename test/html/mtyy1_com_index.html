@@ -50,43 +50,50 @@
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(mtj, s);
     })(); </script>
-    <meta name="tv-like">
-        page-type: video-detail
-        globals {
-            base-url: "https://mtyy1.com"
-            exclude: ".ads"
-        }
-        section: tab .head-nav.ft4.roll.bold0.pc-show1.wap-show0 {
-            text: null
-            img: null
-            link: null
-            items: .swiper-slide {
-                text: a [transform: trim]
-                img: null
-                link: a [attr: href]
-            } [limit: 6]
-        }
-        section: episodes .episode-list {
-            text: null
-            img: null
-            link: null
-            items: .ep-item {
-                text: .name
-                img: null
-                link: a [limit: 2]
-            }
-        }
-        section: recommend .rec-list {
-            text: null
-            img: null
-            link: null
-            items: .item {
-                text: .rec-title
-                img: .thumb img
-                link: a
-            }
-        }
-    </meta>
+    <script type="application/yaml" name="tv-like">
+version: 1
+sections:
+  - name: tab
+    selector: .head-nav.ft4.roll.bold0.pc-show1.wap-show0
+    items:
+      selector: .swiper-slide
+      limit: 6
+      fields:
+        text:
+          selector: a
+          transforms: [trim]
+        link:
+          selector: a
+          attr: href
+          transforms: [abs-url]
+  - name: episodes
+    selector: .episode-list
+    items:
+      selector: .ep-item
+      limit: 2
+      fields:
+        text:
+          selector: .name
+          transforms: [trim]
+        link:
+          selector: a
+          attr: href
+          transforms: [abs-url]
+  - name: recommend
+    selector: .rec-list
+    items:
+      selector: .item
+      fields:
+        text:
+          selector: .rec-title
+          transforms: [trim]
+        img:
+          selector: .thumb img
+        link:
+          selector: a
+          attr: href
+          transforms: [abs-url]
+    </script>
 </head>
 
 <body class="theme2">

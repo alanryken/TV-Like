@@ -1,288 +1,512 @@
 package tv.tvai.like;
 
+import org.yaml.snakeyaml.Yaml;
+import tv.tvai.like.enums.OptionKeyEnum;
 import tv.tvai.like.util.AntPathMatcher;
 import tv.tvai.like.util.PathMatcher;
 import tv.tvai.like.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RuleParser {
 
-    private static final Pattern PATH_PATTERN = Pattern.compile("path\\s*:\\s*([^\\{]+)\\{", Pattern.CASE_INSENSITIVE);
-    private static final Pattern SECTION_PATTERN = Pattern.compile("section\\s*:\\s*([\\w-]+)\\s+([^\\{]+)\\{", Pattern.CASE_INSENSITIVE);
-    private static final Pattern ITEMS_PATTERN = Pattern.compile("items\\s*:\\s*([^\\{\\n]+)\\{", Pattern.CASE_INSENSITIVE);
-    private static final Pattern FIELD_PATTERN = Pattern.compile("^(text|img|link)\\s*:\\s*(.+)$", Pattern.CASE_INSENSITIVE);
-    private static final Pattern OPTION_PATTERN = Pattern.compile("\\[(.*?)]");
-    private static final Set<String> ALLOWED_FIELDS = new HashSet<>(Arrays.asList("text", "img", "link"));
-    private final PathMatcher pathMatcher = new AntPathMatcher();
-    private Map<String, List<RuleNode>> pathRuleMap = new LinkedHashMap<>();
+    private static final Set<String> ALLOWED_FIELDS = new HashSet<String>(Arrays.asList("text", "img", "link"));
+    private static final Set<String> ALLOWED_TRANSFORMS = new LinkedHashSet<String>(
+            Arrays.asList("trim", "upper", "upper-case", "lower", "lower-case", "digits", "abs-url")
+    );
+    private static final String DEFAULT_PATH_PATTERN = "/**";
 
-    private boolean matchPath(String pattern, String path) {
-        return pathMatcher.match(pattern, path);
-    }
+    private final PathMatcher pathMatcher = new AntPathMatcher();
+    private final Yaml yaml = new Yaml();
+    private Map<String, List<RuleNode>> pathRuleMap = new LinkedHashMap<String, List<RuleNode>>();
 
     public List<RuleNode> getPathRule(String path) {
         if (pathRuleMap == null || pathRuleMap.isEmpty()) {
-            return new ArrayList<>();
+            return new ArrayList<RuleNode>();
         }
-        String normalizedPath = StringUtils.isBlank(path) ? "/" : path;
+        String normalizedPath = normalizePath(path);
+        List<Map.Entry<String, List<RuleNode>>> matchedEntries = new ArrayList<Map.Entry<String, List<RuleNode>>>();
         for (Map.Entry<String, List<RuleNode>> entry : pathRuleMap.entrySet()) {
-            String pattern = entry.getKey();
-            if (matchPath(pattern, normalizedPath)) {
-                return entry.getValue();
+            if (pathMatcher.match(entry.getKey(), normalizedPath)) {
+                matchedEntries.add(entry);
             }
         }
-        return new ArrayList<>();
+        if (matchedEntries.isEmpty()) {
+            return new ArrayList<RuleNode>();
+        }
+        final Comparator<String> comparator = pathMatcher.getPatternComparator(normalizedPath);
+        Collections.sort(matchedEntries, new Comparator<Map.Entry<String, List<RuleNode>>>() {
+            @Override
+            public int compare(Map.Entry<String, List<RuleNode>> left, Map.Entry<String, List<RuleNode>> right) {
+                return comparator.compare(left.getKey(), right.getKey());
+            }
+        });
+        return matchedEntries.get(0).getValue();
     }
 
     public void parse(String dsl) {
-        pathRuleMap = new LinkedHashMap<>();
+        pathRuleMap = new LinkedHashMap<String, List<RuleNode>>();
+        DslValidationResult validationResult = validate(dsl);
+        if (!validationResult.isValid()) {
+            return;
+        }
         String normalizedDsl = normalizeDsl(dsl);
-        if (StringUtils.isBlank(normalizedDsl)) {
+        Object raw = loadYaml(normalizedDsl);
+        if (!(raw instanceof Map)) {
             return;
         }
 
-        Matcher matcher = PATH_PATTERN.matcher(normalizedDsl);
-
-        while (matcher.find()) {
-            String pathPatternStr = matcher.group(1).trim();
-            int blockStart = matcher.end() - 1;
-            int blockEnd = findMatchingBrace(normalizedDsl, blockStart);
-            if (blockEnd < 0) continue;
-
-            String body = normalizedDsl.substring(blockStart + 1, blockEnd);
-            List<RuleNode> nodes = parseSectionDsl(body);
-            if (!nodes.isEmpty()) {
-                putRulesForPatterns(pathPatternStr, nodes);
+        @SuppressWarnings("unchecked")
+        Map<String, Object> root = (Map<String, Object>) raw;
+        List<Map<String, Object>> paths = asMapList(root.get("paths"));
+        if (!paths.isEmpty()) {
+            for (Map<String, Object> pathConfig : paths) {
+                List<RuleNode> sections = parseSections(pathConfig.get("sections"));
+                if (sections.isEmpty()) {
+                    continue;
+                }
+                for (String pattern : resolvePathPatterns(pathConfig)) {
+                    pathRuleMap.put(pattern, sections);
+                }
             }
         }
 
         if (pathRuleMap.isEmpty()) {
-            List<RuleNode> nodes = parseSectionDsl(normalizedDsl);
-            pathRuleMap.put("/**", nodes);
+            List<RuleNode> sections = parseSections(root.get("sections"));
+            if (!sections.isEmpty()) {
+                pathRuleMap.put(DEFAULT_PATH_PATTERN, sections);
+            }
         }
     }
 
-    private List<RuleNode> parseSectionDsl(String dsl) {
-        List<RuleNode> sections = new ArrayList<>();
-        if (dsl == null || dsl.trim().isEmpty()) {
-            return sections;
+    public DslValidationResult validate(String dsl) {
+        DslValidationResult result = new DslValidationResult();
+        String normalizedDsl = normalizeDsl(dsl);
+        if (StringUtils.isBlank(normalizedDsl)) {
+            result.addError("DSL content is empty");
+            return result;
         }
+        Object raw = loadYaml(normalizedDsl);
+        if (!(raw instanceof Map)) {
+            result.addError("DSL root must be a YAML object");
+            return result;
+        }
+        @SuppressWarnings("unchecked")
+        Map<String, Object> root = (Map<String, Object>) raw;
+        validateRoot(root, result);
+        return result;
+    }
 
-        Matcher matcher = SECTION_PATTERN.matcher(dsl);
-        while (matcher.find()) {
-            String sectionName = matcher.group(1).trim();
-            String selector = matcher.group(2).trim();
-            int bodyStart = matcher.end() - 1;
-            int bodyEnd = findMatchingBrace(dsl, bodyStart);
-            if (bodyEnd < 0) continue;
+    private Object loadYaml(String content) {
+        try {
+            return yaml.load(content);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-            String body = dsl.substring(bodyStart + 1, bodyEnd);
-            String afterBlock = bodyEnd + 1 < dsl.length() ? extractTrailingOptions(dsl, bodyEnd + 1) : "";
-
-            RuleNode.Options sectionOptions = extractOptionsFromText(afterBlock);
-
-            RuleNode node = new RuleNode(sectionName, selector);
-            node.setSectionOptions(sectionOptions);
-            parseSectionBody(body, node);
-            sections.add(node);
+    private List<RuleNode> parseSections(Object rawSections) {
+        List<Map<String, Object>> sectionConfigs = asMapList(rawSections);
+        List<RuleNode> sections = new ArrayList<RuleNode>();
+        for (Map<String, Object> sectionConfig : sectionConfigs) {
+            RuleNode section = parseSection(sectionConfig);
+            if (section != null) {
+                sections.add(section);
+            }
         }
         return sections;
     }
 
-    private static void parseSectionBody(String body, RuleNode node) {
-        if (body == null) return;
-
-        String remaining = body;
-        remaining = parseItemsBlockIfPresent(remaining, node);
-        parseFieldLines(remaining, node.getFieldSelectors(), node.getFieldOptions());
-    }
-
-    private static String parseItemsBlockIfPresent(String text, RuleNode parentNode) {
-        Matcher matcher = ITEMS_PATTERN.matcher(text);
-
-        if (!matcher.find()) {
-            return text;
+    private RuleNode parseSection(Map<String, Object> config) {
+        if (config == null) {
+            return null;
+        }
+        String name = asString(config.get("name"));
+        String selector = asString(config.get("selector"));
+        if (StringUtils.isBlank(name) || StringUtils.isBlank(selector)) {
+            return null;
         }
 
-        String itemsSelector = matcher.group(1).trim();
-        int blockStart = matcher.end() - 1;
-        int blockEnd = findMatchingBrace(text, blockStart);
-        if (blockEnd < 0) {
-            return text;
+        RuleNode node = new RuleNode(name.trim(), selector.trim());
+        node.setSectionOptions(buildOptions(config.get("meta"), config.get("limit"), null, null));
+        parseFields(config.get("fields"), node);
+        RuleNode itemTemplate = parseItems(config.get("items"));
+        if (itemTemplate != null) {
+            node.setItemTemplate(itemTemplate);
         }
-
-        String innerBody = text.substring(blockStart + 1, blockEnd);
-        String afterBlock = blockEnd + 1 < text.length() ? extractTrailingOptions(text, blockEnd + 1) : "";
-
-        RuleNode.Options itemOptions = extractOptionsFromText(afterBlock);
-
-        RuleNode itemTemplate = new RuleNode();
-        itemTemplate.setName("items");
-        itemTemplate.setSelector(itemsSelector);
-        itemTemplate.setSectionOptions(itemOptions);
-
-        parseItemFields(innerBody, itemTemplate);
-        parentNode.setItemTemplate(itemTemplate);
-
-        String before = text.substring(0, matcher.start());
-        int optionsEnd = findTrailingOptionsEnd(text, blockEnd + 1);
-        String after = optionsEnd >= text.length() ? "" : text.substring(optionsEnd);
-        return before + "\n" + after;
+        return hasUsableContent(node) ? node : null;
     }
 
-    private static void parseItemFields(String inner, RuleNode node) {
-        parseFieldLines(inner, node.getFieldSelectors(), node.getFieldOptions());
+    private boolean hasUsableContent(RuleNode node) {
+        return node != null
+                && ((!node.getFieldSelectors().isEmpty())
+                || node.getItemTemplate() != null);
     }
 
-    private static String extractTrailingOptions(String text, int start) {
-        int optionsEnd = findTrailingOptionsEnd(text, start);
-        if (start >= optionsEnd) {
-            return "";
+    private RuleNode parseItems(Object rawItems) {
+        if (!(rawItems instanceof Map)) {
+            return null;
         }
-        return text.substring(start, optionsEnd).trim();
+        @SuppressWarnings("unchecked")
+        Map<String, Object> itemsConfig = (Map<String, Object>) rawItems;
+        String selector = asString(itemsConfig.get("selector"));
+        if (StringUtils.isBlank(selector)) {
+            return null;
+        }
+        RuleNode itemTemplate = new RuleNode("items", selector.trim());
+        itemTemplate.setSectionOptions(buildOptions(itemsConfig.get("meta"), itemsConfig.get("limit"), null, null));
+        parseFields(itemsConfig.get("fields"), itemTemplate);
+        return hasUsableContent(itemTemplate) ? itemTemplate : null;
     }
 
-    private static int findTrailingOptionsEnd(String text, int start) {
-        int i = start;
-
-        while (i < text.length() && Character.isWhitespace(text.charAt(i))) {
-            i++;
+    private void parseFields(Object rawFields, RuleNode node) {
+        if (!(rawFields instanceof Map) || node == null) {
+            return;
         }
 
-        int optionsStart = i;
-        int bracketDepth = 0;
-        boolean inOption = false;
+        @SuppressWarnings("unchecked")
+        Map<String, Object> fields = (Map<String, Object>) rawFields;
+        for (Map.Entry<String, Object> entry : fields.entrySet()) {
+            String fieldName = entry.getKey() == null ? "" : entry.getKey().trim().toLowerCase();
+            if (!ALLOWED_FIELDS.contains(fieldName)) {
+                continue;
+            }
+            FieldSpec fieldSpec = parseFieldSpec(entry.getValue());
+            if (fieldSpec == null || StringUtils.isBlank(fieldSpec.selector)) {
+                continue;
+            }
+            if (!node.getFieldSelectors().containsKey(fieldName)) {
+                node.getFieldSelectors().put(fieldName, fieldSpec.selector);
+                node.getFieldOptions().put(fieldName, fieldSpec.options);
+            }
+        }
+    }
 
-        while (i < text.length()) {
-            char c = text.charAt(i);
+    private FieldSpec parseFieldSpec(Object rawFieldConfig) {
+        if (rawFieldConfig instanceof String) {
+            String selector = trimToNull((String) rawFieldConfig);
+            if (selector == null) {
+                return null;
+            }
+            return new FieldSpec(selector, new RuleNode.Options());
+        }
+        if (!(rawFieldConfig instanceof Map)) {
+            return null;
+        }
 
-            if (c == '[') {
-                bracketDepth++;
-                inOption = true;
-            } else if (c == ']') {
-                bracketDepth--;
-                if (bracketDepth == 0) {
-                    inOption = false;
+        @SuppressWarnings("unchecked")
+        Map<String, Object> fieldConfig = (Map<String, Object>) rawFieldConfig;
+        String selector = trimToNull(asString(fieldConfig.get("selector")));
+        if (selector == null) {
+            return null;
+        }
+        RuleNode.Options options = buildOptions(fieldConfig.get("meta"), null, fieldConfig.get("attr"), fieldConfig.get("transforms"));
+        if (fieldConfig.containsKey("transform") && !options.getValues().containsKey(OptionKeyEnum.TRANSFORM.getKey())) {
+            mergeTransformOption(options, fieldConfig.get("transform"));
+        }
+        return new FieldSpec(selector, options);
+    }
+
+    private RuleNode.Options buildOptions(Object rawMeta, Object rawLimit, Object rawAttr, Object rawTransforms) {
+        RuleNode.Options options = new RuleNode.Options();
+        if (rawMeta instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> meta = (Map<String, Object>) rawMeta;
+            for (Map.Entry<String, Object> entry : meta.entrySet()) {
+                String key = trimToNull(entry.getKey());
+                if (key != null && entry.getValue() != null) {
+                    options.putIfAbsent(key, entry.getValue());
                 }
-            } else {
-                if (!inOption && !Character.isWhitespace(c)) {
-                    break;
-                }
-            }
-
-            i++;
-        }
-
-        return bracketDepth == 0 ? i : optionsStart;
-    }
-
-    private static void parseFieldLines(String text,
-                                        Map<String, String> selectorMap,
-                                        Map<String, RuleNode.Options> optionsMap) {
-
-        if (text == null) return;
-
-        Scanner scanner = new Scanner(text);
-        while (scanner.hasNextLine()) {
-            String line = scanner.nextLine().trim();
-            if (line.isEmpty()) continue;
-
-            Matcher fieldMatcher = FIELD_PATTERN.matcher(line);
-
-            if (!fieldMatcher.find()) continue;
-
-            String fieldName = fieldMatcher.group(1).toLowerCase();
-            if (!ALLOWED_FIELDS.contains(fieldName)) continue;
-
-            String rest = fieldMatcher.group(2).trim();
-            List<String> optionTokens = extractAllOptionTokens(rest);
-
-            String selector = rest.replaceAll("\\[.*?]", "").trim();
-            if ("null".equalsIgnoreCase(selector)) {
-                selector = null;
-            }
-
-            if (selector != null && !selectorMap.containsKey(fieldName)) {
-                selectorMap.put(fieldName, selector);
-            }
-
-            RuleNode.Options fieldOptions = new RuleNode.Options();
-            for (String token : optionTokens) {
-                parseOptionToken(token, fieldOptions);
-            }
-            if (!optionsMap.containsKey(fieldName)) {
-                optionsMap.put(fieldName, fieldOptions);
             }
         }
-        scanner.close();
-    }
-
-    private static List<String> extractAllOptionTokens(String text) {
-        List<String> tokens = new ArrayList<>();
-        Matcher matcher = OPTION_PATTERN.matcher(text);
-        while (matcher.find()) {
-            tokens.add(matcher.group(1).trim());
-        }
-        return tokens;
-    }
-
-    private static RuleNode.Options extractOptionsFromText(String text) {
-        RuleNode.Options opts = new RuleNode.Options();
-        Matcher matcher = OPTION_PATTERN.matcher(text);
-        while (matcher.find()) {
-            parseOptionToken(matcher.group(1).trim(), opts);
-        }
-        return opts;
-    }
-
-    private static void parseOptionToken(String token, RuleNode.Options options) {
-        if (token == null || token.isEmpty()) return;
-
-        String[] parts = token.split(",");
-        for (String part : parts) {
-            String[] kv = part.split(":", 2);
-            if (kv.length == 1) {
-                options.putIfAbsent(kv[0].trim(), true);
-            } else {
-                options.putIfAbsent(kv[0].trim(), trimWrappingQuotes(kv[1].trim()));
+        if (rawLimit != null) {
+            String limitValue = trimToNull(asString(rawLimit));
+            if (limitValue != null) {
+                options.putIfAbsent(OptionKeyEnum.LIMIT.getKey(), limitValue);
             }
+        }
+        if (rawAttr != null) {
+            String attrValue = trimToNull(asString(rawAttr));
+            if (attrValue != null) {
+                options.putIfAbsent(OptionKeyEnum.ATTR.getKey(), attrValue);
+            }
+        }
+        mergeTransformOption(options, rawTransforms);
+        return options;
+    }
+
+    private void mergeTransformOption(RuleNode.Options options, Object rawTransforms) {
+        String transformValue = joinTransforms(rawTransforms);
+        if (StringUtils.isNotBlank(transformValue)) {
+            options.putIfAbsent(OptionKeyEnum.TRANSFORM.getKey(), transformValue);
         }
     }
 
-    private void putRulesForPatterns(String pathPatternStr, List<RuleNode> nodes) {
-        for (String pattern : splitPathPatterns(pathPatternStr)) {
-            if (!pathRuleMap.containsKey(pattern)) {
-                pathRuleMap.put(pattern, nodes);
-            }
-        }
-    }
-
-    private List<String> splitPathPatterns(String pathPatternStr) {
-        List<String> patterns = new ArrayList<>();
-        if (StringUtils.isBlank(pathPatternStr)) {
+    private List<String> resolvePathPatterns(Map<String, Object> pathConfig) {
+        List<String> patterns = new ArrayList<String>();
+        if (pathConfig == null) {
+            patterns.add(DEFAULT_PATH_PATTERN);
             return patterns;
         }
-        String[] parts = pathPatternStr.split("\\|\\|");
-        for (String part : parts) {
-            String pattern = part.trim();
-            if (StringUtils.isNotBlank(pattern)) {
-                patterns.add(pattern);
+        String singleMatch = trimToNull(asString(pathConfig.get("match")));
+        if (singleMatch != null) {
+            patterns.add(singleMatch);
+        }
+
+        Object rawMatches = pathConfig.get("matches");
+        if (rawMatches instanceof List) {
+            List<?> values = (List<?>) rawMatches;
+            for (Object value : values) {
+                String pattern = trimToNull(asString(value));
+                if (pattern != null) {
+                    patterns.add(pattern);
+                }
             }
         }
+
         if (patterns.isEmpty()) {
-            patterns.add(pathPatternStr.trim());
+            patterns.add(DEFAULT_PATH_PATTERN);
         }
         return patterns;
+    }
+
+    private List<Map<String, Object>> asMapList(Object rawValue) {
+        if (!(rawValue instanceof List)) {
+            return new ArrayList<Map<String, Object>>();
+        }
+        List<?> rawList = (List<?>) rawValue;
+        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
+        for (Object item : rawList) {
+            if (item instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Object> mapItem = (Map<String, Object>) item;
+                result.add(mapItem);
+            }
+        }
+        return result;
+    }
+
+    private void validateRoot(Map<String, Object> root, DslValidationResult result) {
+        boolean hasPaths = root.get("paths") instanceof List;
+        boolean hasSections = root.get("sections") instanceof List;
+        if (!hasPaths && !hasSections) {
+            result.addError("DSL must contain either top-level 'paths' or top-level 'sections'");
+            return;
+        }
+        if (hasPaths) {
+            List<Map<String, Object>> paths = asMapList(root.get("paths"));
+            if (paths.isEmpty()) {
+                result.addError("'paths' must contain at least one path rule");
+            }
+            for (int i = 0; i < paths.size(); i++) {
+                validatePath(paths.get(i), i, result);
+            }
+        }
+        if (hasSections) {
+            validateSections(root.get("sections"), "sections", result);
+        }
+    }
+
+    private void validatePath(Map<String, Object> pathConfig, int index, DslValidationResult result) {
+        if (pathConfig == null) {
+            result.addError("paths[" + index + "] must be an object");
+            return;
+        }
+        List<String> patterns = resolvePathPatterns(pathConfig);
+        if (patterns.isEmpty()) {
+            result.addError("paths[" + index + "] must define 'match' or 'matches'");
+        }
+        validateSections(pathConfig.get("sections"), "paths[" + index + "].sections", result);
+    }
+
+    private void validateSections(Object rawSections, String location, DslValidationResult result) {
+        List<Map<String, Object>> sectionConfigs = asMapList(rawSections);
+        if (sectionConfigs.isEmpty()) {
+            result.addError(location + " must contain at least one section");
+            return;
+        }
+        for (int i = 0; i < sectionConfigs.size(); i++) {
+            validateSection(sectionConfigs.get(i), location + "[" + i + "]", result);
+        }
+    }
+
+    private void validateSection(Map<String, Object> section, String location, DslValidationResult result) {
+        if (section == null) {
+            result.addError(location + " must be an object");
+            return;
+        }
+        requireNonBlank(section.get("name"), location + ".name", result);
+        requireNonBlank(section.get("selector"), location + ".selector", result);
+        validateLimit(section.get("limit"), location + ".limit", result);
+        boolean hasFields = section.get("fields") instanceof Map;
+        boolean hasItems = section.get("items") instanceof Map;
+        if (!hasFields && !hasItems) {
+            result.addError(location + " must define 'fields' or 'items'");
+        }
+        if (hasFields) {
+            validateFields(section.get("fields"), location + ".fields", result);
+        }
+        if (hasItems) {
+            validateItems(section.get("items"), location + ".items", result);
+        }
+    }
+
+    private void validateItems(Object rawItems, String location, DslValidationResult result) {
+        if (!(rawItems instanceof Map)) {
+            result.addError(location + " must be an object");
+            return;
+        }
+        @SuppressWarnings("unchecked")
+        Map<String, Object> items = (Map<String, Object>) rawItems;
+        requireNonBlank(items.get("selector"), location + ".selector", result);
+        validateLimit(items.get("limit"), location + ".limit", result);
+        validateFields(items.get("fields"), location + ".fields", result);
+    }
+
+    private void validateFields(Object rawFields, String location, DslValidationResult result) {
+        if (!(rawFields instanceof Map)) {
+            result.addError(location + " must be an object");
+            return;
+        }
+        @SuppressWarnings("unchecked")
+        Map<String, Object> fields = (Map<String, Object>) rawFields;
+        if (fields.isEmpty()) {
+            result.addError(location + " must contain at least one field");
+            return;
+        }
+        for (Map.Entry<String, Object> entry : fields.entrySet()) {
+            String fieldName = entry.getKey() == null ? "" : entry.getKey().trim().toLowerCase();
+            String fieldLocation = location + "." + fieldName;
+            if (!ALLOWED_FIELDS.contains(fieldName)) {
+                result.addError(fieldLocation + " is not supported. Allowed fields: text, img, link");
+                continue;
+            }
+            validateFieldConfig(entry.getValue(), fieldLocation, result);
+        }
+    }
+
+    private void validateFieldConfig(Object rawFieldConfig, String location, DslValidationResult result) {
+        if (rawFieldConfig instanceof String) {
+            if (StringUtils.isBlank((String) rawFieldConfig)) {
+                result.addError(location + ".selector must not be blank");
+            }
+            return;
+        }
+        if (!(rawFieldConfig instanceof Map)) {
+            result.addError(location + " must be a string selector or an object");
+            return;
+        }
+        @SuppressWarnings("unchecked")
+        Map<String, Object> fieldConfig = (Map<String, Object>) rawFieldConfig;
+        requireNonBlank(fieldConfig.get("selector"), location + ".selector", result);
+        if (fieldConfig.containsKey("attr")) {
+            requireNonBlank(fieldConfig.get("attr"), location + ".attr", result);
+        }
+        validateTransforms(fieldConfig.get("transforms"), location + ".transforms", result);
+        if (fieldConfig.containsKey("transform")) {
+            validateTransforms(fieldConfig.get("transform"), location + ".transform", result);
+        }
+    }
+
+    private void validateTransforms(Object rawTransforms, String location, DslValidationResult result) {
+        if (rawTransforms == null) {
+            return;
+        }
+        List<String> transforms = new ArrayList<String>();
+        if (rawTransforms instanceof List) {
+            for (Object value : (List<?>) rawTransforms) {
+                String transform = trimToNull(asString(value));
+                if (transform != null) {
+                    transforms.add(transform);
+                }
+            }
+        } else {
+            String transformValue = trimToNull(asString(rawTransforms));
+            if (transformValue != null) {
+                String[] split = transformValue.split("\\|");
+                for (String transform : split) {
+                    String normalized = trimToNull(transform);
+                    if (normalized != null) {
+                        transforms.add(normalized);
+                    }
+                }
+            }
+        }
+        if (transforms.isEmpty()) {
+            result.addError(location + " must not be empty");
+            return;
+        }
+        for (String transform : transforms) {
+            if (!ALLOWED_TRANSFORMS.contains(transform)) {
+                result.addError(location + " contains unsupported transform '" + transform + "'");
+            }
+        }
+    }
+
+    private void validateLimit(Object rawLimit, String location, DslValidationResult result) {
+        if (rawLimit == null) {
+            return;
+        }
+        String value = trimToNull(asString(rawLimit));
+        if (value == null) {
+            result.addError(location + " must not be blank");
+            return;
+        }
+        try {
+            if (Long.parseLong(value) < 0) {
+                result.addError(location + " must be greater than or equal to 0");
+            }
+        } catch (NumberFormatException e) {
+            result.addError(location + " must be an integer");
+        }
+    }
+
+    private void requireNonBlank(Object value, String location, DslValidationResult result) {
+        if (StringUtils.isBlank(asString(value))) {
+            result.addError(location + " must not be blank");
+        }
+    }
+
+    private String joinTransforms(Object rawTransforms) {
+        if (rawTransforms instanceof List) {
+            List<?> values = (List<?>) rawTransforms;
+            List<String> transforms = new ArrayList<String>();
+            for (Object value : values) {
+                String transform = trimToNull(asString(value));
+                if (transform != null) {
+                    transforms.add(transform);
+                }
+            }
+            return transforms.isEmpty() ? null : joinWithPipe(transforms);
+        }
+        return trimToNull(asString(rawTransforms));
+    }
+
+    private String joinWithPipe(List<String> transforms) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < transforms.size(); i++) {
+            if (i > 0) {
+                builder.append("|");
+            }
+            builder.append(transforms.get(i));
+        }
+        return builder.toString();
+    }
+
+    private String normalizePath(String path) {
+        if (StringUtils.isBlank(path)) {
+            return "/";
+        }
+        return path.trim();
     }
 
     private static String normalizeDsl(String dsl) {
@@ -291,34 +515,33 @@ public class RuleParser {
         }
         return dsl.replace("\r\n", "\n")
                 .replace("\r", "\n")
-                .replaceAll("(?s)/\\*.*?\\*/", "");
+                .trim();
     }
 
-    private static String trimWrappingQuotes(String value) {
-        if (value == null || value.length() < 2) {
-            return value;
+    private String asString(Object value) {
+        if (value == null) {
+            return null;
         }
-        char first = value.charAt(0);
-        char last = value.charAt(value.length() - 1);
-        if ((first == '"' && last == '"') || (first == '\'' && last == '\'')) {
-            return value.substring(1, value.length() - 1);
+        if (value instanceof Number || value instanceof Boolean) {
+            return String.valueOf(value);
         }
-        return value;
+        return value.toString();
     }
 
-    private static int findMatchingBrace(String text, int openIndex) {
-        int level = 0;
-        for (int i = openIndex; i < text.length(); i++) {
-            char c = text.charAt(i);
-            if (c == '{') {
-                level++;
-            } else if (c == '}') {
-                level--;
-                if (level == 0) {
-                    return i;
-                }
-            }
+    private String trimToNull(String value) {
+        if (StringUtils.isBlank(value)) {
+            return null;
         }
-        return -1;
+        return value.trim();
+    }
+
+    private static class FieldSpec {
+        private final String selector;
+        private final RuleNode.Options options;
+
+        private FieldSpec(String selector, RuleNode.Options options) {
+            this.selector = selector;
+            this.options = options;
+        }
     }
 }

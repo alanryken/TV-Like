@@ -19,6 +19,7 @@ public class TVLikeDSL {
     private static final int CONNECT_TIMEOUT_MILLIS = 10_000;
     private static final int READ_TIMEOUT_MILLIS = 30_000;
     private static final String DEFAULT_USER_AGENT = "Mozilla/5.0";
+    private static final String[] DSL_FILE_SUFFIXES = {".yaml", ".yml"};
     private String tv_like_dsl_hub = "https://hub.tvai.tv/";
 
     public TVLikeDSL() {
@@ -40,14 +41,17 @@ public class TVLikeDSL {
 
     private static String extractRulesFromScript(Document doc) {
         if (doc == null) return "";
-        Element script = doc.selectFirst("script[type=text/plain][name=tv-like]");
+        Element script = doc.selectFirst(
+                "script[name=tv-like], " +
+                        "script[id=tv-like], " +
+                        "script[id=tv-like-rules]"
+        );
         if (script == null) return "";
 
         return script.html()
                 .replace("&#10;", "\n")
                 .replace("&#13;", "\r\n")
                 .replace("\r\n", "\n")
-                .replaceAll("(?s)/\\*.*?\\*/", "")
                 .trim();
     }
 
@@ -72,10 +76,12 @@ public class TVLikeDSL {
             }
         }
         for (String l : candidates) {
-            String reqUrl = tv_like_dsl_hub + l + ".dsl";
-            String s = get(reqUrl);
-            if (StringUtils.isNotBlank(s)) {
-                return s.trim();
+            for (String suffix : DSL_FILE_SUFFIXES) {
+                String reqUrl = tv_like_dsl_hub + l + suffix;
+                String s = get(reqUrl);
+                if (StringUtils.isNotBlank(s)) {
+                    return s.trim();
+                }
             }
         }
         return null;

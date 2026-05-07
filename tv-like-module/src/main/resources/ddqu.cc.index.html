@@ -42,34 +42,50 @@
         });
     </script>
 
-    <script type="text/plain" name="tv-like">
-        page-type: video-detail
-        globals {
-            base-url: "https://www.dadaqu.cc/"
-        }
-        path: / {
-
-            /* 导航 */
-            section:tab .sidebar ul.navbar-items.swiper-wrapper {
-                items: li.swiper-slide.navbar-item {
-                    text: a.links > span
-                    link: a [attr: href]
-                }
-            }
-
-            /* title a */
-            section:top .content .module  {
-                text:
-                    - .module-heading h2.module-title  a
-                    - .module-heading h2.module-title
-                link: .module-heading a
-                items: .module-main .module-items a {
-                    text: a [attr: title]
-                    link: a [attr: href]
-                    img: a  div.module-item-pic img [attr: data-original]
-                }
-            }
-        }
+    <script type="application/yaml" name="tv-like">
+version: 1
+paths:
+  - match: /
+    sections:
+      - name: tab
+        selector: .sidebar ul.navbar-items.swiper-wrapper
+        items:
+          selector: li.swiper-slide.navbar-item
+          fields:
+            text:
+              selector: a.links > span
+              transforms: [trim]
+            link:
+              selector: a
+              attr: href
+              transforms: [abs-url]
+      - name: top
+        selector: .content .module
+        fields:
+          text:
+            selector: .module-heading h2.module-title a, .module-heading h2.module-title
+            transforms: [trim]
+          link:
+            selector: .module-heading a
+            attr: href
+            transforms: [abs-url]
+        items:
+          selector: .module-main .module-items a
+          meta:
+            img-ratio: 2/3
+          fields:
+            text:
+              selector: a
+              attr: title
+              transforms: [trim]
+            link:
+              selector: a
+              attr: href
+              transforms: [abs-url]
+            img:
+              selector: div.module-item-pic img[data-original]
+              attr: data-original
+              transforms: [abs-url]
     </script>
 
     <title>达达趣</title>

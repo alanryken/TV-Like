@@ -14,46 +14,87 @@
     <script src="/static/ds6/js/assembly.js"></script>
     <script src="/static/ds6/js/swiper.min.js"></script>
 
-    <script type="text/plain" name="tv-like">
-        page-type: video-detail
-        globals {
-            base-url: "https://mtyy1.com"
-            exclude: ".ads"
-        }
-        path: /vodtype/** {
-
-            section:tab .head-nav.ft4.roll.bold0.pc-show1.wap-show0 {
-                items: ul.swiper-wrapper li.swiper-slide {
-                    text: a
-                    link: a [attr: href]
-                } [limit: 6]
-            }
-            section:top-title .title > h4.title-h.cor4 {
-                text: a span:first-child
-                link: a
-            }
-            section:episodes .flex.wrap.border-box.public-r {
-                items: .public-list-box.public-pic-a {
-                    text: .public-list-button a.time-title
-                    img: .public-list-div a.public-list-exp img [attr: data-src]
-                    link: .public-list-button a.time-title
-                }
-            }
-            section:episodes .flex.wrap.border-box.public-r {
-                items: .public-list-box.public-pic-b {
-                    text: .public-list-button a.time-title
-                    img: .public-list-div a.public-list-exp img [attr: data-src]
-                    link: .public-list-button a.time-title
-                }
-            }
-            section:actor .actor-new.public-r  ul.swiper-wrapper   {
-                items: li {
-                    text: .public-list-button a.time-title
-                    img: .public-list-div a.public-list-exp img [attr: data-src]
-                    link: .public-list-button a.time-title
-                } [img-ratio: 4/3]
-            }
-        }
+    <script type="application/yaml" name="tv-like">
+version: 1
+paths:
+  - match: /vodtype/**
+    sections:
+      - name: tab
+        selector: .head-nav.ft4.roll.bold0.pc-show1.wap-show0
+        items:
+          selector: ul.swiper-wrapper li.swiper-slide
+          limit: 6
+          fields:
+            text:
+              selector: a
+              transforms: [trim]
+            link:
+              selector: a
+              attr: href
+              transforms: [abs-url]
+      - name: top-title
+        selector: .title > h4.title-h.cor4
+        fields:
+          text:
+            selector: a span:first-child
+          link:
+            selector: a
+            attr: href
+            transforms: [abs-url]
+      - name: episodes-a
+        selector: .flex.wrap.border-box.public-r
+        items:
+          selector: .public-list-box.public-pic-a
+          meta:
+            img-ratio: 2/3
+          fields:
+            text:
+              selector: .public-list-button a.time-title
+              transforms: [trim]
+            img:
+              selector: .public-list-div a.public-list-exp img[data-src]
+              attr: data-src
+              transforms: [abs-url]
+            link:
+              selector: .public-list-button a.time-title
+              attr: href
+              transforms: [abs-url]
+      - name: episodes-b
+        selector: .flex.wrap.border-box.public-r
+        items:
+          selector: .public-list-box.public-pic-b
+          meta:
+            img-ratio: 2/3
+          fields:
+            text:
+              selector: .public-list-button a.time-title
+              transforms: [trim]
+            img:
+              selector: .public-list-div a.public-list-exp img[data-src]
+              attr: data-src
+              transforms: [abs-url]
+            link:
+              selector: .public-list-button a.time-title
+              attr: href
+              transforms: [abs-url]
+      - name: actor
+        selector: .actor-new.public-r ul.swiper-wrapper
+        items:
+          selector: li
+          meta:
+            img-ratio: 4/3
+          fields:
+            text:
+              selector: .public-list-button a.time-title
+              transforms: [trim]
+            img:
+              selector: .public-list-div a.public-list-exp img[data-src]
+              attr: data-src
+              transforms: [abs-url]
+            link:
+              selector: .public-list-button a.time-title
+              attr: href
+              transforms: [abs-url]
     </script>
     <script>var maccms = {
         "vod_mask": "mask-0",

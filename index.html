@@ -78,8 +78,8 @@
 <body>
 <header>
     <img src="images/1767871810.png" alt="TV-Like Logo">
-    <p>Any website, like a TV app.</p>
-    <p>让任何网站，都能像原生应用一样在电视机浏览。</p>
+    <p>Readable YAML rules for turning web pages into TV-ready content.</p>
+    <p>用清晰的 YAML 规则，把网页内容整理成适合电视端消费的结构化数据。</p>
     <a class="github-link" href="https://github.com/alanryken/TV-Like" target="_blank">View on GitHub</a>
 </header>
 
@@ -87,8 +87,8 @@
     <section>
         <h2>English / 英文</h2>
         <ul>
-            <li><a href="https://github.com/alanryken/TV-Like/blob/main/README.en.md" target="_blank">📖 Full English Documentation</a></li>
-            <li><a href="https://github.com/alanryken/TV-Like/blob/main/README.zh.md" target="_blank">📖 完整中文文档</a></li>
+            <li><a href="https://github.com/alanryken/TV-Like/blob/main/README.en.md" target="_blank">📖 English Overview</a></li>
+            <li><a href="https://github.com/alanryken/TV-Like/blob/main/TUTORIAL.en.md" target="_blank">📘 English Tutorial</a></li>
         </ul>
     </section>
 
@@ -97,8 +97,8 @@
     <section>
         <h2>中文 / Chinese</h2>
         <ul>
-            <li><a href="https://github.com/alanryken/TV-Like/blob/main/README.en.md" target="_blank">📖 Full English Documentation</a></li>
-            <li><a href="https://github.com/alanryken/TV-Like/blob/main/README.zh.md" target="_blank">📖 完整中文文档</a></li>
+            <li><a href="https://github.com/alanryken/TV-Like/blob/main/README.zh.md" target="_blank">📖 中文说明</a></li>
+            <li><a href="https://github.com/alanryken/TV-Like/blob/main/TUTORIAL.zh.md" target="_blank">📘 中文教程</a></li>
         </ul>
     </section>
 
@@ -107,87 +107,48 @@
     <section>
         <h2>Project Overview / 项目介绍</h2>
         <ul>
-            <li>TV Like :  Any website, like a TV app.</li>
-            <li>TV Like : 让任何网站，都能像原生应用一样在电视机浏览</li>
+            <li>TV-Like: convert web pages into TV-ready structured content.</li>
+            <li>TV-Like：把网页内容转换成适合电视端消费的结构化结果。</li>
         </ul>
-        <p><strong>TV Like</strong> is an AI-driven experimental project, providing a simple, readable extraction specification to pull key elements from web pages—such as images, text, videos, and hyperlinks—and outputs a unified structure optimized for TV interfaces. Powered by <a href="https://github.com/quicktvui/quicktvui">QuickUI</a>.</p>
-        <p><strong>TV Like</strong> 是一个由 AI 主导的实验性项目，提供简单、易读的提取规范，用于从网页中提取主要元素（如图片、文字、视频、超链接），并输出统一的 TV 端适配结构，由 <a href="https://github.com/quicktvui/quicktvui"  target="_blank">QuickUI</a> 支持。</p>
+        <p><strong>TV-Like</strong> is a lightweight extraction engine. It uses readable YAML rules to describe which sections, lists, text, images, and links should be extracted from a page, then returns a stable JSON-like structure for TV apps and large-screen experiences.</p>
+        <p><strong>TV-Like</strong> 是一个轻量的网页内容提取引擎。它使用易读的 YAML 规则描述页面中的区块、列表、文本、图片和链接，并输出稳定结构，方便电视端应用和大屏内容编排直接消费。</p>
     </section>
 
     <div class="section-divider"></div>
 
     <section>
         <h2>TV Like</h2>
-        <p><strong>TV Like</strong> 是一个由 AI 主导的实验性开源项目，将普通网页转换为适合电视大屏浏览的样式和结构。</p>
-        <p>提供简单易读的 DSL（领域特定语言）来提取网页核心元素，并输出统一 JSON 数据结构，可交给电视端 UI 框架（如 <a href="https://github.com/quicktvui/quicktvui" target="_blank">QuickUI</a>）渲染，实现遥控器交互体验。</p>
+        <p><strong>TV-Like</strong> 聚焦两件事：定义规则和提取结果。项目本身不重写网页，也不绑定某个前端框架，而是把已有页面转换成更适合电视端渲染的数据层。</p>
+        <p>现在的核心规则格式已经统一为 YAML DSL，结构更清楚、可读性更高，也更适合后续做规则生成、校验和维护。</p>
     </section>
 
     <section>
         <h2>Features</h2>
         <ul>
-            <li><strong>网页内容提取</strong>：使用类 CSS 选择器的 DSL 精准提取网页主要内容</li>
-            <li><strong>标准化输出</strong>：统一 JSON 数据结构，便于电视端模板渲染</li>
+            <li><strong>网页内容提取</strong>：用易读的 YAML DSL 描述网页中的核心内容区块</li>
+            <li><strong>标准化输出</strong>：输出统一结构，便于电视端模板和内容层直接消费</li>
             <li><strong>DSL 加载</strong>：
                 <ul>
-                    <li>内嵌 DSL 脚本到目标网页</li>
-                    <li>上传至远程 DSL Hub（默认：https://tvai.tv），页面中不存在 DSL 时尝试读取</li>
+                    <li>在目标网页中内嵌 YAML 规则脚本</li>
+                    <li>上传到远程 YAML Hub，在页面未内嵌规则时按域名回源读取</li>
                 </ul>
             </li>
-            <li><strong>灵活配置</strong>：支持页面级别规则配置，如路径匹配、条件显示、图片比例、文本变换</li>
-            <li><strong>电视适配优化</strong>：使用 QuickUI 框架，专为大屏焦点导航设计</li>
+            <li><strong>灵活配置</strong>：支持 path 匹配、区块提取、列表提取、元数据透传和字段变换</li>
+            <li><strong>电视适配优化</strong>：更适合首页卡片流、推荐区、导航区和详情页模块化输出</li>
             <li><strong>运行环境</strong>：Java 8+</li>
         </ul>
     </section>
 
     <section>
         <h2>Usage</h2>
-        <h3>1. DSL 编写方式</h3>
-        <p>在网页 <code>&lt;head&gt;</code> 或 <code>&lt;body&gt;</code> 中内嵌以下 DSL 脚本：</p>
-        <pre><code>&lt;script type="text/plain" name="tv-like"&gt;
-# 页面类型
-page-type: video-detail
-# 全局配置
-globals {
-    base-url: "https://example.com"
-    exclude: ".ads"
-}
-# 分类页规则示例
-path: /category/** {
-    section:tab .top-navigation {
-        items: ul.nav-list li.nav-item {
-            text: a
-            link: a [attr: href]
-        } [limit: 8]
-    }
-    section:top-title .page-header h1 {
-        text: span.title-text
-        link: a.header-link
-    }
-    section:recommend .grid-container {
-        items: .item-card.type-a {
-            text: .item-title a
-            img: .item-poster img [attr: data-src]
-            link: .item-title a
-        }
-    }
-}
-&lt;/script&gt;</code></pre>
+        <h3>1. 编写 YAML 规则</h3>
+        <p>在页面中内嵌 YAML，或把 YAML 规则放到远程 Hub，让核心引擎知道哪些 path、section、items 和字段需要被提取。</p>
 
-        <h3>2. JSON 输出示例</h3>
-        <pre><code>[
-  {
-    "section": "tab",
-    "items": {
-      "value": [
-        { "link": { "value": "/" }, "text": { "value": "首页" } },
-        { "link": { "value": "/category/1.html" }, "text": { "value": "分类A" } }
-      ]
-    }
-  }
-]</code></pre>
+        <h3>2. 执行提取</h3>
+        <p>将网页 HTML 与页面 URL 传给 <code>TV</code> 入口，核心模块会完成规则加载、路径命中、选择器提取与值变换。</p>
 
-        <h3>3. 与 QuickUI 集成</h3>
-        <p>解析得到的 JSON 数据可直接传入 QuickUI 的电视模板组件，实现焦点移动、遥控器操作等原生电视交互体验。</p>
+        <h3>3. 查看教程</h3>
+        <p>官网只保留项目介绍。详细 YAML 写法、样例和最佳实践请直接查看仓库中的中英文 Tutorial 文档。</p>
     </section>
 
     <section>
