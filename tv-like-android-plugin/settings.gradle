@@ -17,6 +17,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://nexus.extscreen.com/repository/maven-public/' }
+        maven { url 'https://nexus.extscreen.com/repository/maven-extscreen-public/' }
+        maven { url 'https://nexus.extscreen.com/repository/maven-extscreen-releases/' }
+        maven { url 'https://nexus.extscreen.com/repository/maven-extscreen-snapshots/' }
     }
 }
 
