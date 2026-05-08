@@ -7,7 +7,6 @@ import tv.tvai.like.util.StringUtils;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class TV {
 
@@ -27,8 +26,8 @@ public class TV {
         this.dslHub = dslHub;
     }
 
-    public List<Map<String, Object>> like() {
-        List<Map<String, Object>> emptyResult = new ArrayList<>();
+    public List<SectionResult> like() {
+        List<SectionResult> emptyResult = new ArrayList<SectionResult>();
         if (StringUtils.isBlank(html) || StringUtils.isBlank(url)) {
             return emptyResult;
         }

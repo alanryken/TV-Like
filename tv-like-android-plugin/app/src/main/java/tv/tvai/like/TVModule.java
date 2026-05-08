@@ -4,7 +4,6 @@ import android.content.Context;
 
 
 import java.util.List;
-import java.util.Map;
 
 import eskit.sdk.support.EsPromise;
 import eskit.sdk.support.args.EsArray;
@@ -28,15 +27,15 @@ public class TVModule implements IEsModule {
         String url = map.getString("url");
         String dslHub = map.getString("dslHub");
         TV tv = new TV(html, url, dslHub);
-        List<Map<String, Object>> like = tv.like();
+        List<SectionResult> like = tv.like();
         EsArray array = getArray(like);
         promise.resolve(array);
     }
 
-    private EsArray getArray(List<Map<String, Object>> like) {
+    private EsArray getArray(List<SectionResult> like) {
         EsArray array = new EsArray();
-        for (Map<String, Object> map : like) {
-            array.pushObject(map);
+        for (SectionResult section : like) {
+            array.pushObject(section);
         }
         return array;
     }

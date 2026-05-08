@@ -14,8 +14,8 @@ import java.util.Map;
 
 public class Extractor {
 
-    public List<Map<String, Object>> extract(Document doc, List<RuleNode> rules) {
-        List<Map<String, Object>> result = new ArrayList<>();
+    public List<SectionResult> extract(Document doc, List<RuleNode> rules) {
+        List<SectionResult> result = new ArrayList<SectionResult>();
         if (doc == null || rules == null || rules.isEmpty()) {
             return result;
         }
@@ -26,7 +26,7 @@ public class Extractor {
 
     private void traverse(Node node,
                           List<RuleNode> rules,
-                          List<Map<String, Object>> result,
+                          List<SectionResult> result,
                           Map<RuleNode, Integer> matchedSectionCounts) {
         if (node instanceof Element) {
             Element el = (Element) node;
@@ -36,11 +36,9 @@ public class Extractor {
                 }
                 boolean matches = this.matches(el, rule.getSelector());
                 if (matches) {
-                    Map<String, Object> parsed = new LinkedHashMap<>();
-                    parsed.put("section", rule.getName());
-                    this.copyNonExecutableOptions(rule.getSectionOptions(), parsed);
-                    Map<String, Object> map = this.extractSection(el, rule);
-                    parsed.putAll(map);
+                    SectionResult parsed = new SectionResult(rule.getName());
+                    this.copyNonExecutableOptions(rule.getSectionOptions(), parsed.getMeta());
+                    this.extractSection(el, rule, parsed);
                     result.add(parsed);
                     this.incrementMatchedCount(rule, matchedSectionCounts);
                 }
@@ -63,38 +61,33 @@ public class Extractor {
         }
     }
 
-    private Map<String, Object> extractSection(Element el, RuleNode rule) {
-        Map<String, Object> result = new LinkedHashMap<>();
-
+    private void extractSection(Element el, RuleNode rule, SectionResult result) {
         this.extractFields(el, rule, result);
 
         RuleNode itemTemplateRule = rule.getItemTemplate();
         if (itemTemplateRule != null) {
             Elements elements = this.selectElements(el, itemTemplateRule.getSelector());
-            List<Map<String, Object>> items = new ArrayList<>();
+            ItemsResult itemsResult = new ItemsResult();
 
             long limit = this.resolveLimit(itemTemplateRule);
             int i = 0;
             for (Element itemEl : elements) {
                 if (this.hasReachedLimit(limit, i)) break;
-                Map<String, Object> itemMap = new LinkedHashMap<>();
-                this.extractFields(itemEl, itemTemplateRule, itemMap);
-                if (!itemMap.isEmpty()) {
-                    items.add(itemMap);
+                ItemResult itemResult = new ItemResult();
+                this.extractFields(itemEl, itemTemplateRule, itemResult);
+                if (itemResult.hasFieldContent()) {
+                    itemsResult.getList().add(itemResult);
                     i++;
                 }
             }
-            if (!items.isEmpty()) {
-                Result itemsResult = new Result(items);
-                result.put("items", itemsResult);
-                this.copyNonExecutableOptions(itemTemplateRule.getSectionOptions(), itemsResult);
+            if (!itemsResult.getList().isEmpty()) {
+                this.copyNonExecutableOptions(itemTemplateRule.getSectionOptions(), itemsResult.getMeta());
+                result.setItems(itemsResult);
             }
         }
-
-        return result;
     }
 
-    private void extractFields(Element el, RuleNode rule, Map<String, Object> out) {
+    private void extractFields(Element el, RuleNode rule, FieldsResult out) {
         if (el == null || rule == null || out == null || rule.getFieldSelectors() == null) {
             return;
         }
@@ -103,9 +96,9 @@ public class Extractor {
             String selector = en.getValue();
             if (selector == null) continue;
 
-            Result value = this.extractValue(el, field, selector, rule);
-            if (value != null && !value.isEmpty() && !out.containsKey(field)) {
-                out.put(field, value);
+            FieldResult value = this.extractValue(el, field, selector, rule);
+            if (value != null) {
+                this.setFieldResult(out, field, value);
             }
         }
     }
@@ -150,7 +143,7 @@ public class Extractor {
         return opt.getValues();
     }
 
-    private Result extractValue(Element el, String field, String selector, RuleNode rule) {
+    private FieldResult extractValue(Element el, String field, String selector, RuleNode rule) {
         Element target = this.selectFirst(el, selector);
         if (target == null) return null;
         String attr = this.resolveAttr(rule, field);
@@ -175,11 +168,29 @@ public class Extractor {
         value = this.applyTransforms(value, target, attr == null ? this.defaultAttr(field) : attr, rule, field);
         if (StringUtils.isBlank(value)) return null;
 
-        Result fv = new Result(value);
+        FieldResult fv = new FieldResult(value);
 
         Map<String, Object> fieldOptions = this.getFieldOptions(rule, field);
-        this.copyNonExecutableOptions(fieldOptions, fv);
+        this.copyNonExecutableOptions(fieldOptions, fv.getMeta());
         return fv;
+    }
+
+    private void setFieldResult(FieldsResult out, String field, FieldResult value) {
+        if ("text".equals(field)) {
+            if (out.getText() == null) {
+                out.setText(value);
+            }
+            return;
+        }
+        if ("img".equals(field)) {
+            if (out.getImg() == null) {
+                out.setImg(value);
+            }
+            return;
+        }
+        if ("link".equals(field) && out.getLink() == null) {
+            out.setLink(value);
+        }
     }
 
     private String selectText(Element element) {

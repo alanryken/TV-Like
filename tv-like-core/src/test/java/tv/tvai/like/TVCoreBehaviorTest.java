@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.Map;
 
 public class TVCoreBehaviorTest {
 
@@ -48,19 +47,14 @@ public class TVCoreBehaviorTest {
                 + "</script>"
                 + "</body></html>";
 
-        List<Map<String, Object>> result = new TV(html, "https://example.com/foo/bar/index.html").like();
+        List<SectionResult> result = new TV(html, "https://example.com/foo/bar/index.html").like();
 
         Assert.assertEquals(1, result.size());
-        Assert.assertEquals("hero", result.get(0).get("section"));
-        Assert.assertEquals("featured", result.get(0).get("badge"));
-
-        Map<String, Object> text = castMap(result.get(0).get("text"));
-        Map<String, Object> link = castMap(result.get(0).get("link"));
-        Map<String, Object> img = castMap(result.get(0).get("img"));
-
-        Assert.assertEquals("HELLO WORLD", text.get("value"));
-        Assert.assertEquals("https://example.com/detail/1", link.get("value"));
-        Assert.assertEquals("https://example.com/img/1.jpg", img.get("value"));
+        Assert.assertEquals("hero", result.get(0).getSection());
+        Assert.assertEquals("featured", result.get(0).getMeta().get("badge"));
+        Assert.assertEquals("HELLO WORLD", result.get(0).getText().getValue());
+        Assert.assertEquals("https://example.com/detail/1", result.get(0).getLink().getValue());
+        Assert.assertEquals("https://example.com/img/1.jpg", result.get(0).getImg().getValue());
     }
 
     @Test
@@ -95,17 +89,16 @@ public class TVCoreBehaviorTest {
                 + "</script>"
                 + "</body></html>";
 
-        List<Map<String, Object>> result = new TV(html, "https://example.com/list").like();
+        List<SectionResult> result = new TV(html, "https://example.com/list").like();
 
         Assert.assertEquals(1, result.size());
-        Map<String, Object> items = castMap(result.get(0).get("items"));
-        List<Map<String, Object>> values = castList(items.get("value"));
+        ItemsResult items = result.get(0).getItems();
 
-        Assert.assertEquals(2, values.size());
-        Assert.assertEquals("16/9", items.get("img-ratio"));
-        Assert.assertEquals("one", castMap(values.get(0).get("text")).get("value"));
-        Assert.assertEquals("https://example.com/a1", castMap(values.get(0).get("link")).get("value"));
-        Assert.assertEquals("two", castMap(values.get(1).get("text")).get("value"));
+        Assert.assertEquals(2, items.getList().size());
+        Assert.assertEquals("16/9", items.getMeta().get("img-ratio"));
+        Assert.assertEquals("one", items.getList().get(0).getText().getValue());
+        Assert.assertEquals("https://example.com/a1", items.getList().get(0).getLink().getValue());
+        Assert.assertEquals("two", items.getList().get(1).getText().getValue());
     }
 
     @Test
@@ -132,12 +125,12 @@ public class TVCoreBehaviorTest {
                 + "</script>"
                 + "</body></html>";
 
-        List<Map<String, Object>> result = new TV(html, "https://example.com/detail").like();
+        List<SectionResult> result = new TV(html, "https://example.com/detail").like();
 
         Assert.assertEquals(1, result.size());
-        Assert.assertEquals("Play Now", castMap(result.get(0).get("text")).get("value"));
-        Assert.assertEquals("https://example.com/play/1", castMap(result.get(0).get("link")).get("value"));
-        Assert.assertEquals("https://example.com/cover.jpg", castMap(result.get(0).get("img")).get("value"));
+        Assert.assertEquals("Play Now", result.get(0).getText().getValue());
+        Assert.assertEquals("https://example.com/play/1", result.get(0).getLink().getValue());
+        Assert.assertEquals("https://example.com/cover.jpg", result.get(0).getImg().getValue());
     }
 
     @Test
@@ -172,15 +165,5 @@ public class TVCoreBehaviorTest {
             }
         }
         return false;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static Map<String, Object> castMap(Object value) {
-        return (Map<String, Object>) value;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static List<Map<String, Object>> castList(Object value) {
-        return (List<Map<String, Object>>) value;
     }
 }

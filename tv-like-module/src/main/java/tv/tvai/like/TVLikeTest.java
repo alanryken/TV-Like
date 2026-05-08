@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Map;
 
 public class TVLikeTest {
 
@@ -33,7 +32,7 @@ public class TVLikeTest {
             return;
         }
 
-        List<Map<String, Object>> like = new TV(html, url).like();
+        List<SectionResult> like = new TV(html, url).like();
         ObjectMapper om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         System.out.println("YAML DSL is valid. Extracted result:");
         System.out.println(om.writeValueAsString(like));

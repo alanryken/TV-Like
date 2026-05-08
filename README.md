@@ -65,7 +65,7 @@ paths:
 String html = "...网页源码...";
 String url = "https://example.com/list";
 
-List<Map<String, Object>> result = new TV(html, url).like();
+List<SectionResult> result = new TV(html, url).like();
 ```
 
 ## 文档入口
@@ -74,6 +74,7 @@ List<Map<String, Object>> result = new TV(html, url).like();
 - English overview: `README.en.md`
 - 中文教程：`TUTORIAL.zh.md`
 - English tutorial: `TUTORIAL.en.md`
+- 渲染对接文档：`doc/tv-like-render-output.md`
 - 官网介绍页：`index.html`
 - 技能说明：`skills/tvlike-dsl-generator/SKILL.md`
 

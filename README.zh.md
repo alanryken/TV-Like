@@ -97,7 +97,7 @@ sections:
 String html = "...网页源码...";
 String url = "https://example.com/list";
 
-List<Map<String, Object>> result = new TV(html, url).like();
+List<SectionResult> result = new TV(html, url).like();
 ```
 
 ### 3. 使用远程规则 Hub
@@ -107,7 +107,7 @@ String html = "...网页源码...";
 String url = "https://example.com/list";
 String dslHub = "https://your-rule-host.example.com/";
 
-List<Map<String, Object>> result = new TV(html, url, dslHub).like();
+List<SectionResult> result = new TV(html, url, dslHub).like();
 ```
 
 ## 规则加载顺序
@@ -119,16 +119,27 @@ List<Map<String, Object>> result = new TV(html, url, dslHub).like();
 
 ## 输出结构
 
-输出仍然保持为区块数组，方便现有调用方继续消费：
+输出为区块结果数组，每个区块包含固定字段对象和可扩展 `meta`：
 
 ```json
 [
   {
     "section": "hero",
-    "badge": "featured",
-    "text": { "value": "HELLO WORLD" },
-    "link": { "value": "https://example.com/detail/1" },
-    "img": { "value": "https://example.com/img/1.jpg" }
+    "meta": {
+      "badge": "featured"
+    },
+    "text": {
+      "value": "HELLO WORLD",
+      "meta": {}
+    },
+    "link": {
+      "value": "https://example.com/detail/1",
+      "meta": {}
+    },
+    "img": {
+      "value": "https://example.com/img/1.jpg",
+      "meta": {}
+    }
   }
 ]
 ```
@@ -136,6 +147,7 @@ List<Map<String, Object>> result = new TV(html, url, dslHub).like();
 ## 文档导航
 
 - 详细 YAML 教程：`TUTORIAL.zh.md`
+- 渲染对接文档：`doc/tv-like-render-output.md`
 - 英文概览：`README.en.md`
 - 英文教程：`TUTORIAL.en.md`
 - 官网简介：`index.html`

@@ -143,7 +143,7 @@ items:
       transforms: [abs-url]
 ```
 
-`items` 会输出到结果里的 `items.value` 数组中。
+`items` 会输出到结果里的 `items.list` 数组中，`items.meta` 用于承载列表级扩展参数。
 
 ## 7. 完整示例
 

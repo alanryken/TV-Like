@@ -56,7 +56,7 @@ sections:
 String html = "...";
 String url = "https://example.com/list";
 
-List<Map<String, Object>> result = new TV(html, url).like();
+List<SectionResult> result = new TV(html, url).like();
 ```
 
 ## More Docs
@@ -64,4 +64,5 @@ List<Map<String, Object>> result = new TV(html, url).like();
 - Chinese overview: `README.zh.md`
 - Chinese tutorial: `TUTORIAL.zh.md`
 - English tutorial: `TUTORIAL.en.md`
+- Render output spec: `doc/tv-like-render-output.md`
 - Project website copy: `index.html`
