@@ -1,22 +1,17 @@
 package tv.tvai.like;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-public class FieldResult {
+@Getter
+@Setter
+@NoArgsConstructor
+public class FieldResult extends MetaResult {
 
-    private final String value;
-    private final Map<String, Object> meta = new LinkedHashMap<String, Object>();
+    private String value;
 
     public FieldResult(String value) {
         this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
-
-    public Map<String, Object> getMeta() {
-        return meta;
     }
 }
