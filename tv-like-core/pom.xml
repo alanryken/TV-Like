@@ -59,45 +59,4 @@
         </plugins>
     </build>
 
-
-    <repositories>
-        <repository>
-            <id>maven-extscreen-public</id>
-            <name>Extscreen Public</name>
-            <url>https://nexus.extscreen.com/repository/maven-extscreen-public/</url>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>maven-extscreen-public</id>
-            <name>Extscreen Public</name>
-            <url>https://nexus.extscreen.com/repository/maven-extscreen-public/</url>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
-    <distributionManagement>
-        <repository>
-            <id>maven-extscreen-releases</id>
-            <url>https://nexus.extscreen.com/repository/maven-extscreen-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>maven-extscreen-snapshots</id>
-            <url>https://nexus.extscreen.com/repository/maven-extscreen-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
