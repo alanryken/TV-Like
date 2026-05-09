@@ -1,0 +1,86 @@
+version: 1
+paths:
+  - matches:
+      - /
+      - /index.html
+    sections:
+      - name: nav
+        selector: .stui-header__menu
+        items:
+          selector: "> li"
+          limit: 8
+          fields:
+            text:
+              selector: a
+              transforms: [trim]
+            link:
+              selector: a
+              attr: href
+              transforms: [abs-url]
+
+      - name: notice
+        selector: "#note"
+        meta:
+          layout: popup
+        fields:
+          text:
+            selector: .popup-main
+            transforms: [trim]
+          img:
+            selector: .popup-icon img
+            attr: src
+            transforms: [abs-url]
+
+      - name: banner
+        selector: "#iaujwnefhw .t-img-box"
+        meta:
+          badge: ad
+          img-ratio: 16/9
+        fields:
+          text:
+            selector: .a_ms
+            transforms: [trim]
+          link:
+            selector: a
+            attr: href
+            transforms: [abs-url]
+          img:
+            selector: img
+            attr: src
+            transforms: [abs-url]
+
+      - name: latest
+        selector: "div.stui-pannel__bd > ul.stui-vodlist.clearfix:first-of-type"
+        items:
+          selector: "> li"
+          limit: 12
+          meta:
+            img-ratio: 2/3
+          fields:
+            text:
+              selector: h4.title a
+              transforms: [trim]
+            link:
+              selector: a.stui-vodlist__thumb
+              attr: href
+              transforms: [abs-url]
+            img:
+              selector: a.stui-vodlist__thumb
+              attr: data-original
+              transforms: [abs-url]
+
+      - name: category-list
+        selector: div.stui-pannel__bd
+        items:
+          selector: "div.stui-vodlist__head:has(h3 a[href*='/show/'])"
+          limit: 8
+          meta:
+            layout: list
+          fields:
+            text:
+              selector: h3 a
+              transforms: [trim]
+            link:
+              selector: h3 a
+              attr: href
+              transforms: [abs-url]

@@ -1,0 +1,1263 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LIBVIO</title>
+<meta name="keywords" content="" />
+<meta name="description" content="" />   
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE10" />
+<meta name="referrer" content="no-referrer">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link rel="shortcut icon" href="/template/libvio/statics/img/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" href="/template/libvio/statics/font/iconfont.css" type="text/css" />
+<link rel="stylesheet" href="/template/libvio/statics/css/stui_default.css" type="text/css" />
+<script type="text/javascript" src="/template/libvio/statics/js/jquery.min.js"></script>
+<script type="text/javascript" src="/template/libvio/statics/js/stui_default.js "></script>
+<script type="text/javascript" src="/template/libvio/statics/js/jquery.cookie.min.js "></script>
+<script type="text/javascript" src="/template/libvio/statics/js/jquery.lazyload.min.js "></script>
+<script type="text/javascript" src="/template/libvio/statics/js/home.js"></script>
+<script>var maccms={"path":"","mid":"","url":"www.libvio.lat","wapurl":"www.libvio.lat","mob_status":"2"};</script>
+
+<!--[if lt IE 9]>
+<script src="https://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+<body>
+	
+    <div class="container">
+        <div class="row">
+        	<div class="stui-pannel">
+        		<div class="stui-pannel__hd">
+        			<header class="stui-header clearfix">
+	<div class="container">	
+		<div class="row">
+			<ul class="stui_header__user">
+				<li>
+					<a href="javascript:;"><i class="iconfont icon-search"></i></a>
+					<div class="dropdown search">
+						<div class="item"> 
+					        <form id="search" name="search" method="POST" action="/search/-------------.html" onSubmit="return qrsearch();">
+		    					<input type="text" id="wd" name="wd" class="form-control" value="" placeholder="请输入关键词..."/>
+								<button class="submit" id="searchbutton" type="submit" name="submit"><i class="icon iconfont icon-search"></i></button>							
+							</form>
+					   </div>
+					   <ul>
+					   						            <li><a href="/search/-------------.html"></a></li>
+				            					   </ul>
+					</div>
+				</li>
+				<li>
+					<a href="javascript:;"><i class="iconfont icon-viewgallery"></i></a>
+					<ul class="dropdown type clearfix">
+						<li class="active"><a href="/">搜索</a></li>
+								                <li ><a href="/type/1.html">电影</a></li>
+		                		                <li ><a href="/type/2.html">电视剧</a></li>
+		                		                <li ><a href="/type/3.html">纪录片</a></li>
+		                		                <li ><a href="/type/4.html">动漫</a></li>
+		                		                <li ><a href="/type/5.html">综艺</a></li>
+		                		                <li ><a href="/type/6.html">动作</a></li>
+		                		                <li ><a href="/type/7.html">喜剧</a></li>
+		                		                <li ><a href="/type/8.html">爱情</a></li>
+		                		                <li ><a href="/type/9.html">科幻</a></li>
+		                		                <li ><a href="/type/10.html">恐怖</a></li>
+		                		                <li ><a href="/type/11.html">剧情</a></li>
+		                		                <li ><a href="/type/12.html">战争</a></li>
+		                		                <li ><a href="/type/13.html">国产剧</a></li>
+		                		                <li ><a href="/type/14.html">港台剧</a></li>
+		                		                <li ><a href="/type/15.html">日韩剧</a></li>
+		                		                <li ><a href="/type/16.html">海外剧</a></li>
+		                		                <li ><a href="/type/24.html">国产动漫</a></li>
+		                		                <li ><a href="/type/25.html">日韩动漫</a></li>
+		                		                <li ><a href="/type/26.html">港台动漫</a></li>
+		                		                <li ><a href="/type/27.html">欧美动漫</a></li>
+		                		                <li ><a href="/topic.html">专题</a></li>				
+					</ul>
+				</li>
+				<li>
+					<a href="javascript:;"><i class="iconfont icon-clock"></i></a>
+					<div class="dropdown history">
+						<div class="head">
+							<a class="historyclean pull-right" href="">清空</a>
+							<h5>播放记录</h5>
+						</div>
+						<ul class="clearfix" id="stui_history">
+						</ul>
+					</div>
+				</li>
+				<li>
+					<a href="/gbook.html"><i class="icon iconfont icon-comments"></i></a>
+				</li>
+				<li><a href="https://libvio.lol"><i>關于</i></a></li>
+				<!--<li class="date"></li>-->
+			</ul>
+			<div class="stui-header__logo">
+				<a class="logo" href="/"></a>										  
+			</div>
+			<ul class="stui-header__menu">
+				<li class="active"><a href="/">首页</a></li>
+				                <li ><a href="/type/1.html">电影</a></li>
+                                <li ><a href="/type/2.html">电视剧</a></li>
+                                <li ><a href="/type/3.html">纪录片</a></li>
+                                <li ><a href="/type/4.html">动漫</a></li>
+                                <li ><a href="/type/5.html">综艺</a></li>
+                                <li ><a href="/topic.html">专题</a></li>
+			</ul>
+			
+		</div>	  							    
+	</div>
+</header>
+<script type="text/javascript">
+	$(".stui_header__user li a").click(function(){
+		$(this).parent().find(".dropdown").toggle();
+	});
+</script>
+        		</div>
+        		<!--公告-->
+        		<link rel="stylesheet" href="/template/libvio/statics/css/notice.css" type="text/css">
+<script type="text/javascript" src="/template/libvio/statics/js/pop.js"></script>
+<div class="popup" id="note" style="display: block;">
+  <div class="popup-icon"><img src="/template/libvio/statics/img/logo.png"></div>
+  <div class="popup-header">
+    <h3 class="popup-title"></h3>
+  </div>
+  <div class="popup-main">
+    <p style="font-size:18px;color:red"><b>网址失效问题：</b></p>
+    <p>记住我们的永久发布地址：libvio.lol <br><br>
+    资源问题请等待恢复！<br><br>
+    任何问题均可通过留言反馈！</p>
+	<!--<p>👉<a href="/" style="color: #10AEFF;" target="_blank">【写-真】</a>👈</p>-->
+	<!--<p>👉<a href="/" style="color: #10AEFF;" target="_blank">【吃-瓜】</a>👈</p>-->
+ <!--   <p>👉<a href="/" style="color: #yellow;" target="_blank">【体-育】</a>👈</p>-->
+  </div>
+  <div class="popup-footer"><span class="popup-btn" onclick="closeclick()">我记住啦</span></div>
+</div>
+        		<!--横幅-->
+        		<div id="iaujwnefhw">
+        		    <div class="t-img-box">
+    <a href="/jump.php?to=lib_ad" target="_blank"><img src="https://wkphoto.bj.bcebos.com/2fdda3cc7cd98d10d520af68313fb80e7aec90f7.jpg"></a><span class="a_ms">广告</span>
+    <div class="x-box">关闭</div>
+</div> 
+
+        		</div>
+        		<div class="stui-pannel__bd">
+        			<!-- 最近更新 -->
+        			<ul class="stui-vodlist clearfix">
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812950.html" title="我的王室死对头" data-original="https://img.ffzy888.com/upload/vod/20260508-1/6eefe962f7863b290e48d3d7cda243d3.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第01集/每周五、周六更新 </span>-->
+		<span class="pic-text text-right"> 第01集/周五、周六更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812950.html" title="我的王室死对头">我的王室死对头</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">林智妍,许南俊,张胜祖,李世熙,金玟锡,蔡书安,金海淑,尹周相,尹炳熙,郑英珠,白恩惠,白智媛,朴镇宇,吴敏爱,张河恩</p>-->
+	</div>												
+</div>												
+	</li>
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812921.html" title="田锁兄弟" data-original="https://img.ffzy888.com/upload/vod/20260417-1/b2947a95adebc408387bc9c01014a82c.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第04集/每周六更新 </span>-->
+		<span class="pic-text text-right"> 第04集/周六更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812921.html" title="田锁兄弟">田锁兄弟</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">冈田将生,染谷将太,井川遥,中条あやみ,宫近海斗,岸谷五朗,赤间麻里子,内田慈,池下重大,神楽健介,饭尾和树,仙道敦子,长江英和</p>-->
+	</div>												
+</div>												
+	</li>
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812916.html" title="21世纪大君夫人" data-original="https://img.ffzy888.com/upload/vod/20260410-1/a3b4e4660815e6d7dc4e243b69705f7f.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第09集/每周五、六更新 </span>-->
+		<span class="pic-text text-right"> 第09集/周五、六更新 </span>
+		<span class="pic-tag pic-tag-top">8.3</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812916.html" title="21世纪大君夫人">21世纪大君夫人</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">李知恩,边佑锡,鲁常泫,孔升延,刘秀彬,李妍,李才元,蔡书安,朴俊勉</p>-->
+	</div>												
+</div>												
+	</li>
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812922.html" title="浪漫的绝对值" data-original="https://img.ffzy888.com/upload/vod/20260417-1/b60d471864cb6ea5badfdf414e061e79.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第10集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第10集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">7.1</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812922.html" title="浪漫的绝对值">浪漫的绝对值</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">金香起,车学沇,金宰铉,孙正赫,金东圭</p>-->
+	</div>												
+</div>												
+	</li>
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812893.html" title="在你被判死刑之前" data-original="https://viptulz.com/upload/vod/20260403-1/33d92791cb027b3092e0f8a1ea2f8bf5.webp">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第06集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第06集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812893.html" title="在你被判死刑之前">在你被判死刑之前</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">加藤清史郎,唐田英里佳,铃木仁,与田祐希,内博贵,西田亘輝,内田慈,伊礼姬奈</p>-->
+	</div>												
+</div>												
+	</li>
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812344.html" title="奇思妙探第三季" data-original="https://img.ffzy888.com/upload/vod/20251013-1/8a967a0b3d38a5c78c6087868d497526.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第18集/每周六更新 </span>-->
+		<span class="pic-text text-right"> 第18集/周六更新 </span>
+		<span class="pic-tag pic-tag-top">7.7</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812344.html" title="奇思妙探第三季">奇思妙探第三季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">卡丽·普雷斯顿,史蒂芬·科拜尔</p>-->
+	</div>												
+</div>												
+	</li>
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812906.html" title="绝望写手第五季" data-original="https://img.ffzy888.com/upload/vod/20260410-1/04aa2b3264b3390f23e0d82565f74882.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第06集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第06集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812906.html" title="绝望写手第五季">绝望写手第五季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">珍·斯玛特,汉娜·爱宾德,保罗·当斯,梅根·斯塔尔特,卡尔·克莱蒙斯-霍普金斯,马克·印第里凯托,罗斯·阿卜杜,罗比·霍夫曼,托尼·戈德温,凯特琳·奥尔森,克里斯托弗·麦克唐纳,简·亚当斯,劳伦·维德曼,柳波,约翰尼·希比利,路奈尔,安吉拉·伊莱恩·吉布斯,凯特琳·赖利,克里斯托弗·布里尼,莱丝莉·比伯,切莉·琼斯,安·唐德,阿比·奥,乔治·巴兹尔,约书亚·A·布朗宁,克里斯廷·古德温,艾里克·奈特,杰奎琳·麦高恩·尼克勒,约翰·奥布赖恩,玛丽·泽玛,芭芭拉·诺兰</p>-->
+	</div>												
+</div>												
+	</li>
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812892.html" title="掩耳盗邻第二季" data-original="https://viptulz.com/upload/vod/20260403-1/2d58234c0859d660bad72b1907569c81.webp">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第06集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第06集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">7.8</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812892.html" title="掩耳盗邻第二季">掩耳盗邻第二季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">乔恩·哈姆,莉娜·霍尔,布雷·布莱尔,迪诺·卡斯特利,朱莉·克莱尔,多诺万·可兰,Mya Ison,普里亚·贾恩,李勋,本·利文斯顿,Jameson Flynn Lopez,阿里恩·曼迪,詹姆斯·麦斯登,Geneva Meredith,奥利维亚·穆恩,Nicholas Natoli,阿曼达·皮特,马修·劳奇,Erin Robinson,斯万米·萨姆派奥</p>-->
+	</div>												
+</div>												
+	</li>
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812855.html" title="为全人类第五季" data-original="https://img.ffzy888.com/upload/vod/20260327-1/7cddaf7cfe223ae83b4f34f7e551015d.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第07集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第07集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812855.html" title="为全人类第五季">为全人类第五季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">乔尔·金纳曼,托比·凯贝尔,埃迪·盖瑟吉,吴辛惠,科拉尔·培尼亚,瑞安·施密特,米瑞·伊诺丝,科斯塔·罗宁,肖恩·考夫曼,露比·克鲁兹,伊内斯·霍伊塞特·艾瑟森</p>-->
+	</div>												
+</div>												
+	</li>
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812854.html" title="爱在连理里" data-original="https://img.ffzy888.com/upload/vod/20260327-1/e12f6193858f3587dbbbc20a447147cc.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第07集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第07集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812854.html" title="爱在连理里">爱在连理里</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">朴成雄,李水京,李津宇</p>-->
+	</div>												
+</div>												
+	</li>
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812911.html" title="冰之城墙" data-original="https://img.ffzy888.com/upload/vod/20260407-1/01a0daea359b1ca0effff33c338454dc.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第06集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第06集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">8.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812911.html" title="冰之城墙">冰之城墙</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">永濑安奈,和泉风花,千叶翔也,猪股慧士,新福樱,小林千晃,鬼头明里,波多野翔,川井田夏海</p>-->
+	</div>												
+</div>												
+	</li>
+		<li>
+		<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812930.html" title="逆转" data-original="https://img.ffzy888.com/upload/vod/20260417-1/8a980670ce1bf1048253cc7b1057771f.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812930.html" title="逆转">逆转</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">徐智慧,高洙,金栽经,姜泳锡</p>-->
+	</div>												
+</div>												
+	</li>
+	</ul>
+					
+					<!-- 分类列表 -->
+										<div class="stui-vodlist__head">
+						<a class="pull-right" href="/show/1-----------.html">更多 <i class="iconfont icon-more"></i></a>
+						<h3><a href="/show/1-----------.html"><i class="iconfont icon-all"></i>  电影</a></h3>
+						<p>
+						                			<a href="/show/6-----------.html" class="text-muted">动作</a>
+                		                			<a href="/show/7-----------.html" class="text-muted">喜剧</a>
+                		                			<a href="/show/8-----------.html" class="text-muted">爱情</a>
+                		                			<a href="/show/9-----------.html" class="text-muted">科幻</a>
+                		                			<a href="/show/10-----------.html" class="text-muted">恐怖</a>
+                		                			<a href="/show/11-----------.html" class="text-muted">剧情</a>
+                		                			<a href="/show/12-----------.html" class="text-muted">战争</a>
+                								</p>
+					</div>
+					<ul class="stui-vodlist clearfix">
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812947.html" title="血爱杀手" data-original="https://img.ffzy888.com/upload/vod/20260507-1/a7f3409323e2e736f08f15908abce90b.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812947.html" title="血爱杀手">血爱杀手</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">平采娜·乐维瑟派布恩,塔纳波·里拉塔纳卡邹,西瓦功·阿达苏提坤</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812941.html" title="与王生活的男人" data-original="https://img.ffzy888.com/upload/vod/20260429-1/ebef81450f8bdd72f3ca8209ec78a491.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">7.5</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812941.html" title="与王生活的男人">与王生活的男人</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">柳海真,朴志训,刘智泰,田美都,李浚赫,朴智焕,金旻</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812933.html" title="世界的主人" data-original="https://img.ffzy888.com/upload/vod/20260424-1/5f2b4633ac8f75371e0fc7f3be6dad62.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 第9届平遥国际电影展获奖名单 </span>-->
+		<span class="pic-text text-right"> 第9届平遥国际电影展获奖名单 </span>
+		<span class="pic-tag pic-tag-top">8.9</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812933.html" title="世界的主人">世界的主人</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">徐粹彬,张慧珍,金郑植,姜彩允,李宰锡,朴知玧,金艺昶,高旻示,白贤珠,卞重熙,文惠仁,郑恩京,李尚熙,李代延,金锡勋,林在赫</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812931.html" title="巅峰猎杀" data-original="https://img.ffzy888.com/upload/vod/20260424-1/56980e387567a4d4cd25f9f86f0eb99b.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812931.html" title="巅峰猎杀">巅峰猎杀</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">查理兹·塞隆,塔伦·埃哲顿,艾瑞克·巴纳,马特·惠伦,贝茜·霍兰德,亚伦·佩德森,罗伯·卡尔顿,邓肯·法洛,Julia Ohannessian,Niam Hogan,Willow Seager,扎卡里·加雷德,凯特琳·斯塔西</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812926.html" title="像我这样的爱情" data-original="https://img.ffzy888.com/upload/vod/20260419-1/00e1f640bae5cabce6b97a4ccc22485b.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 第44届香港电影金像奖获奖名单 </span>-->
+		<span class="pic-text text-right"> 第44届香港电影金像奖获奖名单 </span>
+		<span class="pic-tag pic-tag-top">7.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812926.html" title="像我这样的爱情">像我这样的爱情</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">廖子妤,陈家乐,刘雅丽,杨淇,刘若宝,林芷沿</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812915.html" title="父影之下" data-original="https://img.meituan.net/content/e9f80e4d91d90dde710db2fbea645093230015.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 第78届戛纳电影节获奖名单 </span>-->
+		<span class="pic-text text-right"> 第78届戛纳电影节获奖名单 </span>
+		<span class="pic-tag pic-tag-top">7.8</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812915.html" title="父影之下">父影之下</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">索佩·迪瑞苏,Godwin Egbo,Chibuike Marvelous Egbo,Efòn Wini,Tosin Adeyemi,Adesina McCoy Babalola,Lawrence Chu,Yetunde Coker,Akerele David,瓦莱·戴维斯,Patrick Diabuah,Paul Edobor,玛莎·厄赫诺梅,Adodo Emmanuel,Patrick Essien,Olarotimi Fakunle,Ikechukwu Gabriel,Fred Ideh,Ebuka</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812908.html" title="狂鲨风暴" data-original="https://img.ffzy888.com/upload/vod/20260410-1/2b9c899cd43f644ccbde0e3b251c005c.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812908.html" title="狂鲨风暴">狂鲨风暴</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">菲比·黛内芙,杰曼·翰苏,科斯塔·德安杰洛,马特·纳夫莱,惠特尼·皮克,艾莉拉·布朗,史泰西·克劳森,以利亚·昂格瓦里,安德鲁斯·李斯,Amy Mathews,Gemma Dart,Dante Ubaldi,Jon Prasida,Sian Luxford,Sami Afuni,Akosia Sabet,柴·汉森</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812907.html" title="星途恶果" data-original="https://img.ffzy888.com/upload/vod/20260410-1/7092ab08f94eeedc570a2b9c92dcafbd.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812907.html" title="星途恶果">星途恶果</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">基努·里维斯,乔纳·希尔,卡梅隆·迪亚兹,马特·波莫,大卫·斯佩德,艾薇·沃尔克,凯雅·基伯,拉弗恩·考克斯,肖拉·阿德乌斯,苏珊·卢琪,卡里·克里斯托弗,冈冢敦子,Carlos Carrasco,韦尔克·怀特,尼古拉·尼克拉斐,埃文·沙夫兰,克里斯·里德,Paul Bartholomew,T.C. Amos IV,小罗伊·伍德</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812905.html" title="泥娃娃" data-original="https://img.ffzy888.com/upload/vod/20260408-1/3a943912bfb57553534da063a05b03d6.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD国语 </span>-->
+		<span class="pic-text text-right"> HD国语 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812905.html" title="泥娃娃">泥娃娃</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">杨祐宁,蔡思韵,张轩睿,周采诗,郭雪芙,陈为民,李冠毅,高山峰,黄建群</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812901.html" title="暗黑新娘！" data-original="https://img.ffzy888.com/upload/vod/20260307-1/0f0b34976f323aec051494b891c92e55.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">6.5</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812901.html" title="暗黑新娘！">暗黑新娘！</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">杰西·巴克利,克里斯蒂安·贝尔,彼得·萨斯加德,安妮特·贝宁,杰克·吉伦哈尔,佩内洛普·克鲁兹,约翰·马加罗,珍妮·柏林,路易斯·坎瑟米,马修·马希尔,朱莉安·浩夫,威廉·希尔,斯蒂芬妮·特洛亚克,马西尔·摩丹,马科·查卡,莉迪亚·凯莉,索菲娅·科,本·格林,伊莲·阿普鲁泽西,安东尼·贝里尼</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812891.html" title="爆弹" data-original="https://img.ffzy888.com/upload/vod/20260402-1/576bf9d0d7561a3c58b6a83bfad58bf2.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 第49届日本电影学院奖获奖名单 </span>-->
+		<span class="pic-text text-right"> 第49届日本电影学院奖获奖名单 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812891.html" title="爆弹">爆弹</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">山田裕贵,伊藤沙莉,染谷将太,渡部笃郎,佐藤二朗</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812885.html" title="洛杉矶劫案" data-original="https://img.ffzy888.com/upload/vod/20260218-1/381b3a8d01807993bf937d7287902e22.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">6.7</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812885.html" title="洛杉矶劫案">洛杉矶劫案</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">克里斯·海姆斯沃斯,马克·鲁法洛,巴里·基奥恩,哈莉·贝瑞,莫妮卡·巴巴罗,科里·霍金斯,尼克·诺特,詹妮弗·杰森·李,泰特·多诺万,保罗·安德斯坦,戴文·博斯蒂克,德鲁·鲍威尔,帕特里克·穆尔维,马修·德尔·内格罗,安德拉·内切塔,法希姆·法兹利,佩曼·莫阿迪,丹·佩罗,乔希·斯通,哈娜可·福特曼</p>-->
+	</div>												
+</div>												
+						</li>
+											</ul>
+										<div class="stui-vodlist__head">
+						<a class="pull-right" href="/show/2-----------.html">更多 <i class="iconfont icon-more"></i></a>
+						<h3><a href="/show/2-----------.html"><i class="iconfont icon-all"></i>  电视剧</a></h3>
+						<p>
+						                			<a href="/show/13-----------.html" class="text-muted">国产剧</a>
+                		                			<a href="/show/14-----------.html" class="text-muted">港台剧</a>
+                		                			<a href="/show/15-----------.html" class="text-muted">日韩剧</a>
+                		                			<a href="/show/16-----------.html" class="text-muted">海外剧</a>
+                								</p>
+					</div>
+					<ul class="stui-vodlist clearfix">
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812950.html" title="我的王室死对头" data-original="https://img.ffzy888.com/upload/vod/20260508-1/6eefe962f7863b290e48d3d7cda243d3.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第01集/每周五、周六更新 </span>-->
+		<span class="pic-text text-right"> 第01集/周五、周六更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812950.html" title="我的王室死对头">我的王室死对头</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">林智妍,许南俊,张胜祖,李世熙,金玟锡,蔡书安,金海淑,尹周相,尹炳熙,郑英珠,白恩惠,白智媛,朴镇宇,吴敏爱,张河恩</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812921.html" title="田锁兄弟" data-original="https://img.ffzy888.com/upload/vod/20260417-1/b2947a95adebc408387bc9c01014a82c.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第04集/每周六更新 </span>-->
+		<span class="pic-text text-right"> 第04集/周六更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812921.html" title="田锁兄弟">田锁兄弟</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">冈田将生,染谷将太,井川遥,中条あやみ,宫近海斗,岸谷五朗,赤间麻里子,内田慈,池下重大,神楽健介,饭尾和树,仙道敦子,长江英和</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812916.html" title="21世纪大君夫人" data-original="https://img.ffzy888.com/upload/vod/20260410-1/a3b4e4660815e6d7dc4e243b69705f7f.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第09集/每周五、六更新 </span>-->
+		<span class="pic-text text-right"> 第09集/周五、六更新 </span>
+		<span class="pic-tag pic-tag-top">8.3</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812916.html" title="21世纪大君夫人">21世纪大君夫人</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">李知恩,边佑锡,鲁常泫,孔升延,刘秀彬,李妍,李才元,蔡书安,朴俊勉</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812922.html" title="浪漫的绝对值" data-original="https://img.ffzy888.com/upload/vod/20260417-1/b60d471864cb6ea5badfdf414e061e79.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第10集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第10集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">7.1</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812922.html" title="浪漫的绝对值">浪漫的绝对值</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">金香起,车学沇,金宰铉,孙正赫,金东圭</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812893.html" title="在你被判死刑之前" data-original="https://viptulz.com/upload/vod/20260403-1/33d92791cb027b3092e0f8a1ea2f8bf5.webp">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第06集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第06集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812893.html" title="在你被判死刑之前">在你被判死刑之前</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">加藤清史郎,唐田英里佳,铃木仁,与田祐希,内博贵,西田亘輝,内田慈,伊礼姬奈</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812344.html" title="奇思妙探第三季" data-original="https://img.ffzy888.com/upload/vod/20251013-1/8a967a0b3d38a5c78c6087868d497526.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第18集/每周六更新 </span>-->
+		<span class="pic-text text-right"> 第18集/周六更新 </span>
+		<span class="pic-tag pic-tag-top">7.7</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812344.html" title="奇思妙探第三季">奇思妙探第三季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">卡丽·普雷斯顿,史蒂芬·科拜尔</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812906.html" title="绝望写手第五季" data-original="https://img.ffzy888.com/upload/vod/20260410-1/04aa2b3264b3390f23e0d82565f74882.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第06集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第06集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812906.html" title="绝望写手第五季">绝望写手第五季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">珍·斯玛特,汉娜·爱宾德,保罗·当斯,梅根·斯塔尔特,卡尔·克莱蒙斯-霍普金斯,马克·印第里凯托,罗斯·阿卜杜,罗比·霍夫曼,托尼·戈德温,凯特琳·奥尔森,克里斯托弗·麦克唐纳,简·亚当斯,劳伦·维德曼,柳波,约翰尼·希比利,路奈尔,安吉拉·伊莱恩·吉布斯,凯特琳·赖利,克里斯托弗·布里尼,莱丝莉·比伯,切莉·琼斯,安·唐德,阿比·奥,乔治·巴兹尔,约书亚·A·布朗宁,克里斯廷·古德温,艾里克·奈特,杰奎琳·麦高恩·尼克勒,约翰·奥布赖恩,玛丽·泽玛,芭芭拉·诺兰</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812892.html" title="掩耳盗邻第二季" data-original="https://viptulz.com/upload/vod/20260403-1/2d58234c0859d660bad72b1907569c81.webp">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第06集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第06集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">7.8</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812892.html" title="掩耳盗邻第二季">掩耳盗邻第二季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">乔恩·哈姆,莉娜·霍尔,布雷·布莱尔,迪诺·卡斯特利,朱莉·克莱尔,多诺万·可兰,Mya Ison,普里亚·贾恩,李勋,本·利文斯顿,Jameson Flynn Lopez,阿里恩·曼迪,詹姆斯·麦斯登,Geneva Meredith,奥利维亚·穆恩,Nicholas Natoli,阿曼达·皮特,马修·劳奇,Erin Robinson,斯万米·萨姆派奥</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812855.html" title="为全人类第五季" data-original="https://img.ffzy888.com/upload/vod/20260327-1/7cddaf7cfe223ae83b4f34f7e551015d.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第07集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第07集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812855.html" title="为全人类第五季">为全人类第五季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">乔尔·金纳曼,托比·凯贝尔,埃迪·盖瑟吉,吴辛惠,科拉尔·培尼亚,瑞安·施密特,米瑞·伊诺丝,科斯塔·罗宁,肖恩·考夫曼,露比·克鲁兹,伊内斯·霍伊塞特·艾瑟森</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812854.html" title="爱在连理里" data-original="https://img.ffzy888.com/upload/vod/20260327-1/e12f6193858f3587dbbbc20a447147cc.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第07集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第07集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812854.html" title="爱在连理里">爱在连理里</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">朴成雄,李水京,李津宇</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812930.html" title="逆转" data-original="https://img.ffzy888.com/upload/vod/20260417-1/8a980670ce1bf1048253cc7b1057771f.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812930.html" title="逆转">逆转</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">徐智慧,高洙,金栽经,姜泳锡</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812840.html" title="向流星许愿的我们" data-original="https://img.ffzy888.com/upload/vod/20260326-1/3e8efa526de9c0af63a89b9fd541956c.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第08集/每周四更新 </span>-->
+		<span class="pic-text text-right"> 第08集/周四更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812840.html" title="向流星许愿的我们">向流星许愿的我们</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">初孟轩,钟岳轩,余杰恩,各务孝太,李李仁,邱凯伟,曹兰,陳彥旭,郭大睿,方语昕,吴岳擎</p>-->
+	</div>												
+</div>												
+						</li>
+											</ul>
+										<div class="stui-vodlist__head">
+						<a class="pull-right" href="/show/3-----------.html">更多 <i class="iconfont icon-more"></i></a>
+						<h3><a href="/show/3-----------.html"><i class="iconfont icon-all"></i>  纪录片</a></h3>
+						<p>
+												</p>
+					</div>
+					<ul class="stui-vodlist clearfix">
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812897.html" title="寻找哈利：魔法背后的匠心" data-original="https://img.ffzy888.com/upload/vod/20260406-1/e030b4334fbfcd4a3ef89e5a09884d9d.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812897.html" title="寻找哈利：魔法背后的匠心">寻找哈利：魔法背后的匠心</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">尼克·弗罗斯特,多米尼克·麦克劳克林,阿拉贝拉·斯坦顿,阿拉斯泰尔·斯托特,约翰·利思戈,珍妮特·麦克蒂尔,帕帕·厄希度</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812878.html" title="BTS：天团回归" data-original="https://img.ffzy888.com/upload/vod/20260327-1/12c592c611665f2157ea556f8462e398.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812878.html" title="BTS：天团回归">BTS：天团回归</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">郑号锡,朴智旻,金硕珍,田柾国,金南俊,闵玧其,金泰亨</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812821.html" title="汉娜·蒙塔娜20周年特别集" data-original="https://img.ffzy888.com/upload/vod/20260324-1/7913d0bf969438c16780cba4cea879b3.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812821.html" title="汉娜·蒙塔娜20周年特别集">汉娜·蒙塔娜20周年特别集</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">麦莉·赛勒斯,蒂什·塞勒斯,比利·雷·赛勒斯,Alex Cooper</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812795.html" title="恐龙时代：你不知道的故事" data-original="https://img.ffzy888.com/upload/vod/20260306-1/48f6ac939eb8396c5f266fbdef4f1941.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">8.3</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812795.html" title="恐龙时代：你不知道的故事">恐龙时代：你不知道的故事</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">摩根·弗里曼</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812739.html" title="国际象棋女王" data-original="https://img.ffzy888.com/upload/vod/20260206-1/555a0a0a681a3fde7db0eaaf8bc3d22a.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">7.8</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812739.html" title="国际象棋女王">国际象棋女王</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">朱迪特·波尔加</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812707.html" title="ONE IN A MILL10N" data-original="https://img.ffzy888.com/upload/vod/20260130-1/dadbbadd45fbe027b69ce41b88d63909.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">7.9</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812707.html" title="ONE IN A MILL10N">ONE IN A MILL10N</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">林娜琏,平井桃,俞定延,凑崎纱夏,名井南,朴志效,金多贤,孙彩瑛,周子瑜</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812647.html" title="距安德烈夫卡2000米" data-original="https://img.meituan.net/content/4ddd26511dec6f9bce05bc43682048be11934.webp">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 第79届英国电影学院奖 最佳纪录片(提名) </span>-->
+		<span class="pic-text text-right"> 第79届英国电影学院奖 最佳纪录片(提名) </span>
+		<span class="pic-tag pic-tag-top">8.8</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812647.html" title="距安德烈夫卡2000米">距安德烈夫卡2000米</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">内详</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812597.html" title="影子学者" data-original="https://img.ffzy888.com/upload/vod/20260103-1/b76208cef5ab1147e9d233f0233b9de6.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> HD中字 </span>-->
+		<span class="pic-text text-right"> HD中字 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812597.html" title="影子学者">影子学者</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">内详</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812537.html" title="泰勒·斯威夫特：时代巡回演唱会终场秀" data-original="https://img.ffzy888.com/upload/vod/20251212-1/915d11c371d24f4a516b86dd4f4a9b7b.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第02集 </span>-->
+		<span class="pic-text text-right"> 第02集 </span>
+		<span class="pic-tag pic-tag-top">9.6</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812537.html" title="泰勒·斯威夫特：时代巡回演唱会终场秀">泰勒·斯威夫特：时代巡回演唱会终场秀</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">泰勒·斯威夫特</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812482.html" title="史前星球：冰川时代" data-original="https://img.ffzy888.com/upload/vod/20251126-1/c5a950a0a983a1d990c41f86003770f6.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 全5集 </span>-->
+		<span class="pic-text text-right"> 全5集 </span>
+		<span class="pic-tag pic-tag-top">8.7</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812482.html" title="史前星球：冰川时代">史前星球：冰川时代</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">汤姆·希德勒斯顿</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812435.html" title="约翰·威尔逊的十万个怎么做第三季" data-original="https://img.ffzy888.com/upload/vod/20230731-1/4925bb12ccf995967d8fbbc2c51552b9.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">9.1</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812435.html" title="约翰·威尔逊的十万个怎么做第三季">约翰·威尔逊的十万个怎么做第三季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">约翰·威尔逊</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812433.html" title="约翰·威尔逊的十万个怎么做第二季" data-original="https://pic.lzzypic.com/upload/vod/20220410-1/40a44ad645769b1ed52b6f8b967f46fc.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">9.4</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812433.html" title="约翰·威尔逊的十万个怎么做第二季">约翰·威尔逊的十万个怎么做第二季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">约翰·威尔森</p>-->
+	</div>												
+</div>												
+						</li>
+											</ul>
+										<div class="stui-vodlist__head">
+						<a class="pull-right" href="/show/4-----------.html">更多 <i class="iconfont icon-more"></i></a>
+						<h3><a href="/show/4-----------.html"><i class="iconfont icon-all"></i>  动漫</a></h3>
+						<p>
+						                			<a href="/show/24-----------.html" class="text-muted">国产动漫</a>
+                		                			<a href="/show/25-----------.html" class="text-muted">日韩动漫</a>
+                		                			<a href="/show/26-----------.html" class="text-muted">港台动漫</a>
+                		                			<a href="/show/27-----------.html" class="text-muted">欧美动漫</a>
+                								</p>
+					</div>
+					<ul class="stui-vodlist clearfix">
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812911.html" title="冰之城墙" data-original="https://img.ffzy888.com/upload/vod/20260407-1/01a0daea359b1ca0effff33c338454dc.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第06集/每周五更新 </span>-->
+		<span class="pic-text text-right"> 第06集/周五更新 </span>
+		<span class="pic-tag pic-tag-top">8.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812911.html" title="冰之城墙">冰之城墙</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">永濑安奈,和泉风花,千叶翔也,猪股慧士,新福樱,小林千晃,鬼头明里,波多野翔,川井田夏海</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812886.html" title="异兽魔都第二季" data-original="https://img.ffzy888.com/upload/vod/20260401-1/fbf3bb26786ce6ad5e31c37cde4e28a6.webp">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第08集 </span>-->
+		<span class="pic-text text-right"> 第08集 </span>
+		<span class="pic-tag pic-tag-top">9.6</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812886.html" title="异兽魔都第二季">异兽魔都第二季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">内详</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812944.html" title="常见副作用第一季" data-original="https://tc-cdn.processon.com/po/64464718d9539c77cca19448-6962895b84aa6b1f690bb7b6">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">8.7</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812944.html" title="常见副作用第一季">常见副作用第一季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">迈克·乔吉,大卫·金,玛莎·凯莉,艾米丽·彭德加斯特,约瑟夫·李·安德森</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812943.html" title="欺诈游戏" data-original="https://img.ffzy888.com/upload/vod/20260407-1/3c087c200945e36156d93cd07fce2ee5.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第05集/每周一更新 </span>-->
+		<span class="pic-text text-right"> 第05集/周一更新 </span>
+		<span class="pic-tag pic-tag-top">6.7</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812943.html" title="欺诈游戏">欺诈游戏</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">仁见纱绫,大冢刚央,中谷一博,飞田展男,上田燿司</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812942.html" title="尖帽子的魔法工坊" data-original="https://img.ffzy888.com/upload/vod/20260407-1/c33169f7644d076ad2034e76aa81ec92.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第06集/每周一更新 </span>-->
+		<span class="pic-text text-right"> 第06集/周一更新 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812942.html" title="尖帽子的魔法工坊">尖帽子的魔法工坊</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">本村玲奈,花江夏树,山村响,陽木くるみ,月城日花,中村悠一,久野美咲,斋贺光希,三石琴乃</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812920.html" title="租借女友第五季" data-original="https://img.ffzy888.com/upload/vod/20260408-1/490afc1d7f8c123737801f0ad8b5467e.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 更新至第05集 </span>-->
+		<span class="pic-text text-right"> 第05集 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812920.html" title="租借女友第五季">租借女友第五季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">堀江瞬,雨宫天,悠木碧,东山奈央,高桥李依,芹泽优</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812929.html" title="怪奇物语：1985故事集" data-original="https://img.ffzy888.com/upload/vod/20260423-1/9b157ca4d50eceda4618550012438ddd.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812929.html" title="怪奇物语：1985故事集">怪奇物语：1985故事集</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">布鲁克林·诺斯泰特,朱莉·黄·拉帕波特,卢卡·迪亚兹,以利沙·威廉斯,布拉克斯顿·昆尼,本杰明·普莱萨拉,布雷特·吉普森,杰瑞米·乔丹,敖德萨·阿锡安,詹妮安·加罗法洛,卢·戴蒙德·菲利普斯</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812815.html" title="无敌少侠第四季" data-original="https://img.ffzy888.com/upload/vod/20260318-1/94a6b9c58518536b97e7f9534ac9f42c.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">9.1</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812815.html" title="无敌少侠第四季">无敌少侠第四季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">史蒂文·元,吴珊卓,J·K·西蒙斯,李·佩斯,马修·瑞斯,丹娜·奎里拉,吉莉安·雅各布斯,莎姬·贝兹,克兰西·布朗,格蕾·德丽斯勒,克里斯·迪亚曼托普洛斯,马克·哈米尔,杰森·曼楚克斯,罗斯·马昆德,玛莱斯·裘,杰弗里·迪恩·摩根,卡里·佩顿,杰·费罗尔,扎克瑞·昆图,安德鲁·兰内斯,凯文·迈克尔·理查德森,塞斯·罗根,本·施瓦茨</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812353.html" title="弹珠汽水瓶里的千岁同学" data-original="https://img.ffzy888.com/upload/vod/20251007-1/2e9ba379d311b815b70ef4a5380a27c6.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">4.6</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812353.html" title="弹珠汽水瓶里的千岁同学">弹珠汽水瓶里的千岁同学</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">坂田将吾,石见舞菜香,羊宫妃那,长谷川育美,大久保瑠美,安济知佳,阿座上洋平,宮﨑雅也</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812607.html" title="地狱乐第二季" data-original="https://img.ffzy888.com/upload/vod/20260112-1/d375e571442e1e4f368b24b1f48cba2a.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">8.1</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812607.html" title="地狱乐第二季">地狱乐第二季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">小林千晃,花守由美里,木村良平,小野贤章,高桥李依,小林亲弘,小市真琴,稻田彻,市川苍,铃木崚汰,游佐浩二,内田真礼,大原沙耶香,小原好美,诹访部顺一,甲斐田裕子</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812342.html" title="古诺希亚" data-original="https://img.ffzy888.com/upload/vod/20251012-1/6a87dfee93321118f921bd6764e90c54.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结/每周六深夜更新 </span>-->
+		<span class="pic-text text-right"> 已完结/周六深夜更新 </span>
+		<span class="pic-tag pic-tag-top">7.7</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812342.html" title="古诺希亚">古诺希亚</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">安济知佳,长谷川育美,鬼头明里,七海弘希,关智一,濑户麻沙美,早见沙织,悠木碧,佐仓绫音,中村悠一,花泽香菜,津田健次郎,大塚刚央,江口拓也</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812638.html" title="葬送的芙莉莲第二季" data-original="https://img.ffzy888.com/upload/vod/20260116-1/7a9fe3cd2b5212218541fcb011af8081.webp">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">9.2</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812638.html" title="葬送的芙莉莲第二季">葬送的芙莉莲第二季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">种崎敦美 , 市之濑加那 , 小林千晃 , 冈本信彦 , 东地宏树</p>-->
+	</div>												
+</div>												
+						</li>
+											</ul>
+										<div class="stui-vodlist__head">
+						<a class="pull-right" href="/show/5-----------.html">更多 <i class="iconfont icon-more"></i></a>
+						<h3><a href="/show/5-----------.html"><i class="iconfont icon-all"></i>  综艺</a></h3>
+						<p>
+						                			<a href="/show/17-----------.html" class="text-muted">大陆综艺</a>
+                		                			<a href="/show/18-----------.html" class="text-muted">港台综艺</a>
+                		                			<a href="/show/20-----------.html" class="text-muted">日韩综艺</a>
+                		                			<a href="/show/21-----------.html" class="text-muted">欧美综艺</a>
+                								</p>
+					</div>
+					<ul class="stui-vodlist clearfix">
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812827.html" title="EXO的爬梯子世界旅行5-济州岛篇" data-original="https://img.ffzy888.com/upload/vod/20260311-1/a7e757c187524fb82e551955c2b058f8.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">0.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812827.html" title="EXO的爬梯子世界旅行5-济州岛篇">EXO的爬梯子世界旅行5-济州岛篇</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">金俊勉,朴灿烈,都敬秀,金钟仁,吴世勋</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812822.html" title="说走就走：李瑞镇的德州德州" data-original="https://img.meituan.net/content/298fc942d9792aa4d92ffc66c6c6f0ff25796.webp">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">7.6</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812822.html" title="说走就走：李瑞镇的德州德州">说走就走：李瑞镇的德州德州</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">李瑞镇,罗暎锡,金大柱</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812745.html" title="天机试炼场" data-original="https://img.ffzy888.com/upload/vod/20260211-1/a562a8904413192da93d28e5d89b9829.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">8.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812745.html" title="天机试炼场">天机试炼场</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">全炫茂,申东熙,姜智荣,朴娜莱,朴河宣</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812781.html" title="一级方程式：疾速争胜第八季" data-original="https://img.ffzy888.com/upload/vod/20260227-1/e631e2a7e0b16ca69dfba35b72ea52db.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">7.1</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812781.html" title="一级方程式：疾速争胜第八季">一级方程式：疾速争胜第八季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">马克斯·维斯塔潘,角田裕毅</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812779.html" title="怪奇谜案限时破第二季" data-original="https://img.ffzy888.com/upload/vod/20260227-1/dec064aa3d78e4fccb06bfd9739f455a.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">8.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812779.html" title="怪奇谜案限时破第二季">怪奇谜案限时破第二季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">李龙真,朴成奎,李惠利,金道勋,刘知珉,愼嘉庀</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812671.html" title="单身即地狱第五季" data-original="https://img.meituan.net/content/7d5d59522f7b374a4b2ee032957a756917746.webp">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">8.1</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812671.html" title="单身即地狱第五季">单身即地狱第五季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">金敏智</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812677.html" title="换乘恋爱第四季" data-original="https://img.meituan.net/portalweb/03aa60b5a5ff4c75f23697bcb01f28652047025.png">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">7.0</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812677.html" title="换乘恋爱第四季">换乘恋爱第四季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">内详</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812613.html" title="黑白厨师：料理阶级战争第二季" data-original="https://img.ffzy888.com/upload/vod/20251216-1/ed2400e6dd3076ef685b993586985cd8.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">8.3</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812613.html" title="黑白厨师：料理阶级战争第二季">黑白厨师：料理阶级战争第二季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">白种元,安成宰</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812614.html" title="黑白厨师：料理阶级战争第一季" data-original="https://img.ffzy888.com/upload/vod/20240917-1/7b82b44bd8d63058ec02c88c3d76e688.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 第61届百想艺术大赏获奖名单 </span>-->
+		<span class="pic-text text-right"> 第61届百想艺术大赏获奖名单 </span>
+		<span class="pic-tag pic-tag-top">8.7</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812614.html" title="黑白厨师：料理阶级战争第一季">黑白厨师：料理阶级战争第一季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">白种元,안성재</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812484.html" title="三傻游肯尼亚" data-original="https://img.ffzy888.com/upload/vod/20251125-1/a6d197494cd3acbdb8d86634146210db.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">9.1</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812484.html" title="三傻游肯尼亚">三傻游肯尼亚</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">殷志源,李寿根,曹圭贤</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5812668.html" title="单身即地狱第四季" data-original="https://img.ffzy888.com/upload/vod/20250114-1/e546cdb93350e707e1dbdef00990d4e8.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">5.9</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5812668.html" title="单身即地狱第四季">单身即地狱第四季</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">洪真庆,李多熙,曹圭贤,郑韩海,金珍荣</p>-->
+	</div>												
+</div>												
+						</li>
+												<li>
+							<div class="stui-vodlist__box">
+	<a class="stui-vodlist__thumb lazyload" href="/detail/5811305.html" title="激赞网红" data-original="https://img.ffzy888.com/upload/vod/20240806-1/f0ffd54d9aed73e7344d48850c949218.jpg">						
+		<span class="play hidden-xs"></span>
+				<!--<span class="pic-text text-right"> 已完结 </span>-->
+		<span class="pic-text text-right"> 已完结 </span>
+		<span class="pic-tag pic-tag-top">6.9</span>
+	</a>									
+	<div class="stui-vodlist__detail">
+		<h4 class="title text-overflow"><a href="/detail/5811305.html" title="激赞网红">激赞网红</a></h4>
+		<!--<p class="text text-overflow text-muted hidden-xs">Pani Bottle,沈娥灯,张根硕,진용진,이사배,대도서</p>-->
+	</div>												
+</div>												
+						</li>
+											</ul>
+										<!-- end 分类列表 -->
+					
+					<!-- 最新专题 -->
+					<div class="stui-vodlist__head">						
+						<h3><a href="/show/5-----------.html"><i class="iconfont icon-all"></i> 最新专题</a></h3>						
+					</div>
+					<ul class="stui-vodlist clearfix">
+											</ul>
+					<!-- end 最新专题 -->
+					
+        		</div>
+        	</div>        	
+        </div>
+    </div>
+    <div class="container">
+	<div class="row">
+		<div class="stui-foot clearfix">
+		    <p class="text-muted text-left visible-xs"><a href="https://libvio.lol/" target="_blank">发布地址</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="https://libvio.lol/" target="_blank">Twitter</a></p>
+		    <p class="text-muted text-left visible-xs">申明：若本站收录得节目无意冒犯了贵司版权，请告知我们：<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d0b8b5bca090bcb9b2a6b9bffebcbfbc">[email&#160;protected]</a>，确认后，我们会尽快删除。</p>	
+      <!--      <p class="text-muted text-center visible-xs">-->
+    		<!--	<a class="fed-font-xiv" href="/rss.xml" target="_blank">RSS订阅</a>-->
+    		<!--	<span class="fed-font-xiv"> - </span>-->
+    		<!--	<a class="fed-font-xiv" href="/rss/baidu.xml" target="_blank">百度蜘蛛</a>-->
+    		<!--	<span class="fed-font-xiv"> - </span>-->
+    		<!--	<a class="fed-font-xiv" href="/rss/google.xml" target="_blank">谷歌地图</a>-->
+    		<!--	<span class="fed-font-xiv"> - </span>-->
+    		<!--	<a class="fed-font-xiv" href="/rss/sm.xml" target="_blank">神马爬虫</a>-->
+    		<!--	<span class="fed-font-xiv fed-hide-xs"> - </span>-->
+    		<!--	<a class="fed-font-xiv fed-hide-xs" href="/rss/sogou.xml" target="_blank">搜狗蜘蛛</a>-->
+    		<!--	<span class="fed-font-xiv fed-hide-xs"> - </span>-->
+    		<!--	<a class="fed-font-xiv fed-hide-xs" href="/rss/so.xml" target="_blank">奇虎地图</a>-->
+    		<!--	<span class="fed-font-xiv fed-hide-xs"> - </span>-->
+    		<!--	<a class="fed-font-xiv fed-hide-xs" href="/rss/bing.xml" target="_blank">必应爬虫</a>-->
+		    <!--</p>-->
+		</div>
+	</div>
+</div>
+	<div class="hide"></div>
+<!-- 引入主动推送 -->
+
+<!--include file="public/baidu_zidong_tuisong"-->
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script defer src="https://u.ticktockwow.com/script.js" data-website-id="648cef76-15e2-43ad-9991-0b60b1f5ee11"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"105a1061b25e405d9539c1e73b90a681","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
