@@ -16,7 +16,7 @@ public class TVLikeTest {
 
     public static void main(String[] args) throws IOException {
         String html = inputStreamToString();
-        String url = "https://www.mtyy1.com/vodtype/index.html";
+        String url = "https://www.libvio.lat/";
         Document doc = Jsoup.parse(html, url);
 
         TVLikeDSL tvLikeDSL = new TVLikeDSL();
@@ -39,7 +39,7 @@ public class TVLikeTest {
     }
 
     public static String inputStreamToString() throws IOException {
-        try (InputStream inputStream = TV.class.getClassLoader().getResourceAsStream("mtyy1_com_index4.html")) {
+        try (InputStream inputStream = TV.class.getClassLoader().getResourceAsStream("libvio.lat.index.html")) {
             if (inputStream == null) {
                 throw new IllegalArgumentException("类路径下未找到文件");
             }
