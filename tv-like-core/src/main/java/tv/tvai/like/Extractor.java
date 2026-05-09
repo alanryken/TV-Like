@@ -26,15 +26,24 @@ public class Extractor {
         Map<RuleNode, Integer> matchedSectionCounts = new LinkedHashMap<RuleNode, Integer>();
         List<AnchoredSectionResult> anchoredResults = new ArrayList<AnchoredSectionResult>();
         int order = 0;
-        for (Element element : elementsInOrder) {
-            RuleNode matchedRule = this.findBestMatchedRule(element, rules, matchedSectionCounts);
-            if (matchedRule == null) {
+        for (RuleNode rule : rules) {
+            if (rule == null || StringUtils.isBlank(rule.getSelector())) {
                 continue;
             }
-            List<AnchoredSectionResult> extractedResults = this.extractAnchoredSections(element, matchedRule, rules, order);
-            anchoredResults.addAll(extractedResults);
-            order += extractedResults.size();
-            this.incrementMatchedCount(matchedRule, matchedSectionCounts);
+            Elements matchedElements = this.selectElements(root, rule.getSelector());
+            for (Element matchedElement : matchedElements) {
+                if (this.hasReachedLimit(rule, matchedSectionCounts)) {
+                    break;
+                }
+                SectionResult parsed = new SectionResult(rule.getName());
+                this.copyNonExecutableOptions(rule.getSectionOptions(), parsed.getMeta());
+                this.extractSection(matchedElement, rule, parsed);
+                if (!this.hasSectionContent(parsed)) {
+                    continue;
+                }
+                anchoredResults.add(new AnchoredSectionResult(matchedElement, parsed, order++));
+                this.incrementMatchedCount(rule, matchedSectionCounts);
+            }
         }
         Collections.sort(anchoredResults, new Comparator<AnchoredSectionResult>() {
             @Override
@@ -62,97 +71,6 @@ public class Extractor {
             domPositions.put(elementsInOrder.get(i), i);
         }
         return domPositions;
-    }
-
-    private List<AnchoredSectionResult> extractAnchoredSections(Element element,
-                                                                RuleNode rule,
-                                                                List<RuleNode> rules,
-                                                                int startOrder) {
-        List<AnchoredSectionResult> results = new ArrayList<AnchoredSectionResult>();
-        if (this.shouldInlineItemsAsSections(element, rule, rules)) {
-            RuleNode itemTemplateRule = rule.getItemTemplate();
-            Elements itemElements = this.selectElements(element, itemTemplateRule.getSelector());
-            long limit = this.resolveLimit(itemTemplateRule);
-            int count = 0;
-            int order = startOrder;
-            for (Element itemElement : itemElements) {
-                if (this.hasReachedLimit(limit, count)) {
-                    break;
-                }
-                SectionResult parsed = new SectionResult(rule.getName());
-                this.copyNonExecutableOptions(rule.getSectionOptions(), parsed.getMeta());
-                this.copyNonExecutableOptions(itemTemplateRule.getSectionOptions(), parsed.getMeta());
-                this.extractFields(itemElement, itemTemplateRule, parsed);
-                if (parsed.hasFieldContent()) {
-                    results.add(new AnchoredSectionResult(itemElement, parsed, order++));
-                    count++;
-                }
-            }
-            return results;
-        }
-
-        SectionResult parsed = new SectionResult(rule.getName());
-        this.copyNonExecutableOptions(rule.getSectionOptions(), parsed.getMeta());
-        this.extractSection(element, rule, parsed);
-        results.add(new AnchoredSectionResult(element, parsed, startOrder));
-        return results;
-    }
-
-    private boolean shouldInlineItemsAsSections(Element element, RuleNode rule, List<RuleNode> rules) {
-        if (element == null || rule == null || rule.getItemTemplate() == null) {
-            return false;
-        }
-        if (rule.getFieldSelectors() != null && !rule.getFieldSelectors().isEmpty()) {
-            return false;
-        }
-        if (this.selectElements(element, rule.getItemTemplate().getSelector()).isEmpty()) {
-            return false;
-        }
-        return this.containsNestedMatches(element, rules, rule);
-    }
-
-    private boolean containsNestedMatches(Element element, List<RuleNode> rules, RuleNode currentRule) {
-        if (element == null || rules == null || rules.isEmpty()) {
-            return false;
-        }
-        for (RuleNode rule : rules) {
-            if (rule == null || rule == currentRule || StringUtils.isBlank(rule.getSelector())) {
-                continue;
-            }
-            Elements matchedElements = this.selectElements(element, rule.getSelector());
-            for (Element matchedElement : matchedElements) {
-                if (matchedElement != null && matchedElement != element) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private RuleNode findBestMatchedRule(Element element,
-                                         List<RuleNode> rules,
-                                         Map<RuleNode, Integer> matchedSectionCounts) {
-        RuleNode bestRule = null;
-        for (RuleNode rule : rules) {
-            if (rule == null || this.hasReachedLimit(rule, matchedSectionCounts) || !this.matches(element, rule.getSelector())) {
-                continue;
-            }
-            if (bestRule == null || this.comparePriority(rule, bestRule) < 0) {
-                bestRule = rule;
-            }
-        }
-        return bestRule;
-    }
-
-    private boolean matches(Element el, String selector) {
-        if (el == null || StringUtils.isBlank(selector)) {
-            return false;
-        }
-        try {
-            return el.is(selector);
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     private void extractSection(Element el, RuleNode rule, SectionResult result) {
@@ -348,43 +266,12 @@ public class Extractor {
         matchedSectionCounts.put(rule, count == null ? 1 : count + 1);
     }
 
-    private int comparePriority(RuleNode current, RuleNode existing) {
-        int currentScore = this.selectorSpecificityScore(current == null ? null : current.getSelector());
-        int existingScore = this.selectorSpecificityScore(existing == null ? null : existing.getSelector());
-        if (currentScore != existingScore) {
-            return existingScore - currentScore;
-        }
-
-        String currentSelector = current == null || current.getSelector() == null ? "" : current.getSelector();
-        String existingSelector = existing == null || existing.getSelector() == null ? "" : existing.getSelector();
-        int selectorCompare = existingSelector.length() - currentSelector.length();
-        if (selectorCompare != 0) {
-            return selectorCompare;
-        }
-
-        String currentName = current == null || current.getName() == null ? "" : current.getName();
-        String existingName = existing == null || existing.getName() == null ? "" : existing.getName();
-        return currentName.compareTo(existingName);
-    }
-
-    private int selectorSpecificityScore(String selector) {
-        if (StringUtils.isBlank(selector)) {
-            return Integer.MIN_VALUE;
-        }
-        int score = 0;
-        for (int i = 0; i < selector.length(); i++) {
-            char current = selector.charAt(i);
-            if (current == '#') {
-                score += 100;
-            } else if (current == '.' || current == '[' || current == ':') {
-                score += 10;
-            } else if (current == '>' || current == '+' || current == '~') {
-                score += 5;
-            } else if (Character.isWhitespace(current)) {
-                score += 1;
-            }
-        }
-        return score;
+    private boolean hasSectionContent(SectionResult result) {
+        return result != null
+                && (result.hasFieldContent()
+                || (result.getItems() != null
+                && result.getItems().getList() != null
+                && !result.getItems().getList().isEmpty()));
     }
 
     private String defaultAttr(String field) {

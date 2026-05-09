@@ -20,7 +20,7 @@ paths:
 
 
       - name: latest
-        selector: "div.stui-pannel__bd > ul.stui-vodlist.clearfix
+        selector: "div.stui-pannel__bd > ul.stui-vodlist.clearfix"
         items:
           selector: "> li"
           meta:
@@ -39,17 +39,15 @@ paths:
               transforms: [abs-url]
 
       - name: category-list
-        selector: div.stui-pannel__bd
-        items:
-          selector: "div.stui-vodlist__head:has(h3 a[href*='/show/'])"
-          limit: 8
-          meta:
-            layout: list
-          fields:
-            text:
-              selector: h3 a
-              transforms: [trim]
-            link:
-              selector: h3 a
-              attr: href
-              transforms: [abs-url]
+        selector: "div.stui-pannel__bd > div.stui-vodlist__head:has(h3 a[href*='/show/'])"
+        limit: 8
+        meta:
+          layout: list
+        fields:
+          text:
+            selector: h3 a
+            transforms: [trim]
+          link:
+            selector: h3 a
+            attr: href
+            transforms: [abs-url]
