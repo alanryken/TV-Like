@@ -1,5 +1,6 @@
 package tv.tvai.like;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,5 +13,6 @@ import java.util.Map;
 @NoArgsConstructor
 public abstract class MetaResult {
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Object> meta = new LinkedHashMap<String, Object>();
 }
