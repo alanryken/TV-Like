@@ -78,6 +78,14 @@ List<SectionResult> result = new TV(html, url).like();
 - 官网介绍页：`index.html`
 - 技能说明：`skills/tvlike-dsl-generator/SKILL.md`
 
+
+## 升级路线
+
+- 播放页嗅探
+- 搜索框上焦、搜索文本支持
+- 自动焦点判定机制、元素背景色
+- 页面缓存
+ 
 ## License
 
 MIT License.
