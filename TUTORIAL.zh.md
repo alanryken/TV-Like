@@ -82,6 +82,12 @@ paths:
 - `fields`：字段定义
 - `items`：列表模板
 
+匹配顺序说明：
+
+- section 输出顺序按页面节点出现顺序决定
+- 同一条规则会自动复用到页面中所有重复出现的同类节点
+- 即使 DSL 里先写“分类内容”再写“分类”，最终输出仍按页面实际顺序排列
+
 ## 5. fields 写法
 
 ### text
@@ -145,7 +151,45 @@ items:
 
 `items` 会输出到结果里的 `items.list` 数组中，`items.meta` 用于承载列表级扩展参数。
 
-## 7. 完整示例
+## 7. 重复结构示例
+
+页面结构如果是：
+
+1. 分类
+2. 分类内容
+3. 分类
+4. 分类内容
+5. 分类内容
+6. 分类内容
+7. 分类
+8. 分类
+
+可以只写两条 section 规则：
+
+```yaml
+version: 1
+sections:
+  - name: category
+    selector: .category
+    fields:
+      text:
+        selector: h2
+        transforms: [trim]
+  - name: category-content
+    selector: .category-content
+    fields:
+      text:
+        selector: a
+        transforms: [trim]
+      link:
+        selector: a
+        attr: href
+        transforms: [abs-url]
+```
+
+引擎会在遍历页面时自动重复利用这两条规则，并按 DOM 实际顺序输出，不需要为第 1 组、第 2 组内容分别再写一套规则。
+
+## 8. 完整示例
 
 ```yaml
 version: 1
@@ -194,7 +238,7 @@ paths:
               transforms: [abs-url]
 ```
 
-## 8. 页面内嵌方式
+## 9. 页面内嵌方式
 
 ```html
 <script type="application/yaml" name="tv-like">
@@ -214,7 +258,7 @@ sections:
 - `script[id="tv-like"]`
 - `script[id="tv-like-rules"]`
 
-## 9. 远程 Hub 方式
+## 10. 远程 Hub 方式
 
 如果页面没有内嵌规则，核心引擎会去规则 Hub 查询：
 
@@ -222,7 +266,7 @@ sections:
 - `${host}.yml`
 - 域名倒序路径形式，如 `com/example/www.yaml`
 
-## 10. 最佳实践
+## 11. 最佳实践
 
 - selector 优先选稳定 class / id，不要过度依赖层级
 - path 规则尽量按页面类型拆分
@@ -231,7 +275,7 @@ sections:
 - 元数据统一放在 `meta`，避免和执行选项混用
 - 大站点按页面类型拆多个 YAML 文件维护
 
-## 11. 规则校验
+## 12. 规则校验
 
 如果你希望在运行提取前先检查 YAML DSL 是否写对，可以直接调用：
 

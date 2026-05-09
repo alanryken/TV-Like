@@ -65,6 +65,12 @@ List<SectionResult>
 - `text` / `img` / `link`：固定字段对象，不存在时为 `null`
 - `items`：列表结果，不存在列表时为 `null`
 
+顺序说明：
+
+- 返回顺序以页面节点实际出现顺序为准
+- 同一条 section 规则会在页面中重复复用，不需要为每个重复块单独写规则
+- 不依赖 DSL 中 `sections` 的声明顺序来决定输出顺序
+
 ## FieldResult
 
 字段对象结构：

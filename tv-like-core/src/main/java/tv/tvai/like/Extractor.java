@@ -2,7 +2,6 @@ package tv.tvai.like;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 import tv.tvai.like.enums.OptionKeyEnum;
 import tv.tvai.like.util.StringUtils;
@@ -19,35 +18,35 @@ public class Extractor {
         if (doc == null || rules == null || rules.isEmpty()) {
             return result;
         }
-        Node root = doc.body() != null ? doc.body() : doc;
-        this.traverse(root, rules, result, new LinkedHashMap<RuleNode, Integer>());
+        Element root = doc.body() != null ? doc.body() : doc;
+        Map<RuleNode, Integer> matchedSectionCounts = new LinkedHashMap<RuleNode, Integer>();
+        for (Element element : root.getAllElements()) {
+            RuleNode matchedRule = this.findBestMatchedRule(element, rules, matchedSectionCounts);
+            if (matchedRule == null) {
+                continue;
+            }
+            SectionResult parsed = new SectionResult(matchedRule.getName());
+            this.copyNonExecutableOptions(matchedRule.getSectionOptions(), parsed.getMeta());
+            this.extractSection(element, matchedRule, parsed);
+            result.add(parsed);
+            this.incrementMatchedCount(matchedRule, matchedSectionCounts);
+        }
         return result;
     }
 
-    private void traverse(Node node,
-                          List<RuleNode> rules,
-                          List<SectionResult> result,
-                          Map<RuleNode, Integer> matchedSectionCounts) {
-        if (node instanceof Element) {
-            Element el = (Element) node;
-            for (RuleNode rule : rules) {
-                if (this.hasReachedLimit(rule, matchedSectionCounts)) {
-                    continue;
-                }
-                boolean matches = this.matches(el, rule.getSelector());
-                if (matches) {
-                    SectionResult parsed = new SectionResult(rule.getName());
-                    this.copyNonExecutableOptions(rule.getSectionOptions(), parsed.getMeta());
-                    this.extractSection(el, rule, parsed);
-                    result.add(parsed);
-                    this.incrementMatchedCount(rule, matchedSectionCounts);
-                }
+    private RuleNode findBestMatchedRule(Element element,
+                                         List<RuleNode> rules,
+                                         Map<RuleNode, Integer> matchedSectionCounts) {
+        RuleNode bestRule = null;
+        for (RuleNode rule : rules) {
+            if (rule == null || this.hasReachedLimit(rule, matchedSectionCounts) || !this.matches(element, rule.getSelector())) {
+                continue;
+            }
+            if (bestRule == null || this.comparePriority(rule, bestRule) < 0) {
+                bestRule = rule;
             }
         }
-
-        for (Node child : node.childNodes()) {
-            this.traverse(child, rules, result, matchedSectionCounts);
-        }
+        return bestRule;
     }
 
     private boolean matches(Element el, String selector) {
@@ -252,6 +251,45 @@ public class Extractor {
     private void incrementMatchedCount(RuleNode rule, Map<RuleNode, Integer> matchedSectionCounts) {
         Integer count = matchedSectionCounts.get(rule);
         matchedSectionCounts.put(rule, count == null ? 1 : count + 1);
+    }
+
+    private int comparePriority(RuleNode current, RuleNode existing) {
+        int currentScore = this.selectorSpecificityScore(current == null ? null : current.getSelector());
+        int existingScore = this.selectorSpecificityScore(existing == null ? null : existing.getSelector());
+        if (currentScore != existingScore) {
+            return existingScore - currentScore;
+        }
+
+        String currentSelector = current == null || current.getSelector() == null ? "" : current.getSelector();
+        String existingSelector = existing == null || existing.getSelector() == null ? "" : existing.getSelector();
+        int selectorCompare = existingSelector.length() - currentSelector.length();
+        if (selectorCompare != 0) {
+            return selectorCompare;
+        }
+
+        String currentName = current == null || current.getName() == null ? "" : current.getName();
+        String existingName = existing == null || existing.getName() == null ? "" : existing.getName();
+        return currentName.compareTo(existingName);
+    }
+
+    private int selectorSpecificityScore(String selector) {
+        if (StringUtils.isBlank(selector)) {
+            return Integer.MIN_VALUE;
+        }
+        int score = 0;
+        for (int i = 0; i < selector.length(); i++) {
+            char current = selector.charAt(i);
+            if (current == '#') {
+                score += 100;
+            } else if (current == '.' || current == '[' || current == ':') {
+                score += 10;
+            } else if (current == '>' || current == '+' || current == '~') {
+                score += 5;
+            } else if (Character.isWhitespace(current)) {
+                score += 1;
+            }
+        }
+        return score;
     }
 
     private String defaultAttr(String field) {

@@ -134,6 +134,61 @@ public class TVCoreBehaviorTest {
     }
 
     @Test
+    public void shouldReuseRulesAcrossRepeatedNodesAndKeepDomOrder() {
+        String html = "<html><body>"
+                + "<div class='category'><h2>动作</h2></div>"
+                + "<div class='category-content'><a href='/detail/1'>片名1</a></div>"
+                + "<div class='category'><h2>喜剧</h2></div>"
+                + "<div class='category-content'><a href='/detail/2'>片名2</a></div>"
+                + "<div class='category-content'><a href='/detail/3'>片名3</a></div>"
+                + "<div class='category-content'><a href='/detail/4'>片名4</a></div>"
+                + "<div class='category'><h2>科幻</h2></div>"
+                + "<div class='category'><h2>纪录片</h2></div>"
+                + "<script type='application/yaml' name='tv-like'>"
+                + "version: 1\n"
+                + "sections:\n"
+                + "  - name: category-content\n"
+                + "    selector: .category-content\n"
+                + "    fields:\n"
+                + "      text:\n"
+                + "        selector: a\n"
+                + "        transforms: [trim]\n"
+                + "      link:\n"
+                + "        selector: a\n"
+                + "        attr: href\n"
+                + "        transforms: [abs-url]\n"
+                + "  - name: category\n"
+                + "    selector: .category\n"
+                + "    fields:\n"
+                + "      text:\n"
+                + "        selector: h2\n"
+                + "        transforms: [trim]\n"
+                + "</script>"
+                + "</body></html>";
+
+        List<SectionResult> result = new TV(html, "https://example.com/index").like();
+
+        Assert.assertEquals(8, result.size());
+        Assert.assertEquals("category", result.get(0).getSection());
+        Assert.assertEquals("动作", result.get(0).getText().getValue());
+        Assert.assertEquals("category-content", result.get(1).getSection());
+        Assert.assertEquals("片名1", result.get(1).getText().getValue());
+        Assert.assertEquals("https://example.com/detail/1", result.get(1).getLink().getValue());
+        Assert.assertEquals("category", result.get(2).getSection());
+        Assert.assertEquals("喜剧", result.get(2).getText().getValue());
+        Assert.assertEquals("category-content", result.get(3).getSection());
+        Assert.assertEquals("片名2", result.get(3).getText().getValue());
+        Assert.assertEquals("category-content", result.get(4).getSection());
+        Assert.assertEquals("片名3", result.get(4).getText().getValue());
+        Assert.assertEquals("category-content", result.get(5).getSection());
+        Assert.assertEquals("片名4", result.get(5).getText().getValue());
+        Assert.assertEquals("category", result.get(6).getSection());
+        Assert.assertEquals("科幻", result.get(6).getText().getValue());
+        Assert.assertEquals("category", result.get(7).getSection());
+        Assert.assertEquals("纪录片", result.get(7).getText().getValue());
+    }
+
+    @Test
     public void shouldValidateYamlDslAndReportReadableErrors() {
         String dsl = ""
                 + "version: 1\n"
