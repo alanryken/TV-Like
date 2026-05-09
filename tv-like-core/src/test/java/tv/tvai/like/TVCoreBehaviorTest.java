@@ -189,6 +189,58 @@ public class TVCoreBehaviorTest {
     }
 
     @Test
+    public void shouldInlineItemOnlySectionWhenNestedSectionsNeedDomOrder() {
+        String html = "<html><body>"
+                + "<div class='container'>"
+                + "<div class='nav'><a href='/movie'>电影</a></div>"
+                + "<ul class='latest'><li><a href='/detail/1'>片名1</a></li></ul>"
+                + "<div class='nav'><a href='/tv'>电视剧</a></div>"
+                + "<ul class='latest'><li><a href='/detail/2'>片名2</a></li></ul>"
+                + "</div>"
+                + "<script type='application/yaml' name='tv-like'>"
+                + "version: 1\n"
+                + "sections:\n"
+                + "  - name: latest\n"
+                + "    selector: .container > ul.latest\n"
+                + "    items:\n"
+                + "      selector: li\n"
+                + "      fields:\n"
+                + "        text:\n"
+                + "          selector: a\n"
+                + "          transforms: [trim]\n"
+                + "        link:\n"
+                + "          selector: a\n"
+                + "          attr: href\n"
+                + "          transforms: [abs-url]\n"
+                + "  - name: nav\n"
+                + "    selector: .container\n"
+                + "    items:\n"
+                + "      selector: .nav\n"
+                + "      fields:\n"
+                + "        text:\n"
+                + "          selector: a\n"
+                + "          transforms: [trim]\n"
+                + "        link:\n"
+                + "          selector: a\n"
+                + "          attr: href\n"
+                + "          transforms: [abs-url]\n"
+                + "</script>"
+                + "</body></html>";
+
+        List<SectionResult> result = new TV(html, "https://example.com/index").like();
+
+        Assert.assertEquals(4, result.size());
+        Assert.assertEquals("nav", result.get(0).getSection());
+        Assert.assertEquals("电影", result.get(0).getText().getValue());
+        Assert.assertEquals("latest", result.get(1).getSection());
+        Assert.assertEquals("片名1", result.get(1).getItems().getList().get(0).getText().getValue());
+        Assert.assertEquals("nav", result.get(2).getSection());
+        Assert.assertEquals("电视剧", result.get(2).getText().getValue());
+        Assert.assertEquals("latest", result.get(3).getSection());
+        Assert.assertEquals("片名2", result.get(3).getItems().getList().get(0).getText().getValue());
+    }
+
+    @Test
     public void shouldValidateYamlDslAndReportReadableErrors() {
         String dsl = ""
                 + "version: 1\n"

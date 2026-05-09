@@ -7,6 +7,8 @@ import tv.tvai.like.enums.OptionKeyEnum;
 import tv.tvai.like.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,19 +21,112 @@ public class Extractor {
             return result;
         }
         Element root = doc.body() != null ? doc.body() : doc;
+        List<Element> elementsInOrder = root.getAllElements();
+        Map<Element, Integer> domPositions = this.indexElements(elementsInOrder);
         Map<RuleNode, Integer> matchedSectionCounts = new LinkedHashMap<RuleNode, Integer>();
-        for (Element element : root.getAllElements()) {
+        List<AnchoredSectionResult> anchoredResults = new ArrayList<AnchoredSectionResult>();
+        int order = 0;
+        for (Element element : elementsInOrder) {
             RuleNode matchedRule = this.findBestMatchedRule(element, rules, matchedSectionCounts);
             if (matchedRule == null) {
                 continue;
             }
-            SectionResult parsed = new SectionResult(matchedRule.getName());
-            this.copyNonExecutableOptions(matchedRule.getSectionOptions(), parsed.getMeta());
-            this.extractSection(element, matchedRule, parsed);
-            result.add(parsed);
+            List<AnchoredSectionResult> extractedResults = this.extractAnchoredSections(element, matchedRule, rules, order);
+            anchoredResults.addAll(extractedResults);
+            order += extractedResults.size();
             this.incrementMatchedCount(matchedRule, matchedSectionCounts);
         }
+        Collections.sort(anchoredResults, new Comparator<AnchoredSectionResult>() {
+            @Override
+            public int compare(AnchoredSectionResult left, AnchoredSectionResult right) {
+                int leftPosition = domPositions.get(left.anchor) == null ? Integer.MAX_VALUE : domPositions.get(left.anchor);
+                int rightPosition = domPositions.get(right.anchor) == null ? Integer.MAX_VALUE : domPositions.get(right.anchor);
+                if (leftPosition != rightPosition) {
+                    return leftPosition - rightPosition;
+                }
+                return left.order - right.order;
+            }
+        });
+        for (AnchoredSectionResult anchoredResult : anchoredResults) {
+            result.add(anchoredResult.result);
+        }
         return result;
+    }
+
+    private Map<Element, Integer> indexElements(List<Element> elementsInOrder) {
+        Map<Element, Integer> domPositions = new LinkedHashMap<Element, Integer>();
+        if (elementsInOrder == null) {
+            return domPositions;
+        }
+        for (int i = 0; i < elementsInOrder.size(); i++) {
+            domPositions.put(elementsInOrder.get(i), i);
+        }
+        return domPositions;
+    }
+
+    private List<AnchoredSectionResult> extractAnchoredSections(Element element,
+                                                                RuleNode rule,
+                                                                List<RuleNode> rules,
+                                                                int startOrder) {
+        List<AnchoredSectionResult> results = new ArrayList<AnchoredSectionResult>();
+        if (this.shouldInlineItemsAsSections(element, rule, rules)) {
+            RuleNode itemTemplateRule = rule.getItemTemplate();
+            Elements itemElements = this.selectElements(element, itemTemplateRule.getSelector());
+            long limit = this.resolveLimit(itemTemplateRule);
+            int count = 0;
+            int order = startOrder;
+            for (Element itemElement : itemElements) {
+                if (this.hasReachedLimit(limit, count)) {
+                    break;
+                }
+                SectionResult parsed = new SectionResult(rule.getName());
+                this.copyNonExecutableOptions(rule.getSectionOptions(), parsed.getMeta());
+                this.copyNonExecutableOptions(itemTemplateRule.getSectionOptions(), parsed.getMeta());
+                this.extractFields(itemElement, itemTemplateRule, parsed);
+                if (parsed.hasFieldContent()) {
+                    results.add(new AnchoredSectionResult(itemElement, parsed, order++));
+                    count++;
+                }
+            }
+            return results;
+        }
+
+        SectionResult parsed = new SectionResult(rule.getName());
+        this.copyNonExecutableOptions(rule.getSectionOptions(), parsed.getMeta());
+        this.extractSection(element, rule, parsed);
+        results.add(new AnchoredSectionResult(element, parsed, startOrder));
+        return results;
+    }
+
+    private boolean shouldInlineItemsAsSections(Element element, RuleNode rule, List<RuleNode> rules) {
+        if (element == null || rule == null || rule.getItemTemplate() == null) {
+            return false;
+        }
+        if (rule.getFieldSelectors() != null && !rule.getFieldSelectors().isEmpty()) {
+            return false;
+        }
+        if (this.selectElements(element, rule.getItemTemplate().getSelector()).isEmpty()) {
+            return false;
+        }
+        return this.containsNestedMatches(element, rules, rule);
+    }
+
+    private boolean containsNestedMatches(Element element, List<RuleNode> rules, RuleNode currentRule) {
+        if (element == null || rules == null || rules.isEmpty()) {
+            return false;
+        }
+        for (RuleNode rule : rules) {
+            if (rule == null || rule == currentRule || StringUtils.isBlank(rule.getSelector())) {
+                continue;
+            }
+            Elements matchedElements = this.selectElements(element, rule.getSelector());
+            for (Element matchedElement : matchedElements) {
+                if (matchedElement != null && matchedElement != element) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private RuleNode findBestMatchedRule(Element element,
@@ -346,5 +441,17 @@ public class Extractor {
             return StringUtils.isNotBlank(absUrl) ? absUrl.trim() : value;
         }
         return value;
+    }
+
+    private static class AnchoredSectionResult {
+        private final Element anchor;
+        private final SectionResult result;
+        private final int order;
+
+        private AnchoredSectionResult(Element anchor, SectionResult result, int order) {
+            this.anchor = anchor;
+            this.result = result;
+            this.order = order;
+        }
     }
 }
