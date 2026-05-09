@@ -20,7 +20,7 @@ public class TVLikeDSL {
     private static final int READ_TIMEOUT_MILLIS = 30_000;
     private static final String DEFAULT_USER_AGENT = "Mozilla/5.0";
     private static final String[] DSL_FILE_SUFFIXES = {".yaml", ".yml"};
-    private String tv_like_dsl_hub = "https://hub.tvai.tv/";
+    private String tv_like_dsl_hub = "http://hub.tvai.tv/";
 
     public TVLikeDSL() {
     }
@@ -64,16 +64,17 @@ public class TVLikeDSL {
             return null;
         }
         Set<String> candidates = new LinkedHashSet<String>();
-        candidates.add(normalizedHost);
-        if (normalizedHost.startsWith("www.")) {
-            candidates.add(normalizedHost.substring("www.".length()));
-        }
         String domainPath = domainToDslPath(normalizedHost);
         if (StringUtils.isNotBlank(domainPath)) {
             candidates.add(domainPath);
             if (domainPath.endsWith("/www")) {
                 candidates.add(domainPath.substring(0, domainPath.length() - "/www".length()));
             }
+        }
+
+        candidates.add(normalizedHost);
+        if (normalizedHost.startsWith("www.")) {
+            candidates.add(normalizedHost.substring("www.".length()));
         }
         for (String l : candidates) {
             for (String suffix : DSL_FILE_SUFFIXES) {

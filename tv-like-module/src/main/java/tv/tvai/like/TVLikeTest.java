@@ -17,20 +17,20 @@ public class TVLikeTest {
     public static void main(String[] args) throws IOException {
         String html = inputStreamToString();
         String url = "https://www.libvio.lat/";
-        Document doc = Jsoup.parse(html, url);
-
-        TVLikeDSL tvLikeDSL = new TVLikeDSL();
-        String dsl = tvLikeDSL.getDSL(doc, new java.net.URL(url).getHost());
-
-        RuleParser parser = new RuleParser();
-        DslValidationResult validationResult = parser.validate(dsl);
-        if (!validationResult.isValid()) {
-            System.out.println("YAML DSL validation failed:");
-            for (String error : validationResult.getErrors()) {
-                System.out.println(" - " + error);
-            }
-            return;
-        }
+//        Document doc = Jsoup.parse(html, url);
+//
+//        TVLikeDSL tvLikeDSL = new TVLikeDSL();
+//        String dsl = tvLikeDSL.getDSL(doc, new java.net.URL(url).getHost());
+//
+//        RuleParser parser = new RuleParser();
+//        DslValidationResult validationResult = parser.validate(dsl);
+//        if (!validationResult.isValid()) {
+//            System.out.println("YAML DSL validation failed:");
+//            for (String error : validationResult.getErrors()) {
+//                System.out.println(" - " + error);
+//            }
+//            return;
+//        }
 
         List<SectionResult> like = new TV(html, url).like();
         ObjectMapper om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);

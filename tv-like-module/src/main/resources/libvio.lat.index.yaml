@@ -18,42 +18,11 @@ paths:
               attr: href
               transforms: [abs-url]
 
-      - name: notice
-        selector: "#note"
-        meta:
-          layout: popup
-        fields:
-          text:
-            selector: .popup-main
-            transforms: [trim]
-          img:
-            selector: .popup-icon img
-            attr: src
-            transforms: [abs-url]
-
-      - name: banner
-        selector: "#iaujwnefhw .t-img-box"
-        meta:
-          badge: ad
-          img-ratio: 16/9
-        fields:
-          text:
-            selector: .a_ms
-            transforms: [trim]
-          link:
-            selector: a
-            attr: href
-            transforms: [abs-url]
-          img:
-            selector: img
-            attr: src
-            transforms: [abs-url]
 
       - name: latest
-        selector: "div.stui-pannel__bd > ul.stui-vodlist.clearfix:first-of-type"
+        selector: "div.stui-pannel__bd > ul.stui-vodlist.clearfix
         items:
           selector: "> li"
-          limit: 12
           meta:
             img-ratio: 2/3
           fields:
