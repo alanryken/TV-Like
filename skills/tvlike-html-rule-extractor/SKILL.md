@@ -1,58 +1,89 @@
 ---
 name: "tvlike-html-rule-extractor"
-description: "Extracts visible TV-Like YAML rules from generic HTML pages. Invoke when an AI needs to turn page HTML and URL into maintainable TV-Like DSL."
+description: "Generates pure TV-Like YAML from page HTML and URL. Invoke when AI needs to convert visible page structure into stable YAML, regardless of whether the page already contains DSL."
 ---
 
 # TV-Like HTML Rule Extractor
 
-你是一个把任意网站的通用 HTML 页面抽取成 TV-Like YAML DSL 的技能。
+你是一个把 HTML 页面归纳为 TV-Like YAML DSL 的技能。
 
-目标：
+你的唯一目标是：
 
-- 从 HTML 和 URL 中识别对电视端真正有价值的可见区块
-- 生成当前 `tv-like-core` 已支持的 YAML 规则
-- 保持 selector 稳定、可维护、尽量通用
-- 不要针对某一个样例页面、某一类站点或某个垂直行业过拟合
+- 根据页面真实结构生成一份可直接使用的 TV-Like YAML
+- 无论页面里是否已经存在内嵌 DSL，都按页面内容重新归纳
+- 最终只输出纯 YAML，不输出解释、分析、标题、前后说明
 
 ## 什么时候调用
 
 在这些场景调用：
 
-- 用户给出一个网页 HTML，要求提取 TV-Like 规则
-- 用户给出一个网页 URL 和源码，希望生成 YAML DSL
-- 其他 AI 需要从任意站点页面中总结“可见规则”
-- 需要把页面结构抽象成适合电视端展示的 section 和 items
+- 用户给出网页 HTML，要求生成 TV-Like YAML
+- 用户给出网页 URL 和源码，希望 AI 归纳出 TV-Like DSL
+- 页面里可能已有内嵌规则，但用户要的是“重新生成一份 YAML”
+- 其他 AI 需要把任意页面结构压缩成当前项目可执行的 YAML
 
 不要在这些场景调用：
 
-- 只是解释 HTML 语法
-- 只是做 DOM 调试，不需要产出 TV-Like YAML
-- 需要生成项目之外的自定义 DSL
+- 只是解释 HTML / CSS 语法
+- 只是分析现有 DSL，不需要重新生成 YAML
+- 需要输出项目之外的自定义 DSL
+- 需要输出 JSON、Markdown 报告或自然语言总结
 
-## 当前项目约束
+## 当前项目真实约束
 
-只使用当前项目已经实现的能力：
+只使用当前仓库已经实现的能力，不要脑补。
 
-- 顶层：`version`
-- 顶层：`paths` 或 `sections`
-- path：`match`、`matches`
-- section：`name`、`selector`、`limit`、`meta`、`fields`、`items`
-- items：`selector`、`limit`、`meta`、`fields`
-- field 只允许：
-  - `text`
-  - `img`
-  - `link`
-- field 配置只允许：
-  - `selector`
-  - `attr`
-  - `transforms`
-  - `meta`
-- transforms 只允许：
-  - `trim`
-  - `upper`
-  - `lower`
-  - `digits`
-  - `abs-url`
+### 顶层 DSL 能力
+
+只支持：
+
+- `version`
+- `paths`
+- `sections`
+
+path 只支持：
+
+- `match`
+- `matches`
+
+section 只支持：
+
+- `name`
+- `selector`
+- `limit`
+- `meta`
+- `fields`
+- `items`
+
+items 只支持：
+
+- `selector`
+- `limit`
+- `meta`
+- `fields`
+
+field 名只支持：
+
+- `text`
+- `img`
+- `link`
+
+field 配置只支持：
+
+- `selector`
+- `attr`
+- `transforms`
+- `meta`
+
+transforms 只支持：
+
+- `trim`
+- `upper`
+- `upper-case`
+- `lower`
+- `lower-case`
+- `digits`
+- `abs-url`
 
 不要虚构这些能力：
 
@@ -60,71 +91,115 @@ description: "Extracts visible TV-Like YAML rules from generic HTML pages. Invok
 - 条件判断
 - 变量引用
 - 自定义函数
-- 自定义字段名
-- 多图、多链接、多文本并行输出
+- import / include
+- 自定义字段类型
+- 多值并行输出
+- 嵌套多层 list 容器
 
-## 可见规则定义
+## 当前解析行为
 
-“可见规则”只提取用户在页面上实际看得到、且电视端有展示价值的内容。
+生成 YAML 时，必须遵守这些真实行为：
 
-默认保留：
+- 路径命中时，更具体的 `match` 会优先于更宽泛的规则
+- 如果没有 `paths` 命中，而顶层有 `sections`，会走默认 `/**`
+- `section` 可以只用 `fields`，也可以用 `items`
+- `items` 里的每个字段通过 `selectFirst()` 取第一个匹配值，不会收集多个值
+- 非法 selector 会被静默忽略，不会抛给用户
+- `meta` 会透传到结果，但不会参与执行逻辑
+- `limit` 作用于 section 命中数或 item 数
+- 最终 section 输出顺序按 DOM 出现顺序排序，而不是 YAML 书写顺序
 
-- 顶部导航
-- 主横幅 / hero / 轮播
-- 当前可见公告
-- 主内容摘要区
-- 通用列表 / 卡片栅格 / 表格化列表
-- 标签、分类、面包屑、筛选入口
-- 相关推荐、推荐入口、操作入口
+因此：
 
-默认忽略：
+- 不要写依赖“字段合并”“多节点拼接”的规则
+- 不要假设一个字段能拿到多个匹配
+- 不要用只有在理想解析器里才成立的复杂设计
+- 不要因为页面里已有 DSL，就直接照抄它
 
-- `script`
-- `style`
-- HTML 注释里的内容
-- 统计脚本、埋点、广告脚本
-- 仅交互逻辑，不承载内容的按钮
-- 纯版权、备案、技术性页脚
-- 默认隐藏且对电视端无意义的下拉层
+## 现有 DSL 的处理原则
 
-注意：
+如果页面里已经有：
 
-- 如果某个公告、弹层、横幅在源码里明确处于可见状态，并且承载内容，可以保留
-- 不要因为是弹层就一律删除，要按“当前是否可见、是否有内容价值”判断
+- `script[name=tv-like]`
+- `script[id=tv-like]`
+- `script[id=tv-like-rules]`
 
-## 抽取原则
+处理方式是：
 
-### 1. 先判断页面类型
+- 可以把它当作参考线索
+- 但不能把它当作最终答案
+- 必须仍然以页面真实结构为准重新归纳
+- 输出结果依然只是一份新的纯 YAML
+
+换句话说：
+
+- 输入里可能有 DSL
+- 输出里不要写“对现有 DSL 的解释”
+- 输出里不要写“我参考了现有 DSL”
+- 输出里只保留最终 YAML
+
+## 工作方法
+
+每次执行都按这个顺序：
+
+1. 判断页面类型
+2. 分析页面真实结构
+3. 忽略脚本和注释，只看真实可见内容
+4. 选择高价值区块
+5. 映射为 `sections / fields / items`
+6. 输出最终 YAML
+
+思考过程可以存在，但最终回复里不要输出思考过程。
+
+## 第一步：判断页面类型
 
 优先判断页面更像：
 
 - 首页 / 门户页
-- 列表页 / 分类页
+- 分类页 / 列表页
 - 搜索结果页
 - 详情页
-- 文章页 / 文档页
-- 商品页 / 服务页
-- 表单页 / 登录页
-- 仪表盘 / 工具页
+- 播放页
+- 专题页
+- 文档页 / 文章页
 
-### 2. 只保留电视端高价值区块
+页面类型会直接影响：
 
-区块数量宁少勿滥。
+- 是否使用 `paths`
+- section 应该保留哪些块
+- 列表是否适合抽成 `items`
+
+## 第二步：分析页面真实结构并归纳
+
+先看用户真正会浏览或点击的内容。
 
 优先保留：
 
-- 用户会浏览和点击的内容区
-- 重复出现的内容卡片区
-- 页面主导航和主入口
+- 顶部导航
+- hero / banner / 可见公告
+- 主内容卡片列表
+- 分类入口
+- 推荐列表
+- 筛选入口 / 标签入口
 
-优先舍弃：
+优先忽略：
 
-- 纯说明文字
-- 重复导航
-- 只在 PC 交互里有意义的浮层
+- `script`
+- `style`
+- HTML 注释
+- 统计和埋点脚本
 - 空列表
+- 纯技术页脚
+- 默认隐藏且不承载核心内容的浮层
 
-### 3. selector 选择策略
+注意：
+
+- 如果公告、弹层、横幅在源码里明确可见，而且对电视端有价值，可以保留
+- 但不要因为“看起来有内容”就把所有可见块都塞进 YAML
+
+## 第三步：按真实实现生成规则
+
+### selector 选择策略
 
 优先使用：
 
@@ -132,123 +207,99 @@ description: "Extracts visible TV-Like YAML rules from generic HTML pages. Invok
 - 稳定的 `class`
 - 语义清楚的父容器
 - 适度的组合选择器
-- 必要时使用 `:has(...)`、`:contains(...)`、`:first-of-type`
+- 在 Jsoup 可支持范围内、且能明显提升稳定性的 `:has(...)`
 
-避免使用：
+避免：
 
 - 过长层级链
 - `nth-child`
-- 强依赖顺序的深层 selector
-- 明显像运行时生成的 class
-- 只对当前样例页面成立的路径
+- 强依赖顺序的深层路径
+- 看起来像运行时生成的 class
+- 只对当前样例 HTML 成立的偶然位置
 
-### 4. section 和 items 的判断
+### section / items 选择原则
 
-- 单块内容：用 `fields`
-- 重复卡片：用 `items`
-- 同构重复块：优先合并成一个通用 `list`
+- 单块信息：优先 `fields`
+- 重复卡片：优先 `items`
+- 同构重复块：优先合并，而不是按文案复制多条 section
 
-如果一个区块里主要是重复卡片，就优先写成：
+例如多个“电影 / 电视剧 / 动漫”区块如果 DOM 结构相同：
 
-```yaml
-items:
-  selector: "> li"
-  fields:
-    text:
-      selector: .title a
-    link:
-      selector: a
-      attr: href
-    img:
-      selector: img
-      attr: src
-```
+- 不要按标题写成 4 条几乎相同的 section
+- 优先保留更有电视端价值的一层
+- 如果当前 DSL 无法优雅表达双层结构，就保留“分类入口”或“影片卡片”中更重要的一层
 
-如果页面上出现很多结构完全相同、只有标题文案不同的块：
+### 字段映射原则
 
-- 不要按文案复制多条 section
-- 优先抽成一个通用 section
-- 再用一个 `items` list 提取这些重复块
-- 如果当前 DSL 不能同时表达“两层嵌套”，优先保留对浏览和点击更有价值的一层
+当前只能输出三个字段，因此要做信息压缩：
 
-错误示例：
-
-- `电影`
-- `电视剧`
-- `纪录片`
-- `动漫`
-
-如果这几块 DOM 结构完全相同，只是标题不同，不要各写一条 rule。
-
-### 5. 字段映射规则
-
-TV-Like 当前只支持三个字段，因此必须做信息压缩：
-
-- `text`：最主要的可读文本，通常是标题
-- `link`：点击后进入详情或播放页的地址
-- `img`：海报、封面、缩略图
+- `text`：核心标题或文案
+- `link`：详情、播放或入口链接
+- `img`：封面、缩略图、海报
 
 常见映射：
 
-- 卡片标题 / 条目名称 / 按钮文案 -> `text`
-- 详情链接 / 跳转链接 / 操作入口 -> `link`
-- 封面图 / 缩略图 / 图标图 -> `img`
-- 导航项文案 -> `text`
+- 导航项文字 -> `text`
 - 导航项地址 -> `link`
-- 公告正文 / 摘要 -> `text`
-- 横幅图 -> `img`
+- 卡片标题 -> `text`
+- 卡片详情链接 -> `link`
+- 卡片封面 -> `img`
+- 公告正文 -> `text`
+- 横幅图片 -> `img`
 - 横幅跳转 -> `link`
 
-不要尝试输出当前引擎不支持的额外字段。
+### attr 与 transforms
 
-## 图片与链接处理
+链接：
 
-链接处理：
-
-- `href` 一般映射到 `link`
+- 一般用 `attr: href`
 - 相对地址优先加 `transforms: [abs-url]`
 
-图片处理：
+图片：
 
-- 先找 `src`
-- 没有再找 `data-src`
-- 还没有再找 `data-original`
+- 先看 `src`
+- 没有再看 `data-src`
+- 再没有再看 `data-original`
 - 相对地址优先加 `transforms: [abs-url]`
 
-文本处理：
+文本：
 
-- 默认加 `transforms: [trim]`
+- 默认优先加 `transforms: [trim]`
 
 ## 路径规则选择
 
-如果已知 URL 或页面类型明确：
+如果 URL 明确、且不同页面类型差异明显：
 
 - 优先输出 `paths`
-- 首页常见可用：
-  - `/`
-  - `/index.html`
-- 详情页、分类页按 URL 模式写 `match`
 
-如果没有可靠 URL：
+首页常见写法：
 
-- 直接输出顶层 `sections`
+```yaml
+version: 1
+paths:
+  - matches:
+      - /
+      - /index.html
+    sections: []
+```
+
+如果没有可靠 URL 信息，或者用户只给了一段片段 HTML：
+
+- 可以直接输出顶层 `sections`
 
 ## section 命名建议
 
-推荐命名：
+推荐：
 
 - `nav`
 - `hero`
 - `banner`
 - `notice`
-- `summary`
+- `latest`
+- `catalog`
 - `list`
 - `grid`
-- `catalog`
 - `related`
-- `actions`
-- `sidebar`
-- `tabs`
 - `filters`
 - `topic`
 
@@ -257,98 +308,65 @@ TV-Like 当前只支持三个字段，因此必须做信息压缩：
 - `section1`
 - `block2`
 - `tmp`
-- 直接复制技术 class 名作为业务名
-
-## 工作流程
-
-按这个顺序执行：
-
-1. 阅读 URL、HTML、可见文本和重复结构
-2. 判断页面类型和主要区块
-3. 排除不可见、空白、低价值节点
-4. 给每个高价值区块选择稳定 root selector
-5. 判断该区块是 `fields` 还是 `items`
-6. 为每个区块映射 `text / link / img`
-7. 为相对链接和图片补 `abs-url`
-8. 控制 section 数量，避免把页面所有零碎块都写进 YAML
-9. 检查 selector 是否明显过拟合
-10. 输出 YAML 和必要说明
+- 直接照搬技术 class 名当业务名
 
 ## 输出格式
 
-默认输出两部分：
+最终回复必须是一个 YAML 代码块的纯内容，不要输出任何别的文字。
 
-### 1. 页面判断
-
-简要说明：
-
-- 页面类型
-- 保留了哪些可见区块
-- 略过了哪些低价值区块
-- selector 为什么这样选
-
-### 2. YAML DSL
-
-直接输出可复制的 YAML：
+正确：
 
 ```yaml
 version: 1
-sections:
-  - name: nav
-    selector: .nav
-    items:
-      selector: li
-      fields:
-        text:
-          selector: a
-          transforms: [trim]
-        link:
-          selector: a
-          attr: href
-          transforms: [abs-url]
+paths:
+  - matches:
+      - /
+      - /index.html
+    sections:
+      - name: nav
+        selector: .stui-header__menu
+        items:
+          selector: "> li"
+          limit: 8
+          fields:
+            text:
+              selector: a
+              transforms: [trim]
+            link:
+              selector: a
+              attr: href
+              transforms: [abs-url]
 ```
 
-如果页面存在很多同构块，优先输出这种合并写法：
+错误示例：
 
-```yaml
-version: 1
-sections:
-  - name: catalog
-    selector: .page-body
-    items:
-      selector: ".block-head:has(a[href])"
-      fields:
-        text:
-          selector: a
-          transforms: [trim]
-        link:
-          selector: a
-          attr: href
-          transforms: [abs-url]
-```
+- 不要先写“页面分析如下”
+- 不要先写“我参考了现有 DSL”
+- 不要输出分点说明
+- 不要输出“下面是 YAML”
+- 不要输出 Markdown 标题
 
-必要时再补充一句人工复核提示，但不要长篇解释。
+如果用户明确要求“只要 YAML”，那就只返回 YAML 文本本身。
 
 ## 自检清单
 
 输出前逐项检查：
 
-- 是否只用了项目支持的 YAML 能力
+- 是否是从页面结构归纳出的 YAML，而不是照抄现有 DSL
+- 是否只用了项目当前真实支持的能力
 - 是否只用了 `text / img / link`
-- 是否优先选择了稳定 selector
-- 是否避免了注释内容和脚本内容
-- 是否忽略了空列表和低价值区块
-- 是否给相对链接加了 `abs-url`
-- 是否把重复卡片写成了 `items`
-- 是否把同构重复块合并成了一个通用 list
-- 是否存在明显绑定单一样例站点的 selector
+- 是否理解了 `selectFirst()` 带来的单值提取限制
+- 是否给相对链接和图片加了 `abs-url`
+- 是否避免把同构区块按文案重复展开
+- 是否避免了明显过拟合的 selector
+- 最终输出是否只有纯 YAML
 
 ## 失败时的处理
 
-如果 HTML 过于混乱，无法稳定抽取：
+如果 HTML 很乱，或者稳定 selector 很难选：
 
-- 先给出最小可用 YAML
+- 先给最小可用 YAML
 - 只保留最稳定的 1 到 3 个 section
-- 明确指出需要人工复核的区块
+- 不要输出失败说明，仍然只输出最小 YAML
 
-优先稳定可维护，不要追求覆盖所有元素。
+优先稳定和可维护，不要追求“把整页都抽出来”。
