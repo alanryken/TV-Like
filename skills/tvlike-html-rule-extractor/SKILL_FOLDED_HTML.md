@@ -1,9 +1,9 @@
 ---
-name: "tvlike-cleaned-html-rule-extractor"
-description: "Generates pure TV-Like YAML from html and URL. Invoke when AI needs rules closer to original HTML while still leveraging cleaned or folded repeated structures."
+name: "tvlike-folded-html-rule-extractor"
+description: "Generates pure TV-Like YAML from html and URL. Invoke when AI needs rules from html that already contains folded repeated blocks."
 ---
 
-# TV-Like Cleaned HTML Rule Extractor
+# TV-Like Folded HTML Rule Extractor
 
 你是一个把传入的 `html` 归纳为 TV-Like YAML DSL 的技能。
 
@@ -11,7 +11,7 @@ description: "Generates pure TV-Like YAML from html and URL. Invoke when AI need
 
 - 根据页面真实结构生成一份可直接使用的 TV-Like YAML
 - 优先基于 `html` 和 URL 归纳，而不是照抄页面已有 DSL
-- 在存在重复结构时，主动识别适合抽成 `items` 的列表块
+- 主动识别已经被压缩折叠的重复结构，并把它们归纳成稳定的列表规则
 - 最终只输出纯 YAML，不输出解释、分析、标题、前后说明
 
 ## 什么时候调用
@@ -19,9 +19,9 @@ description: "Generates pure TV-Like YAML from html and URL. Invoke when AI need
 在这些场景调用：
 
 - 用户给出 `html` 和 URL，要求生成 TV-Like YAML
-- 用户希望结果尽量接近直接分析原 HTML 的效果，但不想输入整页原始 HTML
-- 页面里存在大量重复卡片、导航项、分类入口，希望 AI 识别为可复用的列表规则
-- 其他 AI 已经先做了 HTML 预处理，需要再将结果归纳成当前项目可执行的 YAML
+- 传入的 `html` 已经包含重复块压缩结果，希望 AI 识别这些块对应的列表结构
+- 页面中存在大量重复卡片、导航项、分类入口、剧集入口，需要优先抽成 `items`
+- 其他 AI 已经先对 HTML 做了折叠压缩，需要再将结果归纳成当前项目可执行的 YAML
 
 不要在这些场景调用：
 
@@ -32,18 +32,38 @@ description: "Generates pure TV-Like YAML from html and URL. Invoke when AI need
 
 ## `html` 的输入特点
 
-传入的 `html` 可能已经过预处理，通常具有这些特点：
+传入的 `html` 可能已经过预处理和重复结构压缩，通常具有这些特点：
 
 - 已移除 `script`、`style`、`noscript`、`template` 等噪声节点
 - 已移除明显隐藏元素
 - 文本已做空白归一化
 - 只保留较关键的属性，如 `id`、`class`、`href`、`src`、`data-src`、`data-original`、`title`、`alt`
+- 对连续重复的同构节点，可能只保留一个代表节点，并补充压缩标记
+
+压缩后的重复块常见形态类似：
+
+```html
+<ul class="stui-vodlist clearfix">
+  <li class="card" data-tv-like-repeat="12" data-tv-like-folded="true">
+    <a class="thumb" href="/detail/1.html" data-original="/img/1.jpg"></a>
+    <div class="detail">
+      <h4 class="title"><a href="/detail/1.html">示例标题</a></h4>
+    </div>
+  </li>
+</ul>
+```
+
+读法规则：
+
+- `data-tv-like-repeat="12"` 表示这个节点代表一组被折叠的重复结构
+- `data-tv-like-folded="true"` 表示该节点是压缩后保留下来的代表节点
+- 这些标记是分析线索，不是线上页面稳定存在的业务属性
 
 这意味着：
 
-- 它通常保留了足够多的真实 DOM 细节
-- 它通常比原始 HTML 更干净，更适合归纳稳定 selector
-- 你可以直接利用属性值、层级和重复结构来判断页面类型和字段含义
+- 你可以更快识别哪些区域适合抽成 `items`
+- 你仍然需要依赖真实可执行的 DOM 结构来写 selector
+- 不要把压缩标记直接写进最终 YAML 的 selector
 
 ## 当前项目真实约束
 
@@ -137,7 +157,7 @@ transforms 只支持：
 每次执行都按这个顺序：
 
 1. 先结合 URL 判断页面类型
-2. 再从 `html` 中识别高价值区块和重复结构
+2. 再从 `html` 中识别高价值区块和压缩后的重复结构
 3. 优先寻找稳定的容器 selector
 4. 对重复块抽取 `items.selector`
 5. 对标题、链接、封面映射为 `text / link / img`
@@ -163,7 +183,7 @@ transforms 只支持：
 - section 应该保留哪些块
 - 列表是否适合抽成 `items`
 
-## 第二步：识别重复结构和折叠线索
+## 第二步：识别压缩后的重复结构
 
 优先识别这些高价值重复块：
 
@@ -180,11 +200,39 @@ transforms 只支持：
 - 把重复子节点作为 `items.selector`
 - 不要为每个重复块单独生成几乎相同的 section
 
-如果输入内容中已经包含任何“repeat / 折叠 / 重复结构”线索：
+如果 `html` 中已经带有压缩标记：
 
-- 把这些线索当作重复结构的强提示
-- 优先用它们帮助你决定哪些区域应该抽成 `items`
-- 但 selector 仍然要基于 `html` 中真实可执行的 DOM 结构来写
+- 把这些标记当作重复结构的强提示
+- 优先把带压缩标记的节点理解为列表项模板，而不是单个孤立节点
+- 结合其父容器判断更适合把哪一层抽成 `section.selector`
+
+注意：
+
+- `data-tv-like-repeat`
+- `data-tv-like-folded`
+
+这两个标记只用于帮助理解“这里原本是一组重复块”。
+
+不要把它们直接写进最终 selector，例如不要输出这类规则：
+
+```yaml
+items:
+  selector: li[data-tv-like-folded=true]
+```
+
+正确做法是回退到真实业务结构，例如：
+
+```yaml
+items:
+  selector: "> li"
+```
+
+或：
+
+```yaml
+items:
+  selector: li.card
+```
 
 ## 第三步：selector 选择策略
 
@@ -207,6 +255,7 @@ transforms 只支持：
 - 强依赖顺序的深层路径
 - 看起来像运行时生成的 class
 - 只对当前样例成立的偶然位置
+- 依赖压缩标记的辅助属性选择器
 
 ## 第四步：section / items 选择原则
 
@@ -332,6 +381,7 @@ paths:
 - 是否只用了 `text / img / link`
 - 是否理解了 `selectFirst()` 带来的单值提取限制
 - 是否识别并合并了明显重复的卡片、导航、分类或选集结构
+- 是否把压缩标记仅作为分析线索，而没有写进最终 selector
 - 是否给相对链接和图片加了 `abs-url`
 - 如果用户给了明确 URL，是否判断过该页面更适合 `matches`、`match` 还是顶层 `sections`
 - 最终输出是否只有纯 YAML
