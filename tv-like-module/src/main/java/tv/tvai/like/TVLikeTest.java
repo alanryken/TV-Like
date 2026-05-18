@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TVLikeTest {
 
@@ -31,6 +33,12 @@ public class TVLikeTest {
 //            }
 //            return;
 //        }
+        HtmlSummarizer.SummaryResult summaryResult = new HtmlSummarizer().summarize(html);
+        Map<String, String> summaryJson = new LinkedHashMap<String, String>();
+        summaryJson.put("url", url);
+        summaryJson.put("tree", summaryResult.getCustomTree());
+        String jsonString = new ObjectMapper().writeValueAsString(summaryJson);
+        System.out.println(jsonString);
 
         List<SectionResult> like = new TV(html, url).like();
         ObjectMapper om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
