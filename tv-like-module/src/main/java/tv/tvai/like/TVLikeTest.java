@@ -36,14 +36,14 @@ public class TVLikeTest {
         HtmlSummarizer.SummaryResult summaryResult = new HtmlSummarizer().summarize(html);
         Map<String, String> summaryJson = new LinkedHashMap<String, String>();
         summaryJson.put("url", url);
-        summaryJson.put("tree", summaryResult.getCustomTree());
+        summaryJson.put("html", summaryResult.getCustomTree());
         String jsonString = new ObjectMapper().writeValueAsString(summaryJson);
         System.out.println(jsonString);
 
-        List<SectionResult> like = new TV(html, url).like();
-        ObjectMapper om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
-        System.out.println("YAML DSL is valid. Extracted result:");
-        System.out.println(om.writeValueAsString(like));
+        // List<SectionResult> like = new TV(html, url).like();
+        // ObjectMapper om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+        // System.out.println("YAML DSL is valid. Extracted result:");
+        // System.out.println(om.writeValueAsString(like));
     }
 
     public static String inputStreamToString() throws IOException {
