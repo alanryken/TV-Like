@@ -300,10 +300,29 @@ transforms 只支持：
 
 ## 路径规则选择
 
-由于此技能只处理 `customTree`，默认没有可靠 URL 信息：
+此技能的主要输入是 `customTree`，但如果用户同时提供了明确 URL，可以把 URL 当作可靠路径信息使用：
 
-- 默认直接输出顶层 `sections`
-- 只有当用户显式同时提供可用路径信息，并且你能从输入中稳定区分页面类型时，才谨慎输出 `paths`
+- 如果没有 URL，默认直接输出顶层 `sections`
+- 如果 URL 明确，且你能从 URL 或页面结构稳定判断页面类型，优先输出 `paths`
+- 首页 / 门户页这类固定入口，优先使用 `matches`
+- 列表页 / 详情页 / 播放页这类有明显路径模式的页面，优先使用 `match`
+
+首页常见写法：
+
+```yaml
+version: 1
+paths:
+  - matches:
+      - /
+      - /index.html
+    sections: []
+```
+
+注意：
+
+- 只有在用户明确提供 URL 时，才能根据 URL 推断 `matches` 或 `match`
+- 不要凭 `customTree` 自行猜测不存在的路径
+- 如果 URL 与 `customTree` 信息冲突，优先保守，退回顶层 `sections`
 
 ## section 命名建议
 
@@ -338,7 +357,7 @@ transforms 只支持：
 
 输出前逐项检查：
 
-- 是否是从 `customTree` 和真实结构归纳出的 YAML，而不是照抄输入里的旧规则
+- 是否是从 `customTree`、URL 和真实结构归纳出的 YAML，而不是照抄输入里的旧规则
 - 是否只用了项目当前真实支持的能力
 - 是否优先用了更短、更稳的 selector
 - 是否严格使用了 2 空格缩进，且没有 tab
@@ -346,6 +365,7 @@ transforms 只支持：
 - 是否理解了 `selectFirst()` 带来的单值提取限制
 - 是否避免使用 `first-of-type / nth-*` 这类容易丢数据的 selector
 - 是否给相对链接和图片加了 `abs-url`
+- 如果用户给了明确 URL，是否判断过该页面更适合 `matches`、`match` 还是顶层 `sections`
 - 是否避免把同构区块按文案重复展开
 - 最终输出是否只有纯 YAML
 
