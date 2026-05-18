@@ -13,17 +13,20 @@ public class TV {
     private final String html;
     private final String dslHub;
     private final String url;
+    private final String dsl;
 
     public TV(String html, String url) {
         this.html = html;
         this.url = url;
         this.dslHub = null;
+        this.dsl = null;
     }
 
-    public TV(String html, String url, String dslHub) {
+    public TV(String html, String url, String dslHub, String dsl) {
         this.html = html;
         this.url = url;
         this.dslHub = dslHub;
+        this.dsl = dsl;
     }
 
     public List<SectionResult> like() {
@@ -39,7 +42,8 @@ public class TV {
             String path = u.getPath();
             String host = u.getHost();
 
-            String dsl = tvLikeDSL.getDSL(doc, host);
+
+            String dsl = StringUtils.isNotBlank(this.dsl) ? this.dsl : tvLikeDSL.getDSL(doc, host);
             if (StringUtils.isBlank(dsl)) return emptyResult;
             RuleParser parser = new RuleParser();
             parser.parse(dsl);

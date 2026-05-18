@@ -36,10 +36,12 @@ public class TVLikeTest {
         HtmlSummarizer.SummaryResult summaryResult = new HtmlSummarizer().summarize(html);
         Map<String, String> summaryJson = new LinkedHashMap<String, String>();
         summaryJson.put("url", url);
-        summaryJson.put("tree", summaryResult.getCustomTree());
+        summaryJson.put("html", summaryResult.getFoldedHtml());
         String jsonString = new ObjectMapper().writeValueAsString(summaryJson);
-        System.out.println(jsonString);
-
+//        System.out.println(jsonString);
+//        if (true) return;
+        String dsl = getDslString();
+//        List<SectionResult> like = new TV(html, url, null, dsl).like();
         List<SectionResult> like = new TV(html, url).like();
         ObjectMapper om = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
         System.out.println("YAML DSL is valid. Extracted result:");
@@ -62,6 +64,25 @@ public class TVLikeTest {
             }
         } catch (IOException e) {
             throw new RuntimeException("读取 HTML 文件失败：", e);
+        }
+    }
+
+    public static String getDslString() throws IOException {
+        try (InputStream inputStream = TV.class.getClassLoader().getResourceAsStream("libvio.lat.index.yaml")) {
+            if (inputStream == null) {
+                throw new IllegalArgumentException("类路径下未找到文件");
+            }
+            try (BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+                StringBuilder sb = new StringBuilder();
+                int charCode;
+                while ((charCode = reader.read()) != -1) {
+                    sb.append((char) charCode);
+                }
+                return sb.toString();
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("读取 YAML 文件失败：", e);
         }
     }
 }
