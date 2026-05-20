@@ -1,0 +1,78 @@
+version: 1
+paths:
+  - match: /index.php/vod/type/id/20.html
+    sections:
+      - name: notice
+        selector: .stui-header__notice
+        fields:
+          text:
+            selector: span
+            transforms:
+              - trim
+          link:
+            selector: a[href]
+            attr: href
+            transforms:
+              - abs-url
+      - name: nav
+        selector: .stui-header__menu
+        items:
+          selector: li
+          fields:
+            text:
+              selector: a
+              transforms:
+                - trim
+            link:
+              selector: a
+              attr: href
+              transforms:
+                - abs-url
+      - name: filters
+        selector: '#screenbox'
+        items:
+          selector: ul li a[href]
+          limit: 50
+          fields:
+            text:
+              selector: a
+              transforms:
+                - trim
+            link:
+              selector: a
+              attr: href
+              transforms:
+                - abs-url
+      - name: grid
+        selector: .stui-vodlist
+        items:
+          selector: li
+          fields:
+            text:
+              selector: .stui-vodlist__detail .title a
+              transforms:
+                - trim
+            link:
+              selector: .stui-vodlist__detail .title a
+              attr: href
+              transforms:
+                - abs-url
+            img:
+              selector: .stui-vodlist__thumb
+              attr: data-original
+              transforms:
+                - abs-url
+      - name: pagination
+        selector: .stui-page__item
+        items:
+          selector: li
+          fields:
+            text:
+              selector: a
+              transforms:
+                - trim
+            link:
+              selector: a
+              attr: href
+              transforms:
+                - abs-url

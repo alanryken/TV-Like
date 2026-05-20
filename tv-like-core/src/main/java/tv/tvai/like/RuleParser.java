@@ -387,7 +387,7 @@ public class RuleParser {
             String fieldName = entry.getKey() == null ? "" : entry.getKey().trim().toLowerCase();
             String fieldLocation = location + "." + fieldName;
             if (!ALLOWED_FIELDS.contains(fieldName)) {
-                result.addError(fieldLocation + " is not supported. Allowed fields: text, img, link");
+                result.addWarning(fieldLocation + " is not supported. Allowed fields: text, img, link");
                 continue;
             }
             validateFieldConfig(entry.getValue(), fieldLocation, result);

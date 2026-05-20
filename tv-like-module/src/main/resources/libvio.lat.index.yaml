@@ -18,22 +18,35 @@ paths:
               attr: href
               transforms:
                 - abs-url
-      - name: vodlist
-        selector: .stui-pannel__bd
+      - name: video-list
+        selector: .stui-vodlist
         items:
-          selector: .stui-vodlist > li
+          selector: li
+          limit: 12
           fields:
             text:
               selector: .title a
               transforms:
                 - trim
             link:
-              selector: .stui-vodlist__thumb
+              selector: .title a
               attr: href
               transforms:
                 - abs-url
             img:
-              selector: .stui-vodlist__thumb
+              selector: .lazyload
               attr: data-original
               transforms:
                 - abs-url
+      - name: category-head
+        selector: .stui-vodlist__head
+        fields:
+          text:
+            selector: h3 a
+            transforms:
+              - trim
+          link:
+            selector: h3 a
+            attr: href
+            transforms:
+              - abs-url

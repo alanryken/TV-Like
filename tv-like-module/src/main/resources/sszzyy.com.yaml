@@ -1,0 +1,104 @@
+version: 1
+paths:
+  - matches:
+      - /
+      - /index.html
+    sections:
+      - name: nav
+        selector: .stui-header__menu
+        items:
+          selector: li
+          limit: 20
+          meta:
+            name: 顶部导航项
+          fields:
+            text:
+              selector: a
+              transforms:
+                - trim
+            link:
+              selector: a
+              attr: href
+              transforms:
+                - abs-url
+      - name: notice
+        selector: .stui-header__notice
+        meta:
+          name: 网站公告
+        fields:
+          text:
+            selector: span
+            transforms:
+              - trim
+          link:
+            selector: a
+            attr: href
+            transforms:
+              - abs-url
+      - name: banner
+        selector: .carousel .stui-banner__item
+        meta:
+          name: 轮播推荐
+        fields:
+          text:
+            selector: .pic-text
+            transforms:
+              - trim
+          link:
+            selector: a
+            attr: href
+            transforms:
+              - abs-url
+      - name: hot-recommend
+        selector: .stui-vodlist__head:has(h3:contains(热播推荐))
+        meta:
+          name: 热播推荐
+        fields:
+          text:
+            selector: h3
+            transforms:
+              - trim
+      - name: category-head
+        selector: .stui-vodlist__head:not(:has(h3:contains(热播推荐)))
+        meta:
+          name: 分类标题行
+        fields:
+          text:
+            selector: h3 a
+            transforms:
+              - trim
+          link:
+            selector: h3 a
+            attr: href
+            transforms:
+              - abs-url
+          more-link:
+            selector: a.pull-right
+            attr: href
+            transforms:
+              - abs-url
+      - name: category-list
+        selector: .stui-vodlist.clearfix
+        meta:
+          name: 分类影片列表
+        limit: 20
+        items:
+          selector: li
+          limit: 12
+          meta:
+            name: 影片卡片
+          fields:
+            text:
+              selector: .title a
+              transforms:
+                - trim
+            link:
+              selector: .title a
+              attr: href
+              transforms:
+                - abs-url
+            img:
+              selector: .stui-vodlist__thumb
+              attr: data-original
+              transforms:
+                - abs-url
