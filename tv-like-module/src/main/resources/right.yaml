@@ -1,0 +1,54 @@
+
+version: 1
+paths:
+  - matches:
+      - /
+      - /index.html
+    sections:
+      - name: nav
+        selector: .stui-header__menu
+        items:
+          selector: "> li"
+          limit: 8
+          fields:
+            text:
+              selector: a
+              transforms: [trim]
+            link:
+              selector: a
+              attr: href
+              transforms: [abs-url]
+
+
+      - name: latest
+        selector: "div.stui-pannel__bd > ul.stui-vodlist.clearfix"
+        items:
+          selector: "> li"
+          meta:
+            img-ratio: 2/3
+          fields:
+            text:
+              selector: h4.title a
+              transforms: [trim]
+            link:
+              selector: a.stui-vodlist__thumb
+              attr: href
+              transforms: [abs-url]
+            img:
+              selector: a.stui-vodlist__thumb
+              attr: data-original
+              transforms: [abs-url]
+
+      - name: category-list
+        selector: "div.stui-pannel__bd > div.stui-vodlist__head:has(h3 a[href*='/show/'])"
+        limit: 8
+        meta:
+          layout: list
+        fields:
+          text:
+            selector: h3 a
+            transforms: [trim]
+          link:
+            selector: h3 a
+            attr: href
+            transforms: [abs-url]
